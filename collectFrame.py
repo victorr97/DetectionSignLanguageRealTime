@@ -1,14 +1,12 @@
 import mediapipe as mp
 import cv2
-import train
 import landmarks
 import csv
 
 total = []
 
 
-def cam_points(isCollectPhotos, class_name, trainData) -> None:
-    if isCollectPhotos:
+def cam_points(class_name) -> None:
         mp_drawing = mp.solutions.drawing_utils
         mp_holistic = mp.solutions.holistic
         mp_drawing_styles = mp.solutions.drawing_styles
@@ -63,8 +61,6 @@ def cam_points(isCollectPhotos, class_name, trainData) -> None:
                     break
         cap.release()
         cv2.destroyAllWindows()
-    else:
-        train.trainingData(trainData)
 
 
 def saveAllDataSignLanguage(cap, row):
