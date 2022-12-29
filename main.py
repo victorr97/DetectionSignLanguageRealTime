@@ -7,7 +7,8 @@ if __name__ == '__main__':
 
     parser = ArgumentParser()
     parser.add_argument('--collect', action='store_true', help="Collects landmarks and stores them in coords.csv file")
-    parser.add_argument('--nameSign', nargs='?', help="Use to specify which sign you want to save in coords.csv")
+    parser.add_argument('--nameSign', type=str, nargs='?', help="Use to specify which sign you want to save in "
+                                                                "coords.csv") 
     parser.add_argument('--train', action='store_true', help="Serves to train the data model")
 
     args = parser.parse_args()
