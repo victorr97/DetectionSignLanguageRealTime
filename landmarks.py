@@ -5,7 +5,7 @@ import numpy as np
 
 def formatLandmarks(puntos) -> None:
     # numCoords = len(puntos.pose_landmarks.landmark) + len(puntos.face_landmarks.landmark) + len(puntos.left_hand_landmarks.landmark) + len(puntos.right_hand_landmarks.landmark)
-    numCoords = len(puntos.pose_landmarks.landmark) + len(puntos.left_hand_landmarks.landmark)
+    numCoords = len(puntos.left_hand_landmarks.landmark)
     print("Detect " + str(numCoords) + " landmarks")
 
     landmarks = ['class']
@@ -21,19 +21,17 @@ def collectPointsRow(puntos, class_name):
     # puntosCara = puntos.face_landmarks.landmark
     # face_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosCara]).flatten())
 
-    puntosPose = puntos.pose_landmarks.landmark
-    pose_row = list(
-        np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosPose]).flatten())
+    # puntosPose = puntos.pose_landmarks.landmark
+    # pose_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosPose]).flatten())
 
     puntosManoIzq = puntos.left_hand_landmarks.landmark
-    manoIzq_row = list(
-        np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosManoIzq]).flatten())
+    manoIzq_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosManoIzq]).flatten())
 
-    # puntosManoDer = puntos.right_hand_landmarks.landmark
-    # manoDer_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosManoDer]).flatten())
+    #puntosManoDer = puntos.right_hand_landmarks.landmark
+    #manoDer_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosManoDer]).flatten())
 
     # row = face_row+pose_row+manoIzq_row+manoDer_row
-    row = pose_row + manoIzq_row
+    row = manoIzq_row
 
     row.insert(0, class_name)
 

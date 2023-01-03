@@ -24,6 +24,7 @@ def pickleFileResults():
                 min_tracking_confidence=0.5) as holistic:
             while cap.isOpened():
                 success, image = cap.read()
+
                 if not success:
                     print("Ignoring empty camera frame.")
                     continue
@@ -60,10 +61,8 @@ def pickleFileResults():
                     # puntosCara = results.face_landmarks.landmark
                     # face_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosCara]).flatten())
 
-                    puntosPose = results.pose_landmarks.landmark
-                    pose_row = list(np.array(
-                        [[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in
-                         puntosPose]).flatten())
+                    #puntosPose = results.pose_landmarks.landmark
+                    #pose_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosPose]).flatten())
 
                     puntosManoIzq = results.left_hand_landmarks.landmark
                     manoIzq_row = list(np.array(
@@ -74,11 +73,16 @@ def pickleFileResults():
                     # manoDer_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosManoDer]).flatten())
 
                     # row = face_row + pose_row + manoIzq_row + manoDer_row
-                    row = pose_row + manoIzq_row
+                    row = manoIzq_row
 
                     Z = pd.DataFrame([row])
+
                     body_language_class = model.predict(Z)[0]
                     body_language_prob = model.predict_proba(Z)[0]
+
+                    #d = model.decision_function(Z)[0]
+                    #body_language_prob = np.exp(d) / np.sum(np.exp(d))
+
                     print(body_language_class, body_language_prob)
 
                     coords = tuple(
@@ -92,10 +96,7 @@ def pickleFileResults():
                                 2, cv2.LINE_AA)
 
                     cv2.putText(image, 'PROB', (15, 12), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
-                    cv2.putText(image, str(round(body_language_prob[np.argmax(body_language_prob)], 2)), (10, 40),
-                                cv2.FONT_HERSHEY_SIMPLEX, 1,
-                                (255, 255, 255), 2, cv2.LINE_AA)
-
+                    cv2.putText(image, str(round(body_language_prob[np.argmax(body_language_prob)], 2)), (10, 40),cv2.FONT_HERSHEY_SIMPLEX, 1,(255, 255, 255), 2, cv2.LINE_AA)
                     cv2.imshow('MediaPipe Holistic - RESULT', image)
 
                 # Cerrar CAM
