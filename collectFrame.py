@@ -57,6 +57,7 @@ def cam_points(class_name) -> None:
                     print("Doesn't detect all points of the person")
                 else:
                     global num
+                    #Para empezar a almacenar datos has de clicar las teclas 1 y luego 's'
                     if cv2.waitKey(1) & 0xFF == ord('s'):
                         num = 1
                     if num == 1:
@@ -75,7 +76,7 @@ def saveAllDataSignLanguage(cap, row):
 
     if len(total) == 30:
         for i in total:
-            with open('coords.csv', mode='a+', newline='') as file:
+            with open('generatedFiles/coords.csv', mode='a+', newline='') as file:
                 csv_writer = csv.writer(file)
                 csv_writer.writerow(i)
                 cap.release()

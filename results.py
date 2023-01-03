@@ -1,15 +1,15 @@
+import joblib
 import mediapipe as mp
 import numpy as np
 import cv2
-import pickle
 import pandas as pd
-
+import landmarks
+from sklearn.linear_model import RidgeClassifier
 
 def pickleFileResults():
     print("*** RESULTS ***")
-    with open('models.pkl', 'rb') as f:
-        model = pickle.load(f)
-        print(model)
+    with open('generatedFiles/bestModel.pkl', 'rb') as f:
+        model = joblib.load(f)
 
         mp_drawing = mp.solutions.drawing_utils
         mp_holistic = mp.solutions.holistic
@@ -58,30 +58,17 @@ def pickleFileResults():
                 if (results.pose_landmarks is None) or (results.left_hand_landmarks is None):
                     print("Doesn't detect all points of the person")
                 else:
-                    # puntosCara = results.face_landmarks.landmark
-                    # face_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosCara]).flatten())
-
-                    #puntosPose = results.pose_landmarks.landmark
-                    #pose_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosPose]).flatten())
-
-                    puntosManoIzq = results.left_hand_landmarks.landmark
-                    manoIzq_row = list(np.array(
-                        [[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in
-                         puntosManoIzq]).flatten())
-
-                    # puntosManoDer = results.right_hand_landmarks.landmark
-                    # manoDer_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosManoDer]).flatten())
-
-                    # row = face_row + pose_row + manoIzq_row + manoDer_row
-                    row = manoIzq_row
-
+                    row = landmarks.pointsRealTime(results)
                     Z = pd.DataFrame([row])
 
-                    body_language_class = model.predict(Z)[0]
-                    body_language_prob = model.predict_proba(Z)[0]
-
-                    #d = model.decision_function(Z)[0]
-                    #body_language_prob = np.exp(d) / np.sum(np.exp(d))
+                    #Si el clasificador es RidgeClassifier almaceno el name y la prob. de diferente manera
+                    if isinstance(RidgeClassifier(), type(model.best_estimator_.named_steps.classifier)):
+                        body_language_class = model.predict(Z)[0]
+                        d = model.decision_function(Z)[0]
+                        body_language_prob = np.exp(d) / np.sum(np.exp(d))
+                    else:
+                        body_language_class = model.predict(Z)[0]
+                        body_language_prob = model.predict_proba(Z)[0]
 
                     print(body_language_class, body_language_prob)
 

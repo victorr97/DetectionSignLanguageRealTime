@@ -1,5 +1,7 @@
+import joblib
 import pandas as pd
 from matplotlib import pyplot as plt
+from sklearn.dummy import DummyClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
@@ -30,12 +32,13 @@ def confusionMatrix(y_test, y_predict, nameClass) -> None:
 def trainingData() -> None:
     print("***TRAINING DATA OF COORDS***")
 
-    df = pd.read_csv('coords.csv')
+    df = pd.read_csv('generatedFiles/coords.csv')
     X = df.drop('class', axis=1)
     y = df['class']
     name = y.array
     nameClass = []
     [nameClass.append(x) for x in name if x not in nameClass]
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1234)
 
     X_train_normalized = stats.zscore(X_train, axis=1)
@@ -44,29 +47,27 @@ def trainingData() -> None:
     print("{} -> {}".format("X_train_normalized", X_train_normalized))
     print("{} -> {}".format("X_test_normalized", X_test_normalized))
 
-    pipelines = {
-        'lr': make_pipeline(StandardScaler(), LogisticRegression()),
-        'rc': make_pipeline(StandardScaler(), RidgeClassifier()),
-        'rf': make_pipeline(StandardScaler(), RandomForestClassifier()),
-        'gb': make_pipeline(StandardScaler(), GradientBoostingClassifier()),
+    pipe = Pipeline(steps=[
+        ('scaler', StandardScaler()),
+        ('classifier', DummyClassifier()),
+    ])
+
+    params = {
+        'classifier': [LogisticRegression(), RidgeClassifier(), RandomForestClassifier(), GradientBoostingClassifier()],
     }
 
-    fit_models = {}
+    gridPipe = GridSearchCV(pipe, params, scoring='accuracy', cv=10, refit=True)
+    gridPipe.fit(X_train, y_train)
 
-    for classifier, pipeline in pipelines.items():
-        model = pipeline.fit(X_train.values, y_train)
-        fit_models[classifier] = model
+    y_predict = gridPipe.predict(X_test)
+    print(gridPipe.best_params_['classifier'], accuracy_score(y_test, y_predict))
+    confusionMatrix(y_test, y_predict, nameClass)
 
-    # print(fit_models['rc'].predict(X_test))
+    print("\n*************** GridSearchCV - con Pipeline ***************\n")
+    print("Mejor método:", gridPipe.best_params_['classifier'])
+    print("Mejor puntuación:", gridPipe.best_score_)
 
-    for classifier, model in fit_models.items():
-        y_predict = model.predict(X_test)
-        print(classifier, accuracy_score(y_test, y_predict))
-        confusionMatrix(y_test, y_predict, nameClass)
+    with open('generatedFiles/bestModel.pkl', 'wb') as f:
+        joblib.dump(gridPipe, f, compress=1)
 
-    # fit_models['rf'].predict(X_test)
-
-    with open('models.pkl', 'wb') as f:
-        pickle.dump(fit_models['rf'], f)
-
-    print("***FINISHED TRAINING***")
+    print("\n***FINISHED TRAINING***")
