@@ -1,10 +1,12 @@
 import joblib
 import pandas as pd
 from matplotlib import pyplot as plt
+from pipelinehelper import PipelineHelper
 from sklearn.dummy import DummyClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MaxAbsScaler
 from sklearn.linear_model import LogisticRegression, RidgeClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.metrics import accuracy_score
@@ -13,7 +15,51 @@ import seaborn as sn
 import pickle
 from sklearn.pipeline import Pipeline
 from scipy import stats
+from sklearn.svm import LinearSVC
 
+
+def gridSearchCrossValidation(X_train, y_train):
+    k_range = list(range(1, 11))
+    weight_options = ['uniform', 'distance']
+
+    pipe = Pipeline([
+        ('scaler', PipelineHelper([
+            ('std', StandardScaler()),
+            ('max', MaxAbsScaler()),
+        ])),
+        ('classifier', PipelineHelper([
+            ('knn', KNeighborsClassifier()),
+            ('rc', RidgeClassifier()),
+            ('gb', GradientBoostingClassifier()),
+            ('rf', RandomForestClassifier()),
+            ('lr', LogisticRegression()),
+        ])),
+    ])
+
+    param_grid_pipe = {
+        'scaler__selected_model': pipe.named_steps['scaler'].generate({
+            'std__with_mean': [True, False],
+            'std__with_std': [True, False],
+            'max__copy': [True],
+        }),
+        'classifier__selected_model': pipe.named_steps['classifier'].generate({
+            'knn__n_neighbors': k_range,
+            'knn__weights': weight_options,
+            'rc__alpha': [1.0],
+            'rc__solver': ['auto'],
+            'gb__n_estimators': [100],
+            'gb__learning_rate': [1.0],
+            'rf__n_estimators': [100],
+            'lr__solver': ['lbfgs'],
+        })
+    }
+
+    print("\n***Starting training***\n")
+    gridPipe = GridSearchCV(pipe, param_grid_pipe, scoring='accuracy', cv=10, refit=True)
+    gridPipe.fit(X_train, y_train)
+    print("\n***Finished training***\n")
+
+    return gridPipe
 
 def confusionMatrix(y_test, y_predict, nameClass) -> None:
     cm = confusion_matrix(y_test, y_predict)
@@ -47,27 +93,18 @@ def trainingData() -> None:
     print("{} -> {}".format("X_train_normalized", X_train_normalized))
     print("{} -> {}".format("X_test_normalized", X_test_normalized))
 
-    pipe = Pipeline(steps=[
-        ('scaler', StandardScaler()),
-        ('classifier', DummyClassifier()),
-    ])
-
-    params = {
-        'classifier': [LogisticRegression(), RidgeClassifier(), RandomForestClassifier(), GradientBoostingClassifier()],
-    }
-
-    gridPipe = GridSearchCV(pipe, params, scoring='accuracy', cv=10, refit=True)
-    gridPipe.fit(X_train, y_train)
+    gridPipe = gridSearchCrossValidation(X_train, y_train)
 
     y_predict = gridPipe.predict(X_test)
-    print(gridPipe.best_params_['classifier'], accuracy_score(y_test, y_predict))
+    print(gridPipe.best_params_['classifier__selected_model'], accuracy_score(y_test, y_predict))
     confusionMatrix(y_test, y_predict, nameClass)
 
-    print("\n*************** GridSearchCV - con Pipeline ***************\n")
-    print("Mejor método:", gridPipe.best_params_['classifier'])
+    print("\n*************** GridSearchCV - With Pipeline ***************\n")
+    print("Mejor método:", gridPipe.best_params_['classifier__selected_model'])
     print("Mejor puntuación:", gridPipe.best_score_)
 
     with open('generatedFiles/bestModel.pkl', 'wb') as f:
         joblib.dump(gridPipe, f, compress=1)
+        print("\n*************** GUARDADO MODELO EN ARCHIVO ***************\n")
 
     print("\n***FINISHED TRAINING***")
