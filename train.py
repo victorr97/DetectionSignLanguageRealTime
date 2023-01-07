@@ -2,25 +2,21 @@ import joblib
 import pandas as pd
 from matplotlib import pyplot as plt
 from pipelinehelper import PipelineHelper
-from sklearn.dummy import DummyClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler, MaxAbsScaler
 from sklearn.linear_model import LogisticRegression, RidgeClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report
 from sklearn.metrics import confusion_matrix
 import seaborn as sn
-import pickle
 from sklearn.pipeline import Pipeline
 from scipy import stats
-from sklearn.svm import LinearSVC
 
 
 def gridSearchCrossValidation(X_train, y_train):
-    k_range = list(range(1, 11))
-    weight_options = ['uniform', 'distance']
+    # k_range = list(range(1, 11))
+    # weight_options = ['uniform', 'distance']
 
     pipe = Pipeline([
         ('scaler', PipelineHelper([
@@ -28,7 +24,7 @@ def gridSearchCrossValidation(X_train, y_train):
             ('max', MaxAbsScaler()),
         ])),
         ('classifier', PipelineHelper([
-            ('knn', KNeighborsClassifier()),
+            # ('knn', KNeighborsClassifier()),
             ('rc', RidgeClassifier()),
             ('gb', GradientBoostingClassifier()),
             ('rf', RandomForestClassifier()),
@@ -43,8 +39,8 @@ def gridSearchCrossValidation(X_train, y_train):
             'max__copy': [True],
         }),
         'classifier__selected_model': pipe.named_steps['classifier'].generate({
-            'knn__n_neighbors': k_range,
-            'knn__weights': weight_options,
+            # 'knn__n_neighbors': k_range,
+            # 'knn__weights': weight_options,
             'rc__alpha': [1.0],
             'rc__solver': ['auto'],
             'gb__n_estimators': [100],
@@ -60,6 +56,7 @@ def gridSearchCrossValidation(X_train, y_train):
     print("\n***Finished training***\n")
 
     return gridPipe
+
 
 def confusionMatrix(y_test, y_predict, nameClass) -> None:
     cm = confusion_matrix(y_test, y_predict)
@@ -96,8 +93,9 @@ def trainingData() -> None:
     gridPipe = gridSearchCrossValidation(X_train, y_train)
 
     y_predict = gridPipe.predict(X_test)
-    print(gridPipe.best_params_['classifier__selected_model'], accuracy_score(y_test, y_predict))
+    print("Accuracy_score: " + str(accuracy_score(y_test, y_predict)))
     confusionMatrix(y_test, y_predict, nameClass)
+    print("\nClassification report: \n\n" + classification_report(y_test, y_predict))
 
     print("\n*************** GridSearchCV - With Pipeline ***************\n")
     print("Mejor método:", gridPipe.best_params_['classifier__selected_model'])

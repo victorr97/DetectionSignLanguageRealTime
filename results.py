@@ -61,6 +61,7 @@ def pickleFileResults():
                     row = landmarks.pointsRealTime(results)
                     Z = pd.DataFrame([row])
 
+                    """
                     #Si el clasificador es RidgeClassifier almaceno el name y la prob. de diferente manera
                     if isinstance(RidgeClassifier(), type(model.best_estimator_.named_steps.classifier)):
                         body_language_class = model.predict(Z)[0]
@@ -69,6 +70,11 @@ def pickleFileResults():
                     else:
                         body_language_class = model.predict(Z)[0]
                         body_language_prob = model.predict_proba(Z)[0]
+                    """
+
+                    body_language_class = model.predict(Z)[0]
+                    d = model.decision_function(Z)[0]
+                    body_language_prob = np.exp(d) / np.sum(np.exp(d))
 
                     print(body_language_class, body_language_prob)
 
