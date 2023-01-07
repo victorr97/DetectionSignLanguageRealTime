@@ -76,7 +76,11 @@ def pickleFileResults():
                     d = model.decision_function(Z)[0]
                     body_language_prob = np.exp(d) / np.sum(np.exp(d))
 
-                    print(body_language_class, body_language_prob)
+                    print("Selected Class: " + body_language_class)
+                    classes = model.best_estimator_.classes_
+                    probAllClasses = zip(classes, body_language_prob)
+                    for i in probAllClasses:
+                        print(i)
 
                     coords = tuple(
                         np.multiply(np.array((results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EAR].x,
