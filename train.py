@@ -1,9 +1,11 @@
 import joblib
+import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from pipelinehelper import PipelineHelper
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler, MaxAbsScaler
 from sklearn.linear_model import LogisticRegression, RidgeClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
@@ -32,6 +34,10 @@ def gridSearchCrossValidation(X_train, y_train):
         ])),
     ])
 
+    parameters = {'solver': ['lbfgs'], 'max_iter': [1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000],
+                  'alpha': 10.0 ** -np.arange(1, 10), 'hidden_layer_sizes': np.arange(10, 15),
+                  'random_state': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
+
     param_grid_pipe = {
         'scaler__selected_model': pipe.named_steps['scaler'].generate({
             'std__with_mean': [True, False],
@@ -51,7 +57,7 @@ def gridSearchCrossValidation(X_train, y_train):
     }
 
     print("\n***Starting training***\n")
-    gridPipe = GridSearchCV(pipe, param_grid_pipe, scoring='accuracy', cv=10, refit=True)
+    gridPipe = GridSearchCV(MLPClassifier(), parameters, scoring='accuracy', cv=10, refit=True)
     gridPipe.fit(X_train, y_train)
     print("\n***Finished training***\n")
 
@@ -98,10 +104,10 @@ def trainingData() -> None:
     print("\nClassification report: \n\n" + classification_report(y_test, y_predict))
 
     print("\n*************** GridSearchCV - With Pipeline ***************\n")
-    print("Mejor método:", gridPipe.best_params_['classifier__selected_model'])
-    print("Mejor puntuación:", gridPipe.best_score_)
+    #print("Mejor método:", gridPipe.best_params_['classifier__selected_model'])
+    #print("Mejor puntuación:", gridPipe.best_score_)
 
-    with open('generatedFiles/bestModel.pkl', 'wb') as f:
+    with open('generatedFiles/neuralNetworkAllAlphabet.pkl', 'wb') as f:
         joblib.dump(gridPipe, f, compress=1)
         print("\n*************** GUARDADO MODELO EN ARCHIVO ***************\n")
 

@@ -8,7 +8,7 @@ from sklearn.linear_model import RidgeClassifier
 
 def pickleFileResults():
     print("*** RESULTS ***")
-    with open('generatedFiles/bestModel.pkl', 'rb') as f:
+    with open('generatedFiles/neuralNetworkAllAlphabet.pkl', 'rb') as f:
         model = joblib.load(f)
 
         mp_drawing = mp.solutions.drawing_utils
@@ -73,8 +73,15 @@ def pickleFileResults():
                     """
 
                     body_language_class = model.predict(Z)[0]
+                    body_language_prob = model.predict_proba(Z)[0]
+
+                    """
+
+                    body_language_class = model.predict(Z)[0]
                     d = model.decision_function(Z)[0]
                     body_language_prob = np.exp(d) / np.sum(np.exp(d))
+                    
+                    """
 
                     print("Selected Class: " + body_language_class)
                     classes = model.best_estimator_.classes_
