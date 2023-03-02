@@ -1,4 +1,3 @@
-import cv2
 import collectFrame
 import train
 import results
@@ -15,12 +14,12 @@ def index():
 def result():
     return Response(results.resultsWeb(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/test', methods=['GET'])
-def test():
-    return "TEST"
+@app.route('/recollectData', methods=['GET'])
+def recollectData():
+    return render_template('recollect.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)
 
     parser = ArgumentParser()
     parser.add_argument('--collect', action='store_true', help="Collects landmarks and stores them in coords.csv file")
