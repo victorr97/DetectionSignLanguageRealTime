@@ -6,20 +6,24 @@ from flask import Flask, render_template, Response
 
 app = Flask(__name__)
 
-@app.route('/',  methods=['GET'])
+
+@app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
+
 
 @app.route('/result', methods=['GET'])
 def result():
     return Response(results.resultsWeb(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
 @app.route('/recollectData', methods=['GET'])
 def recollectData():
     return render_template('recollect.html')
 
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="localhost", debug=True)
 
     parser = ArgumentParser()
     parser.add_argument('--collect', action='store_true', help="Collects landmarks and stores them in coords.csv file")
@@ -39,15 +43,13 @@ if __name__ == '__main__':
     elif args.nameSign is not None and args.collect is False:
         raise TypeError("Missing --collect")
 
-    if args.collect:
-        # Almaceno los datos en coords.csv
-        collectFrame.cam_points(args.nameSign)
-    else:
-        if args.train:
-            # Hace el training y guarda el modelo en models.pkl
-            train.trainingData()
-        else:
-            # Lee el models.pkl y lo compara los resultados en tiempo real
-            results.pickleFileResults()
-
-cap.release()
+    # if args.collect:
+    #     # Almaceno los datos en coords.csv
+    #     collectFrame.cam_points(args.nameSign)
+    # else:
+    #     if args.train:
+    #         # Hace el training y guarda el modelo en models.pkl
+    #         train.trainingData()
+    #     else:
+    #         # Lee el models.pkl y lo compara los resultados en tiempo real
+    #         #results.pickleFileResults()

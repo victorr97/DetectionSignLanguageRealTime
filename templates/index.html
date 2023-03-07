@@ -3,7 +3,6 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-
 		<title>Reconocimiento de lenguaje de signos en tiempo real</title>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainPage.css') }}">
 	</head>
@@ -22,40 +21,46 @@
                 <div class="button_container">
                     <div class="button_su">
                         <span class="su_button_circle"></span>
-                    <a href="{{ url_for('recollectData') }}" class="button_su_inner">
-                        <span class="button_text_container">
-                            RECOLLECT
-                        </span>
-                    </a>
+                        <a href="{{ url_for('recollectData') }}" class="button_su_inner">
+                            <span class="button_text_container">
+                                RECOLLECT
+                            </span>
+                        </a>
                     </div>
                 </div>
                 <div class="button_container">
                     <div class="button_su">
                         <span class="su_button_circle"></span>
-                    <a href="{{ url_for('recollectData') }}" class="button_su_inner">
-                        <span class="button_text_container">
-                            TRAIN
-                        </span>
-                    </a>
+                        <a href="{{ url_for('recollectData') }}" class="button_su_inner">
+                            <span class="button_text_container">
+                                TRAIN
+                            </span>
+                        </a>
                     </div>
                 </div>
                 <div class="button_container">
                     <div class="button_su">
                         <span class="su_button_circle"></span>
-                    <a href="{{ url_for('recollectData') }}" class="button_su_inner">
-                        <span class="button_text_container">
-                            START
-                        </span>
-                    </a>
+                        <a id="clickBtn" class="button_su_inner">
+                            <span class="button_text_container">
+                                START
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div id="popup">
+                    <div class="popup-container">
+                        <div class="popup">
+                            <div class="close-popup" id="closeBtn"><a href="#">X</a></div>
+                            <h2>Permisos camara</h2>
+                            <p>
+                                Si quieres utilizar este apartado de la web, necesitas aceptar los permisos de la camara.
+                            </p>
+                            <a href="{{ url_for('recollectData') }}" class="popup-btn">Aceptar camara</a>
+                        </div>
                     </div>
                 </div>
             </div>
-
-<!--            <div class="hiddenStart">
-                <div id="frame">
-                    <img src="{{ url_for('result') }}"/>
-                </div>
-            </div>-->
 		</section>
 
         <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
