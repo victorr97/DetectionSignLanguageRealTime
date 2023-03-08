@@ -204,6 +204,7 @@ section .title span a::after {
 }
 
 .button_su_inner{
+    cursor: pointer;
 	display: inline-block;
 	background: #F8B627;
 	color: #F4F4F4;
@@ -291,7 +292,7 @@ section .title span a::after {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    background-color: rgb(96 95 127 / 70%);
+    background-color: rgb(96 95 127);
     position: absolute;
     top: 0;
     left: 0;
