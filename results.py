@@ -91,7 +91,7 @@ def resultsWeb():
 
                     if not flag:
                         continue
-                    yield (b'--frame\r\n' b'Content-type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n')
+                    yield b'--frame\r\n' b'Content-type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n'
 
 
 def pickleFileResults():

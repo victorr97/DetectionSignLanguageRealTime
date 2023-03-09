@@ -1,4 +1,5 @@
 import results
+import collectFrame
 from argparse import ArgumentParser
 from flask import Flask, render_template, Response
 
@@ -7,17 +8,12 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
-
-
-@app.route('/result', methods=['GET'])
-def result():
-    return Response(results.resultsWeb(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return render_template('mainPage.html')
 
 
 @app.route('/recollectData', methods=['GET'])
 def recollectData():
-    return render_template('recollect.html')
+    return render_template('recollectData.html')
 
 
 @app.route('/train', methods=['GET'])
@@ -27,7 +23,17 @@ def train():
 
 @app.route('/start', methods=['GET'])
 def start():
-    return "RESULT"
+    return render_template('start.html')
+
+
+@app.route('/result', methods=['GET'])
+def result():
+    return Response(results.resultsWeb(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/recollect', methods=['GET'])
+def recollect():
+    return Response(collectFrame.cam_points(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':

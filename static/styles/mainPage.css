@@ -207,10 +207,10 @@ section .title span a::after {
     cursor: pointer;
 	display: inline-block;
 	background: #F8B627;
-	color: #F4F4F4;
-	font-size: 16px;
-	font-weight: normal;
-	width: 132px;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+	width: 150px;
 	text-align: center;
 	border-radius: 3px;
 	transition: 400ms;
@@ -220,12 +220,18 @@ section .title span a::after {
 	z-index: 1;
 }
 
+.button_su_inner:active {
+    color:aliceblue;
+    transform: scale(1.10,1.10);
+}
+
 .button_text_container{
    position:relative;
 }
 
 .explode-circle {
-   animation: explode 0.5s forwards;
+    animation: explode 0.5s forwards;
+    transform: translateY(-5px);
 }
 
 .desplode-circle{
@@ -234,18 +240,21 @@ section .title span a::after {
 
 @keyframes explode {
   0% {
-	width: 0px;
-	height: 0px;
-	margin-left: 0px;
-	margin-top: 0px;
-	background-color: rgba(42, 53, 80,0.2);
+    width: 0px;
+    height: 0px;
+    margin-left: 0px;
+    margin-top: 0px;
+    background-color: rgba(42, 53, 80,0.2);
+    transform:scale(0,0);
   }
   100% {
-	width: 400px;
-	height: 400px;
-	margin-left: -200px;
-	margin-top: -200px;
-	background-color: rgba(20, 180, 87,0.8);
+    width: 400px;
+    height: 400px;
+    margin-left: -200px;
+    margin-top: -200px;
+    background-color: rgba(20, 180, 87,0.8);
+    transform:scale(1.2,1.2);
+
   }
 }
 
@@ -270,7 +279,7 @@ section .title span a::after {
   display: flex;
   flex-direction: row;
   gap: 100px;
-  margin-left: -100px;
+  margin-left: -115px;
 }
 
 /********************************************
@@ -331,7 +340,7 @@ section .title span a::after {
 
 .popup-btn{
     text-decoration: none;
-    border: 2px solid #f8b62759;
+    border: 3px solid #f8b62759;
     color: black;
     padding: 5px 15px;
     border-radius: 20px;
@@ -344,4 +353,9 @@ section .title span a::after {
 .popup-btn:hover{
     background-color: #F8B627;
     color: #fff;
+    transform:scale(1.1,1.1);
+}
+
+.popup-btn:active{
+    transform:scale(1.2,1.2);
 }
