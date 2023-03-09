@@ -52,21 +52,25 @@ def saveDataSet() -> None:
                 image, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS,
                 mp_drawing_styles.get_default_hand_landmarks_style(),
                 mp_drawing_styles.get_default_hand_connections_style())
-            cv2.imshow('MediaPipe Holistic Collect Photos', image)
+            (flag, encodedImage) = cv2.imencode(".jpg", image)
+            if not flag:
+                continue
+            yield (b'--frame\r\n' b'Content-type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n')
 
             # if ((results.face_landmarks is None) or (results.pose_landmarks is None) or (results.left_hand_landmarks is None) or (results.right_hand_landmarks is None)):
             if (results.pose_landmarks is None) or (results.left_hand_landmarks is None):
                 print("Doesn't detect all points of the person")
             else:
-
-                global num
+                print("Detect person")
+                # global num
                 # Para empezar a almacenar datos has de clicar las teclas 1 y luego 's'
-                if cv2.waitKey(1) & 0xFF == ord('s'):
-                    num = 1
-                if num == 1:
-                    landmarks.formatLandmarks(results)
-                    row = landmarks.collectPointsRow(results, class_name)
-                    saveAllDataSignLanguage(cap, row)
+                # if cv2.waitKey(1) & 0xFF == ord('s'):
+                #     num = 1
+                # if num == 1:
+                #     landmarks.formatLandmarks(results)
+                #     row = landmarks.collectPointsRow(results, class_name)
+                #     saveAllDataSignLanguage(cap, row)
+
             # Cerrar CAM
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break

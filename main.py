@@ -1,9 +1,21 @@
 import results
 import collectFrame
 from argparse import ArgumentParser
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, jsonify, request
 
 app = Flask(__name__)
+
+
+@app.route('/procesar', methods=['POST'])
+def procesar():
+
+    if request.is_json:
+        lenguaje_seleccionado = request.get_json()['lenguajeSeleccionado']
+        # Haz algo con el lenguaje seleccionado, como guardarlo en una base de datos o procesarlo
+        respuesta = {'mensaje': 'El lenguaje seleccionado fue ' + lenguaje_seleccionado}
+        return jsonify(respuesta)
+    else:
+        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
 
 
 @app.route('/', methods=['GET'])
@@ -33,7 +45,7 @@ def result():
 
 @app.route('/recollect', methods=['GET'])
 def recollect():
-    return Response(collectFrame.cam_points(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(collectFrame.saveDataSet(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':
