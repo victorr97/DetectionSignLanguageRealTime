@@ -3,43 +3,16 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-        <script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
-
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static',filename='resources/slt_icon.ico') }}">
 		<title>Reconocimiento de lenguaje de signos en tiempo real</title>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainPage.css') }}">
+		<script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
 	</head>
 	<body>
 		<section>
 			<div id="frame">
 				<img src="{{ url_for('result') }}"/>
-<!--				<video id="webcam" autoplay playsinline width="640" height="480"></video>
-				<canvas id="canvas" class="d-none" ></canvas>-->
 			</div>
 		</section>
-
-			<script>
-				window.onload = function() {
-				  	//permissionWebcam();
-
-				};
-				function permissionWebcam(){
-					const webcamElement = document.getElementById('webcam');
-					const canvasElement = document.getElementById('canvas');
-					const webcam = new Webcam(webcamElement, 'user', canvasElement, null);
-
-
-					webcam.start()
-					   .then(result =>{
-						  console.log("webcam started");
-						  alert("USUARIO ACEPTA");
-						  //document.getElementById("frame").innerHTML = "<img src=\"{{ url_for('result') }}\"/>"
-
-					   })
-					   .catch(err => {
-						   alert("USUARIO NO ACEPTA");
-					   });
-				}
-			</script>
-
 	</body>
 </html>

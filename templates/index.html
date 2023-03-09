@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static',filename='resources/slt_icon.ico') }}">
 		<title>Reconocimiento de lenguaje de signos en tiempo real</title>
         <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainPage.css') }}">
 	</head>
@@ -21,7 +22,7 @@
                 <div class="button_container">
                     <div class="button_su">
                         <span class="su_button_circle"></span>
-                        <a href="{{ url_for('recollectData') }}" class="button_su_inner">
+                        <a id="clickBtnRecollect" class="button_su_inner">
                             <span class="button_text_container">
                                 RECOLLECT
                             </span>
@@ -31,7 +32,7 @@
                 <div class="button_container">
                     <div class="button_su">
                         <span class="su_button_circle"></span>
-                        <a href="{{ url_for('recollectData') }}" class="button_su_inner">
+                        <a id="clickBtnTrain" class="button_su_inner">
                             <span class="button_text_container">
                                 TRAIN
                             </span>
@@ -41,7 +42,7 @@
                 <div class="button_container">
                     <div class="button_su">
                         <span class="su_button_circle"></span>
-                        <a id="clickBtn" class="button_su_inner">
+                        <a id="clickBtnStart" class="button_su_inner">
                             <span class="button_text_container">
                                 START
                             </span>
@@ -50,13 +51,14 @@
                 </div>
                 <div id="popup">
                     <div class="popup-container">
-                        <div class="popup">
+                        <div id="popUpContainer" class="popup">
                             <div class="close-popup" id="closeBtn"><a href="#">X</a></div>
-                            <h2>Permisos camara</h2>
+                            <h2>Permite el acceso a tu cámara</h2>
                             <p>
-                                Si quieres utilizar este apartado de la web, necesitas aceptar los permisos de la camara.
+                                Al hacer clic en Aceptar, estás permitiendo el uso de la cámara de tu ordenador.
+                                Esto es necesario para poder utilizar ciertas funciones de la página web.
+                                Si no deseas utilizar la cámara, puedes cerrar la ventana.
                             </p>
-                            <a href="{{ url_for('recollectData') }}" class="popup-btn">Aceptar camara</a>
                         </div>
                     </div>
                 </div>
