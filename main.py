@@ -1,5 +1,3 @@
-import collectFrame
-import train
 import results
 from argparse import ArgumentParser
 from flask import Flask, render_template, Response
@@ -20,6 +18,16 @@ def result():
 @app.route('/recollectData', methods=['GET'])
 def recollectData():
     return render_template('recollect.html')
+
+
+@app.route('/train', methods=['GET'])
+def train():
+    return "TRAIN"
+
+
+@app.route('/start', methods=['GET'])
+def start():
+    return "RESULT"
 
 
 if __name__ == '__main__':

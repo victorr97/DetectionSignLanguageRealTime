@@ -163,7 +163,7 @@ section .title span a::after {
 }
 
 /********************************************
-****************BUTTON********************
+****************BUTTONS********************
 *********************************************/
 
 .credit{
@@ -226,7 +226,6 @@ section .title span a::after {
 
 .explode-circle {
    animation: explode 0.5s forwards;
-
 }
 
 .desplode-circle{
@@ -274,17 +273,14 @@ section .title span a::after {
   margin-left: -100px;
 }
 
-
-
-
-
-
-
-
+/********************************************
+****************POPUP********************
+*********************************************/
 
 #popup{
     display: none;
 }
+
 .popup-container{
     height: 100vh;
     width: 100%;
@@ -292,24 +288,27 @@ section .title span a::after {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    background-color: rgb(96 95 127);
+    background-color: #1b1b1b;
     position: absolute;
     top: 0;
     left: 0;
 }
+
 .popup{
     background-color: #ffffff;
     padding: 20px 30px;
     width: 50%;
     border-radius: 15px;
 }
+
 .close-popup{
     display: flex;
     justify-content: flex-end;
 }
+
 .close-popup a{
     font-size: 1.2rem;
-    background-color: rebeccapurple;
+    background-color: #F8B627;
     color: #fff;
     padding: 5px 10px;
     font-weight: bold;
@@ -317,24 +316,32 @@ section .title span a::after {
     border-radius: 10px;
     display: inline-block;
 }
+
 .popup > h2{
     font-size: 1.6rem;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
 }
+
 .popup > p{
     font-size: 1.2rem;
     margin-bottom: 10px;
 }
+
 .popup-btn{
-    display: inline-block;
     text-decoration: none;
-    border: 2px solid rebeccapurple;
+    border: 2px solid #f8b62759;
+    color: black;
     padding: 5px 15px;
     border-radius: 20px;
-    margin: 10px 0px;
     transition: .2s all ease-in;
+    display: flex;
+    justify-content: center;
+    margin: 15px 40%;
 }
+
 .popup-btn:hover{
-    background-color: rebeccapurple;
+    background-color: #F8B627;
     color: #fff;
 }
