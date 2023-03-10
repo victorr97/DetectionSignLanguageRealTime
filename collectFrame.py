@@ -7,6 +7,12 @@ import csv
 
 total = []
 num = 0
+selectSign = ""
+
+
+def setSelectSign(selectUser) -> None:
+    global selectSign
+    selectSign = selectUser
 
 
 def saveDataSet() -> None:
@@ -61,6 +67,8 @@ def saveDataSet() -> None:
             if (results.pose_landmarks is None) or (results.left_hand_landmarks is None):
                 print("Doesn't detect all points of the person")
             else:
+                if len(selectSign) != 0:
+                    print("test: " + selectSign)
                 print("Detect person")
                 # global num
                 # Para empezar a almacenar datos has de clicar las teclas 1 y luego 's'

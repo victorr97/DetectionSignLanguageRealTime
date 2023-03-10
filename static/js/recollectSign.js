@@ -11,28 +11,28 @@ selectElement.addEventListener("change", function() {
 });*/
 
 $(document).ready(function() {
-  // Agregar un evento de escucha para el evento de clic del botón de envío
+  //Click en submit
   $('#enviar-btn').click(function(e) {
     e.preventDefault(); // Prevenir que el formulario se envíe automáticamente
 
     // Obtener el valor seleccionado del elemento <select>
-    const lenguajeSeleccionado = $('#lenguajes').val();
+    const letterSign = $('#letterSign').val();
 
-    // Enviar una solicitud AJAX al backend Flask
-    $.ajax({
-      type: 'POST',
-      url: '/procesar',
-      data: JSON.stringify({ 'lenguajeSeleccionado': lenguajeSeleccionado }),
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json',
-      success: function(respuesta) {
-        // Manejar la respuesta del servidor aquí
-        console.log(respuesta);
-      },
-      error: function(error) {
-        // Manejar errores aquí
-        console.log(error);
+    // Enviar una solicitud Fetch al backend
+    fetch('/procesar', {
+      method: 'POST',
+      body: JSON.stringify({ 'letterSign': letterSign }),
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8'
       }
+    })
+    .then(response => response.json())
+    .then(data => {
+      //Respuesta del servidor
+      console.log(data);
+    })
+    .catch(error => {
+      console.log(error);
     });
   });
 });

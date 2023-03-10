@@ -8,11 +8,12 @@ app = Flask(__name__)
 
 @app.route('/procesar', methods=['POST'])
 def procesar():
-
     if request.is_json:
-        lenguaje_seleccionado = request.get_json()['lenguajeSeleccionado']
+        letterSign = request.get_json()['letterSign']
         # Haz algo con el lenguaje seleccionado, como guardarlo en una base de datos o procesarlo
-        respuesta = {'mensaje': 'El lenguaje seleccionado fue ' + lenguaje_seleccionado}
+        respuesta = {'mensaje': 'La letra de lenguaje de signos seleccionada fue ' + letterSign}
+        # Seteo la respuesta del usuario en el bucle para guardar datos
+        collectFrame.setSelectSign(letterSign)
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
