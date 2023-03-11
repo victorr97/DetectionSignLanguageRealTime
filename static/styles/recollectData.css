@@ -1,5 +1,5 @@
 /********************************************
-****************RECOLLECTDATA PAGE********************
+**************RECOLLECTDATA PAGE*************
 *********************************************/
 
 body {
@@ -17,14 +17,23 @@ section {
     align-items: center;
 }
 
+div#containerSelectUser{
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#textSelectLetter{
+    color: white;
+}
+
 select {
     width: 400px;
     max-width: 100%;
-    overflow-y: auto;
     cursor: pointer;
     padding: 15px 25px;
     -webkit-appearance: none;
-    -moz-appearance: none;
     border: none;
     outline: none;
     border-radius: 12px;
@@ -50,29 +59,48 @@ select option:checked {
     box-shadow: 0 0 10px 100px #595959 inset;
 }
 
-/* scrollbar container */
+/********** scrollbar *********/
 select::-webkit-scrollbar {
     width: 10px;
 }
 
-/* scrollbar track */
 select::-webkit-scrollbar-track {
     background-color: #f1f1f1;
     border-radius: 10px;
 }
 
-/* scrollbar thumb */
 select::-webkit-scrollbar-thumb {
     background: linear-gradient(90deg, #e6e6e6 0%, #c2c2c2 100%);
     border-radius: 10px;
     border: 2px solid #f1f1f1;
 }
 
-select.fadeIn {
-    animation: fadeInDown 0.2s;
-    cursor: auto;
+/********** buttonSave *********/
+.saveData {
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid #f8b62759;
+    color: black;
+    background-color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    transition: .2s all ease-in;
+    display: flex;
+    justify-content: center;
+    margin: 15px 40%;
 }
 
-select.fadeOut {
-    animation: fadeInUp 0.2s;
+.saveData:hover {
+    background-color: #F8B627;
+    color: #fff;
+    transform: scale(1.1, 1.1);
+}
+
+.saveData:active {
+    transform: scale(1.2, 1.2);
+}
+
+select option[value="messageSelect"] {
+    background: none;
+    cursor: auto;
 }

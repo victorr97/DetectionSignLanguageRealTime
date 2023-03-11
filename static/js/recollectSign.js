@@ -1,13 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    let selectElement = document.querySelector('select');
+    const selectElement = document.getElementById("letterSign");
+
 
     //click on the item when the box is closed. (sign language letter)
     selectElement.addEventListener('focus', () => {
-      selectElement.size = 5;
-      selectElement.classList.add('fadeIn');
-      selectElement.classList.remove('fadeOut');
-      selectElement.style.backgroundColor = '#FFF';
+        selectElement.size = 5;
     });
+
 
     //When you mouse over an item
     selectElement.addEventListener('mouseover', () => {
@@ -23,34 +22,53 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
+
     // When you click on an item after displaying it
     selectElement.addEventListener('change', function(e) {
         selectElement.size = 1;
         selectElement.blur();
-        selectElement.classList.add('fadeOut');
-        selectElement.classList.remove('fadeIn');
         selectElement.style.backgroundColor = '#FFF';
 
-        e.preventDefault(); // Prevent the form from being sent automatically
+        if (checkLetter()){
+            e.preventDefault(); // Prevent the form from being sent automatically
 
-        // User-selected letter
-        const letterSign = selectElement.value;
+            // User-selected letter
+            const letterSign = selectElement.value;
 
-        // Enviar una solicitud Fetch al backend
-        fetch('/procesar', {
-            method: 'POST',
-            body: JSON.stringify({ 'letterSign': letterSign }),
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            //Respuesta del servidor
-            console.log(data);
-        })
-        .catch(error => {
-            console.log(error);
-        });
+            // Enviar una solicitud Fetch al backend
+            fetch('/procesar', {
+                method: 'POST',
+                body: JSON.stringify({ 'letterSign': letterSign }),
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                //Respuesta del servidor
+                console.log(data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }
     });
+
+    let buttonSave = document.getElementById('save');
+    buttonSave.addEventListener('click', ()=>{
+        if (checkLetter()){
+            console.log("HAY LETRA")
+        } else {
+            console.log("NO HAY LETRA SELECCIONADA")
+        }
+        //checkPositionHuman()
+    });
+
+    function checkLetter(){
+        if(selectElement.value !== "messageSelect"){
+            return true
+        }
+    }
+
 });
+
