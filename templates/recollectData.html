@@ -1,29 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Reconocimiento de lenguaje de signos en tiempo real</title>
-        <link rel="shortcut icon" type="image/png" href="{{ url_for('static',filename='resources/slt_icon.ico') }}">
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/recollectData.css') }}">
-	</head>
-	<body>
-		<section>
-			<div id="frame">
-				<img src="{{ url_for('recollect') }}"/>
-			</div>
-			<form method="POST" action="/procesar">
-				<label for="letterSign">Selecciona una letra de lenguaje de signos:</label>
-				<select name="letterSign" id="letterSign">
-					<option value="A">A</option>
-					<option value="B">B</option>
-					<option value="C">C</option>
-				</select>
-				<br>
-				<button id="enviar-btn" type="submit">Enviar</button>
-			</form>
-		</section>
-		<script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
-		<script src="{{ url_for('static',filename='js/recollectSign.js') }}"></script>
-	</body>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reconocimiento de lenguaje de signos en tiempo real</title>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static',filename='resources/slt_icon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/recollectData.css') }}">
+</head>
+<body>
+<section>
+    <div id="frame">
+        <img src="{{ url_for('recollect') }}"/>
+    </div>
+    <form method="POST" action="/procesar">
+        <label for="letterSign">Selecciona una letra de lenguaje de signos</label>
+        <select name="letterSign" id="letterSign">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+        </select>
+    </form>
+</section>
+<script src="{{ url_for('static',filename='js/recollectSign.js') }}"></script>
+</body>
 </html>

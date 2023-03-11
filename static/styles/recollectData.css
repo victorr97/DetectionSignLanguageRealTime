@@ -3,16 +3,76 @@
 *********************************************/
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
 }
 
 section {
     background-color: #1b1b1b;
     height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+select {
+    width: 400px;
+    max-width: 100%;
+    overflow-y: auto;
+    cursor: pointer;
+    padding: 15px 25px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    color: #444;
+    font-size: 18px;
+    box-shadow: -3px 3px 5px 0px rgba(0, 0, 0, 0.10);
+}
+
+select option {
+    padding: 10px 20px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    background-color: rgb(238, 238, 238);
+    white-space: pre-wrap;
+    cursor: pointer;
+}
+
+select option:hover {
+    background-color: rgb(223, 223, 223);
+}
+
+select option:checked {
+    box-shadow: 0 0 10px 100px #595959 inset;
+}
+
+/* scrollbar container */
+select::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* scrollbar track */
+select::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+}
+
+/* scrollbar thumb */
+select::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #e6e6e6 0%, #c2c2c2 100%);
+    border-radius: 10px;
+    border: 2px solid #f1f1f1;
+}
+
+select.fadeIn {
+    animation: fadeInDown 0.2s;
+    cursor: auto;
+}
+
+select.fadeOut {
+    animation: fadeInUp 0.2s;
 }
