@@ -8,11 +8,16 @@ import csv
 total = []
 num = 0
 selectSign = ""
+detectPerson = "False"
 
 
 def setSelectSign(selectUser) -> None:
     global selectSign
     selectSign = selectUser
+
+
+def getPerson():
+    return detectPerson
 
 
 def saveDataSet() -> None:
@@ -66,6 +71,8 @@ def saveDataSet() -> None:
             # if ((results.face_landmarks is None) or (results.pose_landmarks is None) or (results.left_hand_landmarks is None) or (results.right_hand_landmarks is None)):
             if (results.pose_landmarks is not None) and (results.left_hand_landmarks is not None):
                 print("Detect person")
+                global detectPerson
+                detectPerson = "True"
                 if len(selectSign) != 0:
                     print("test: " + selectSign)
                 # global num
@@ -76,6 +83,8 @@ def saveDataSet() -> None:
                 #     landmarks.formatLandmarks(results)
                 #     row = landmarks.collectPointsRow(results, class_name)
                 #     saveAllDataSignLanguage(cap, row)
+            else:
+                detectPerson = "False"
 
             # Cerrar CAM
             if cv2.waitKey(1) & 0xFF == ord('q'):

@@ -56,8 +56,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let buttonSave = document.getElementById('save');
     buttonSave.addEventListener('click', ()=>{
+        const letterSign = selectElement.value;
+        //Si hay letra compruebo si la persona esta bien posicionado
         if (checkLetter()){
             console.log("HAY LETRA")
+            // Enviar una solicitud Fetch al backend
+            fetch('/checkPerson', {
+                method: 'POST',
+                body: JSON.stringify({ 'letterSign': letterSign }),
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                //Respuesta del servidor
+                console.log(data);
+                if (data.mensaje === "True"){
+                    console.log("Hay persona")
+                } else {
+                    console.log("No hay persona")
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
         } else {
             console.log("NO HAY LETRA SELECCIONADA")
         }

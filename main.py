@@ -19,6 +19,18 @@ def procesar():
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
 
 
+@app.route('/checkPerson', methods=['POST'])
+def checkPerson():
+    if request.is_json:
+        letterSign = request.get_json()['letterSign']
+        personInCamera = collectFrame.getPerson()
+        # Haz algo con el lenguaje seleccionado, como guardarlo en una base de datos o procesarlo
+        respuesta = {'mensaje': personInCamera}
+        # Seteo la respuesta del usuario en el bucle para guardar datos
+        return jsonify(respuesta)
+    else:
+        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
+
 @app.route('/', methods=['GET'])
 def index():
     return render_template('mainPage.html')
