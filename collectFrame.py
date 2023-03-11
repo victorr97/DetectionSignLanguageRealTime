@@ -64,12 +64,10 @@ def saveDataSet() -> None:
             yield (b'--frame\r\n' b'Content-type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n')
 
             # if ((results.face_landmarks is None) or (results.pose_landmarks is None) or (results.left_hand_landmarks is None) or (results.right_hand_landmarks is None)):
-            if (results.pose_landmarks is None) or (results.left_hand_landmarks is None):
-                print("Doesn't detect all points of the person")
-            else:
+            if (results.pose_landmarks is not None) and (results.left_hand_landmarks is not None):
+                print("Detect person")
                 if len(selectSign) != 0:
                     print("test: " + selectSign)
-                print("Detect person")
                 # global num
                 # Para empezar a almacenar datos has de clicar las teclas 1 y luego 's'
                 # if cv2.waitKey(1) & 0xFF == ord('s'):
