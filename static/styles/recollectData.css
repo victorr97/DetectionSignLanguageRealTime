@@ -137,13 +137,14 @@ select option[value="messageSelect"] {
     width: 40%;
     border-radius: 15px;
     margin-right: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .popup > h2 {
     font-size: 1.6rem;
     margin-bottom: 10px;
-    display: flex;
-    justify-content: center;
 }
 
 .popup > p {
@@ -176,6 +177,10 @@ select option[value="messageSelect"] {
 .counter3Seconds{
     color: red;
     font-size: xxx-large;
-    display: flex;
+    margin: 10px;
+}
+
+.textSaveData{
     justify-content: center;
+    display: none;
 }

@@ -22,7 +22,6 @@ def procesar():
 @app.route('/checkPerson', methods=['POST'])
 def checkPerson():
     if request.is_json:
-        letterSign = request.get_json()['letterSign']
         personInCamera = collectFrame.getPerson()
         # Haz algo con el lenguaje seleccionado, como guardarlo en una base de datos o procesarlo
         respuesta = {'mensaje': personInCamera}
@@ -30,6 +29,20 @@ def checkPerson():
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
+
+
+@app.route('/goSave', methods=['POST'])
+def goSave():
+    if request.is_json:
+        startSaveData = request.get_json()['startSaveData']
+        # Haz algo con el lenguaje seleccionado, como guardarlo en una base de datos o procesarlo
+        respuesta = {'mensaje': 'START SAVE DATA IN FILE:  ' + startSaveData}
+        # Seteo la respuesta del usuario en el bucle para guardar datos
+        collectFrame.setStartSaveData(startSaveData)
+        return jsonify(respuesta)
+    else:
+        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
+
 
 @app.route('/', methods=['GET'])
 def index():

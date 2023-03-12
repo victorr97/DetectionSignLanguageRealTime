@@ -9,6 +9,7 @@ total = []
 num = 0
 selectSign = ""
 detectPerson = "False"
+startSaveData = ""
 
 
 def setSelectSign(selectUser) -> None:
@@ -18,6 +19,11 @@ def setSelectSign(selectUser) -> None:
 
 def getPerson():
     return detectPerson
+
+
+def setStartSaveData(saveData) -> None:
+    global startSaveData
+    startSaveData = saveData
 
 
 def saveDataSet() -> None:
@@ -73,16 +79,11 @@ def saveDataSet() -> None:
                 print("Detect person")
                 global detectPerson
                 detectPerson = "True"
-                if len(selectSign) != 0:
-                    print("test: " + selectSign)
-                # global num
-                # Para empezar a almacenar datos has de clicar las teclas 1 y luego 's'
-                # if cv2.waitKey(1) & 0xFF == ord('s'):
-                #     num = 1
-                # if num == 1:
-                #     landmarks.formatLandmarks(results)
-                #     row = landmarks.collectPointsRow(results, class_name)
-                #     saveAllDataSignLanguage(cap, row)
+                #Si hay letra y podemos empezar a guardar, se almacena en el archivo csv
+                if len(selectSign) != 0 and startSaveData == "True":
+                    landmarks.formatLandmarks(results)
+                    row = landmarks.collectPointsRow(results, selectSign)
+                    saveAllDataSignLanguage(row)
             else:
                 detectPerson = "False"
 
@@ -156,7 +157,7 @@ def cam_points(class_name) -> None:
     cv2.destroyAllWindows()
 
 
-def saveAllDataSignLanguage(cap, row):
+def saveAllDataSignLanguage(row):
     total.append(row)
 
     if len(total) == 30:
@@ -164,5 +165,3 @@ def saveAllDataSignLanguage(cap, row):
             with open('generatedFiles/coords.csv', mode='a+', newline='') as file:
                 csv_writer = csv.writer(file)
                 csv_writer.writerow(i)
-                cap.release()
-                cv2.destroyAllWindows()

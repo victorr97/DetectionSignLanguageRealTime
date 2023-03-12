@@ -115,13 +115,31 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById("countDown").innerHTML = seconds.toString();
 
             if (distance < 0) {
+                const messageSaveData = document.getElementById("messageSaveData");
                 clearInterval(x);
                 document.getElementById("countDown").innerHTML = "0";
+                messageSaveData.style.display = "block"
+                setSaveDataInBackend()
             }
         }, 1000);
     }
 
-
-
+    function setSaveDataInBackend(){
+        fetch('/goSave', {
+            method: 'POST',
+            body: JSON.stringify({ 'startSaveData': "True" }),
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            //Respuesta del servidor
+            console.log(data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
 });
 
