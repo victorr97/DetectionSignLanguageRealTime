@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const selectElement = document.getElementById("letterSign");
     const textErrorMessage = document.getElementById("textErrorMessage");
+    const popup = document.getElementById("popupSaveData");
 
     //click on the item when the box is closed. (sign language letter)
     selectElement.addEventListener('focus', () => {
@@ -35,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // User-selected letter
             const letterSign = selectElement.value;
+            //TODO: MOSTRAR IMAGEN DE COMO SE HACE LA LETRA SELECCIONADA
 
             // Envio la letra seleccionada con solicitud Fetch al backend
             fetch('/procesar', {
@@ -74,6 +76,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(data);
                 if (data.mensaje === "True"){
                     textErrorMessage.style.display = "none"
+                    //TODO POPUP CUENTA ATRAS Y GUARDAR
+                    popup.style.display = 'block';
+                    //Cuenta 3 segundos, cuento 4 por el -1
+                    countdown3Seconds(4);
+
                 } else {
                     textErrorMessage.style.display = "block"
                     textErrorMessage.innerHTML = "Por favor, colócate frente a la cámara y asegúrate <br> de que tus manos estén en la posición correcta antes de continuar.";
@@ -93,6 +100,28 @@ document.addEventListener('DOMContentLoaded', function() {
             return true
         }
     }
+
+    function countdown3Seconds(seconds) {
+        const countDownDate = new Date().getTime() + seconds * 1000;
+
+        // Actualiza contador cada 1seg
+        const x = setInterval(function () {
+            const now = new Date().getTime();
+            let distance = countDownDate - now;
+
+            //  Cálculo del tiempo segundos
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            console.log(seconds)
+            document.getElementById("countDown").innerHTML = seconds.toString();
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countDown").innerHTML = "0";
+            }
+        }, 1000);
+    }
+
+
 
 });
 

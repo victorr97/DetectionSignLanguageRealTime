@@ -109,3 +109,73 @@ select option[value="messageSelect"] {
     display: none;
     color: red;
 }
+
+
+/********************************************
+****************POPUP********************
+*********************************************/
+
+#popupSaveData {
+    display: none;
+}
+
+.popup-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: right;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.popup {
+    background-color: #ffffff;
+    padding: 20px 30px;
+    width: 40%;
+    border-radius: 15px;
+    margin-right: 2%;
+}
+
+.popup > h2 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.popup > p {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.popup-btn {
+    text-decoration: none;
+    border: 3px solid #f8b62759;
+    color: black;
+    padding: 5px 15px;
+    border-radius: 20px;
+    transition: .2s all ease-in;
+    display: flex;
+    justify-content: center;
+    margin: 15px 40%;
+}
+
+.popup-btn:hover {
+    background-color: #F8B627;
+    color: #fff;
+    transform: scale(1.1, 1.1);
+}
+
+.popup-btn:active {
+    transform: scale(1.2, 1.2);
+}
+
+.counter3Seconds{
+    color: red;
+    font-size: xxx-large;
+    display: flex;
+    justify-content: center;
+}
