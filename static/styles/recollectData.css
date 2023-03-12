@@ -104,3 +104,8 @@ select option[value="messageSelect"] {
     background: none;
     cursor: auto;
 }
+
+.errorMessage{
+    display: none;
+    color: red;
+}

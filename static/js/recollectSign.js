@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const selectElement = document.getElementById("letterSign");
-
+    const textErrorMessage = document.getElementById("textErrorMessage");
 
     //click on the item when the box is closed. (sign language letter)
     selectElement.addEventListener('focus', () => {
@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         selectElement.size = 1;
         selectElement.blur();
         selectElement.style.backgroundColor = '#FFF';
+        textErrorMessage.style.display = "none"
 
         if (checkLetter()){
             e.preventDefault(); // Prevent the form from being sent automatically
@@ -35,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // User-selected letter
             const letterSign = selectElement.value;
 
-            // Enviar una solicitud Fetch al backend
+            // Envio la letra seleccionada con solicitud Fetch al backend
             fetch('/procesar', {
                 method: 'POST',
                 body: JSON.stringify({ 'letterSign': letterSign }),
@@ -59,8 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const letterSign = selectElement.value;
         //Si hay letra compruebo si la persona esta bien posicionado
         if (checkLetter()){
-            console.log("HAY LETRA")
-            // Enviar una solicitud Fetch al backend
+            // Enviar una solicitud Fetch al backend para comprobar si la persona esta en la camara
             fetch('/checkPerson', {
                 method: 'POST',
                 body: JSON.stringify({ 'letterSign': letterSign }),
@@ -73,18 +73,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 //Respuesta del servidor
                 console.log(data);
                 if (data.mensaje === "True"){
-                    console.log("Hay persona")
+                    textErrorMessage.style.display = "none"
                 } else {
-                    console.log("No hay persona")
+                    textErrorMessage.style.display = "block"
+                    textErrorMessage.innerHTML = "Por favor, colócate frente a la cámara y asegúrate <br> de que tus manos estén en la posición correcta antes de continuar.";
                 }
             })
             .catch(error => {
                 console.log(error);
             });
         } else {
-            console.log("NO HAY LETRA SELECCIONADA")
+            textErrorMessage.style.display = "block";
+            textErrorMessage.innerHTML = "Parece que no has seleccionado ninguna letra. <br> Por favor, selecciona una letra antes de continuar.";
         }
-        //checkPositionHuman()
     });
 
     function checkLetter(){
