@@ -10,7 +10,7 @@ num = 0
 selectSign = ""
 detectPerson = "False"
 startSaveData = ""
-
+finishSaveData = "False"
 
 def setSelectSign(selectUser) -> None:
     global selectSign
@@ -24,6 +24,15 @@ def getPerson():
 def setStartSaveData(saveData) -> None:
     global startSaveData
     startSaveData = saveData
+
+
+def setFinishSaveData(saveData):
+    global finishSaveData
+    finishSaveData = saveData
+
+#TODO: NO IMPLEMENTADO AUN
+def getFinishSaveData():
+    return finishSaveData
 
 
 def saveDataSet() -> None:
@@ -72,20 +81,24 @@ def saveDataSet() -> None:
             (flag, encodedImage) = cv2.imencode(".jpg", image)
             if not flag:
                 continue
-            yield (b'--frame\r\n' b'Content-type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n')
+            yield b'--frame\r\n' b'Content-type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n'
+
 
             # if ((results.face_landmarks is None) or (results.pose_landmarks is None) or (results.left_hand_landmarks is None) or (results.right_hand_landmarks is None)):
             if (results.pose_landmarks is not None) and (results.left_hand_landmarks is not None):
-                print("Detect person")
                 global detectPerson
                 detectPerson = "True"
                 #Si hay letra y podemos empezar a guardar, se almacena en el archivo csv
                 if len(selectSign) != 0 and startSaveData == "True":
+                    print("SI SE ESTA GUARDANDO")
                     landmarks.formatLandmarks(results)
                     row = landmarks.collectPointsRow(results, selectSign)
                     saveAllDataSignLanguage(row)
             else:
                 detectPerson = "False"
+                if len(selectSign) != 0 and startSaveData == "True":
+                    print("NO SE ESTA GUARDANDO")
+                    #TODO: ENVIAR DE QUE NO SE ESTA GUARDANDO Y QUE SE COLOQUE BIEN EN LA WEBCAM
 
             # Cerrar CAM
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -165,3 +178,9 @@ def saveAllDataSignLanguage(row):
             with open('generatedFiles/coords.csv', mode='a+', newline='') as file:
                 csv_writer = csv.writer(file)
                 csv_writer.writerow(i)
+        #Una vez guardado reseteo las variables
+        global finishSaveData
+        finishSaveData = "True"
+        setSelectSign("")
+        setStartSaveData("False")
+        # TODO: FALTA ENVIAR LA VARIABLE A JS PARA SAVER CUANDO HA ACABADO DE ENVIAR DATOS

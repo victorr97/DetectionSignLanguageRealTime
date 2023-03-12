@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
         selectElement.size = 5;
     });
 
-
     //When you mouse over an item
     selectElement.addEventListener('mouseover', () => {
       if(selectElement.size === 1){
@@ -22,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
          selectElement.style.backgroundColor = '#FFF';
       }
     });
-
 
     // When you click on an item after displaying it
     selectElement.addEventListener('change', function(e) {
@@ -76,9 +74,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(data);
                 if (data.mensaje === "True"){
                     textErrorMessage.style.display = "none"
-                    //TODO POPUP CUENTA ATRAS Y GUARDAR
                     popup.style.display = 'block';
-                    //Cuenta 3 segundos, cuento 4 por el -1
+                    //Cuenta 3 segundos
                     countdown3Seconds(4);
 
                 } else {
@@ -115,9 +112,9 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById("countDown").innerHTML = seconds.toString();
 
             if (distance < 0) {
-                const messageSaveData = document.getElementById("messageSaveData");
                 clearInterval(x);
                 document.getElementById("countDown").innerHTML = "0";
+                const messageSaveData = document.getElementById("messageSaveData");
                 messageSaveData.style.display = "block"
                 setSaveDataInBackend()
             }

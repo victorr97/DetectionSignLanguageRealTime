@@ -3,6 +3,7 @@ import collectFrame
 from argparse import ArgumentParser
 from flask import Flask, render_template, Response, jsonify, request
 
+
 app = Flask(__name__)
 
 
@@ -14,6 +15,8 @@ def procesar():
         respuesta = {'mensaje': 'La letra de lenguaje de signos seleccionada fue ' + letterSign}
         # Seteo la respuesta del usuario en el bucle para guardar datos
         collectFrame.setSelectSign(letterSign)
+        # Reset var FinishSaveData
+        collectFrame.setFinishSaveData("False")
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
