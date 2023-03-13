@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         //Si hay letra compruebo si la persona esta bien posicionado
         if (checkLetter()){
             // Enviar una solicitud Fetch al backend para comprobar si la persona esta en la camara
+            //TODO: HACER GET NO POST
             fetch('/checkPerson', {
                 method: 'POST',
                 body: JSON.stringify({ 'letterSign': letterSign }),
@@ -117,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const messageSaveData = document.getElementById("messageSaveData");
                 messageSaveData.style.display = "block"
                 setSaveDataInBackend()
+                checkFinishSaveData()
             }
         }, 1000);
     }
@@ -137,6 +139,30 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.log(error);
         });
+    }
+
+    async function checkFinishSaveData() {
+        let intervalId = setInterval(() => {
+            fetch('/checkSaveData', {
+            method: 'POST',
+            body: JSON.stringify({ 'startSaveData': "True" }),
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+            })
+            .then(response => response.json())
+            .then(data => {
+                //Respuesta del servidor
+                console.log(data);
+                if (data.mensaje === 'True') {
+                    clearInterval(intervalId); // Detiene la llamada a setInterval
+                    //SE QUE HA ACABADO DE GUARDAR LOS DATOS.
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }, 1000); // Ejecutar cada segundo
     }
 });
 

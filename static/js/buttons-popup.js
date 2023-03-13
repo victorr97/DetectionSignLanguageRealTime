@@ -15,6 +15,8 @@ $(".button_su_inner").mouseenter(function(e) {
     $(this).prev(".su_button_circle").addClass("desplode-circle");
 });
 
+
+
 /************** GET ELEMENTS *********************/
 const clickBtnRecollect = document.getElementById("clickBtnRecollect");
 const clickBtnTrain = document.getElementById("clickBtnTrain");

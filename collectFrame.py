@@ -12,6 +12,7 @@ detectPerson = "False"
 startSaveData = ""
 finishSaveData = "False"
 
+
 def setSelectSign(selectUser) -> None:
     global selectSign
     selectSign = selectUser
@@ -30,7 +31,7 @@ def setFinishSaveData(saveData):
     global finishSaveData
     finishSaveData = saveData
 
-#TODO: NO IMPLEMENTADO AUN
+
 def getFinishSaveData():
     return finishSaveData
 
@@ -179,8 +180,7 @@ def saveAllDataSignLanguage(row):
                 csv_writer = csv.writer(file)
                 csv_writer.writerow(i)
         #Una vez guardado reseteo las variables
-        global finishSaveData
-        finishSaveData = "True"
+        setFinishSaveData("True")
         setSelectSign("")
         setStartSaveData("False")
         # TODO: FALTA ENVIAR LA VARIABLE A JS PARA SAVER CUANDO HA ACABADO DE ENVIAR DATOS

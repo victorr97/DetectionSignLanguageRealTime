@@ -3,8 +3,20 @@ import collectFrame
 from argparse import ArgumentParser
 from flask import Flask, render_template, Response, jsonify, request
 
-
 app = Flask(__name__)
+
+
+@app.route('/checkSaveData', methods=['POST'])
+def checkSaveData():
+    if request.is_json:
+        startSaveData = request.get_json()['startSaveData']
+        # Haz algo con el lenguaje seleccionado, como guardarlo en una base de datos o procesarlo
+        respuesta = {'mensaje': collectFrame.getFinishSaveData()}
+
+        return jsonify(respuesta)
+
+    else:
+        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
 
 
 @app.route('/procesar', methods=['POST'])
@@ -42,7 +54,9 @@ def goSave():
         respuesta = {'mensaje': 'START SAVE DATA IN FILE:  ' + startSaveData}
         # Seteo la respuesta del usuario en el bucle para guardar datos
         collectFrame.setStartSaveData(startSaveData)
+
         return jsonify(respuesta)
+
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
 
