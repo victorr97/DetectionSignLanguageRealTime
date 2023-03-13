@@ -154,6 +154,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.mensaje === 'True') {
                     clearInterval(intervalId); // Detiene la llamada a setInterval
                     //SE QUE HA ACABADO DE GUARDAR LOS DATOS.
+                    console.log("SE HAN GUARDADO LOS DATOS")
+                }
+                if (data.person === 'True'){
+                    console.log("USUARIO HA SALIDO DEL PLANO")
                 }
             })
             .catch(error => {

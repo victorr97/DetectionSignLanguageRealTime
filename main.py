@@ -38,7 +38,7 @@ def goSave():
 @app.route('/checkSaveData', methods=['GET'])
 def checkSaveData():
     if request.is_json:
-        respuesta = {'mensaje': collectFrame.getFinishSaveData()}
+        respuesta = {'mensaje': collectFrame.getFinishSaveData(), 'person': collectFrame.getPersonWhenSaveData()}
         return jsonify(respuesta)
 
     else:

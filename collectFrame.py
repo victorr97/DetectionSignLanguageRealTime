@@ -10,6 +10,7 @@ selectSign = ""
 detectPerson = "False"
 startSaveData = ""
 finishSaveData = "False"
+detectPersonWhenSaveData = "False"
 
 
 def setSelectSign(selectUser) -> None:
@@ -18,6 +19,10 @@ def setSelectSign(selectUser) -> None:
 
 
 def getPerson():
+    return detectPerson
+
+
+def getPersonWhenSaveData():
     return detectPerson
 
 
@@ -92,6 +97,8 @@ def saveDataSet() -> None:
                 #Si hay letra y podemos empezar a guardar, se almacena en el archivo csv
                 if len(selectSign) != 0 and startSaveData == "True":
                     print("SI SE ESTA GUARDANDO")
+                    global detectPersonWhenSaveData
+                    detectPersonWhenSaveData = "True"
                     landmarks.formatLandmarks(results)
                     row = landmarks.collectPointsRow(results, selectSign)
                     saveAllDataSignLanguage(row)
@@ -99,7 +106,7 @@ def saveDataSet() -> None:
                 detectPerson = "False"
                 if len(selectSign) != 0 and startSaveData == "True":
                     print("NO SE ESTA GUARDANDO")
-                    #TODO: ENVIAR DE QUE NO SE ESTA GUARDANDO Y QUE SE COLOQUE BIEN EN LA WEBCAM
+                    detectPersonWhenSaveData = "False"
 
             # Cerrar CAM
             if cv2.waitKey(1) & 0xFF == ord('q'):
