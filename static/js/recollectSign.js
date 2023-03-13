@@ -61,10 +61,8 @@ document.addEventListener('DOMContentLoaded', function() {
         //Si hay letra compruebo si la persona esta bien posicionado
         if (checkLetter()){
             // Enviar una solicitud Fetch al backend para comprobar si la persona esta en la camara
-            //TODO: HACER GET NO POST
             fetch('/checkPerson', {
-                method: 'POST',
-                body: JSON.stringify({ 'letterSign': letterSign }),
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8'
                 }
@@ -81,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 } else {
                     textErrorMessage.style.display = "block"
-                    textErrorMessage.innerHTML = "Por favor, colócate frente a la cámara y asegúrate <br> de que tus manos estén en la posición correcta antes de continuar.";
+                    textErrorMessage.innerHTML = "Por favor, colócate frente a la cámara y asegúrate <br> de que tu mano derecha esté en la posición correcta antes de continuar.";
                 }
             })
             .catch(error => {
@@ -144,8 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function checkFinishSaveData() {
         let intervalId = setInterval(() => {
             fetch('/checkSaveData', {
-            method: 'POST',
-            body: JSON.stringify({ 'startSaveData': "True" }),
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
             }

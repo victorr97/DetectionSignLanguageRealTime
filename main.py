@@ -6,41 +6,16 @@ from flask import Flask, render_template, Response, jsonify, request
 app = Flask(__name__)
 
 
-@app.route('/checkSaveData', methods=['POST'])
-def checkSaveData():
-    if request.is_json:
-        startSaveData = request.get_json()['startSaveData']
-        # Haz algo con el lenguaje seleccionado, como guardarlo en una base de datos o procesarlo
-        respuesta = {'mensaje': collectFrame.getFinishSaveData()}
-
-        return jsonify(respuesta)
-
-    else:
-        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
-
+# ROUTES POST
 
 @app.route('/procesar', methods=['POST'])
 def procesar():
     if request.is_json:
         letterSign = request.get_json()['letterSign']
-        # Haz algo con el lenguaje seleccionado, como guardarlo en una base de datos o procesarlo
         respuesta = {'mensaje': 'La letra de lenguaje de signos seleccionada fue ' + letterSign}
-        # Seteo la respuesta del usuario en el bucle para guardar datos
         collectFrame.setSelectSign(letterSign)
         # Reset var FinishSaveData
         collectFrame.setFinishSaveData("False")
-        return jsonify(respuesta)
-    else:
-        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
-
-
-@app.route('/checkPerson', methods=['POST'])
-def checkPerson():
-    if request.is_json:
-        personInCamera = collectFrame.getPerson()
-        # Haz algo con el lenguaje seleccionado, como guardarlo en una base de datos o procesarlo
-        respuesta = {'mensaje': personInCamera}
-        # Seteo la respuesta del usuario en el bucle para guardar datos
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
@@ -50,13 +25,31 @@ def checkPerson():
 def goSave():
     if request.is_json:
         startSaveData = request.get_json()['startSaveData']
-        # Haz algo con el lenguaje seleccionado, como guardarlo en una base de datos o procesarlo
         respuesta = {'mensaje': 'START SAVE DATA IN FILE:  ' + startSaveData}
-        # Seteo la respuesta del usuario en el bucle para guardar datos
         collectFrame.setStartSaveData(startSaveData)
-
         return jsonify(respuesta)
 
+    else:
+        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
+
+
+# ROUTES GET
+
+@app.route('/checkSaveData', methods=['GET'])
+def checkSaveData():
+    if request.is_json:
+        respuesta = {'mensaje': collectFrame.getFinishSaveData()}
+        return jsonify(respuesta)
+
+    else:
+        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
+
+
+@app.route('/checkPerson', methods=['GET'])
+def checkPerson():
+    if request.is_json:
+        respuesta = {'mensaje': collectFrame.getPerson()}
+        return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
 
