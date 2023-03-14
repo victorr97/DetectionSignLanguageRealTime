@@ -1,7 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
+    //INIT VARS
     const selectElement = document.getElementById("letterSign");
     const textErrorMessage = document.getElementById("textErrorMessage");
     const popup = document.getElementById("popupSaveData");
+    const saveMoreData = document.getElementById("saveMoreData");
+    const noSaveMore = document.getElementById("noSaveMore");
+    const containerButtonsPopUp = document.getElementById("containerButtonsPopUp");
+    const messageSaveData = document.getElementById("messageSaveData");
+    let buttonSave = document.getElementById('save');
+    let countDown = document.getElementById("countDown");
+    let boxCountDown = document.getElementById("boxCountDown");
+    let titlePopUp = document.getElementById("titlePopUp");
+
+    saveMoreData.style.display = "none";
+    noSaveMore.style.display = "none";
+    containerButtonsPopUp.style.display = "none";
 
     //click on the item when the box is closed. (sign language letter)
     selectElement.addEventListener('focus', () => {
@@ -47,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    let buttonSave = document.getElementById('save');
     buttonSave.addEventListener('click', () => {
         //Si hay letra compruebo si la persona esta bien posicionado
         if (checkLetter()) {
@@ -69,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                             .then(result => {
                                                 if (result === true) {
                                                     console.log("GUARDADO DATOS CORRECTAMENTE");
+                                                    changePopUpGoodSave();
                                                 } else {
                                                     console.log("EL USUARIO HA SALIDO DEL PLANO");
                                                 }
@@ -98,6 +111,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    saveMoreData.addEventListener('click', () => {
+        console.log("SAVE MORE")
+        popup.style.display = "none";
+        changeResetPopUp();
+    });
+
+    noSaveMore.addEventListener('click', () => {
+        console.log("NO SAVE MORE")
+    });
+
     function checkLetter() {
         if (selectElement.value !== "messageSelect") {
             return true
@@ -113,18 +136,41 @@ document.addEventListener('DOMContentLoaded', function () {
                 let distance = countDownDate - now;
 
                 //  Cálculo del tiempo segundos
-                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                document.getElementById("countDown").innerHTML = seconds.toString();
+                countDown.innerHTML = Math.floor((distance % (1000 * 60)) / 1000).toString();
 
                 if (distance < 0) {
                     isCountdownFinished = true
                     clearInterval(x);
-                    document.getElementById("countDown").innerHTML = "0";
-                    const messageSaveData = document.getElementById("messageSaveData");
+                    countDown.innerHTML = "0";
                     messageSaveData.style.display = "block";
+                    messageSaveData.innerHTML = "<strong>Guardando datos...</strong> no se mueva porfavor.";
                     resolve(true);
                 }
             }, 1000);
         });
+    }
+
+    function changePopUpGoodSave(){
+        boxCountDown.style.display = "none";
+        messageSaveData.innerHTML = null;
+        titlePopUp.innerHTML = null;
+        titlePopUp.innerHTML = "Se ha guardado correctamente";
+        messageSaveData.innerHTML = "Quieres guardar más datos?";
+        saveMoreData.style.display = "flex"
+        noSaveMore.style.display = "flex"
+        containerButtonsPopUp.style.display = "flex";
+        containerButtonsPopUp.style.marginTop = "2%";
+        saveMoreData.style.margin = "0";
+        saveMoreData.style.marginRight = "15%";
+        noSaveMore.style.margin = "0";
+    }
+
+    function changeResetPopUp(){
+        boxCountDown.style.display = "flex";
+        messageSaveData.innerHTML = null;
+        titlePopUp.innerHTML = null;
+        titlePopUp.innerHTML = "Guardando coordenadas en ";
+        saveMoreData.style.display = "none"
+        noSaveMore.style.display = "none"
     }
 });

@@ -184,3 +184,14 @@ select option[value="messageSelect"] {
     justify-content: center;
     display: none;
 }
+
+/********************************************
+*************POPUP CHANGED******************
+*********************************************/
+
+.rowButtonsPopUp{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+}
