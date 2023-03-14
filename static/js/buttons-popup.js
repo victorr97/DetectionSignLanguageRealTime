@@ -16,7 +16,6 @@ $(".button_su_inner").mouseenter(function(e) {
 });
 
 
-
 /************** GET ELEMENTS *********************/
 const clickBtnRecollect = document.getElementById("clickBtnRecollect");
 const clickBtnTrain = document.getElementById("clickBtnTrain");

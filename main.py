@@ -12,7 +12,7 @@ app = Flask(__name__)
 def procesar():
     if request.is_json:
         letterSign = request.get_json()['letterSign']
-        respuesta = {'mensaje': 'La letra de lenguaje de signos seleccionada fue ' + letterSign}
+        respuesta = {'letter': letterSign}
         collectFrame.setSelectSign(letterSign)
         # Reset var FinishSaveData
         collectFrame.setFinishSaveData("False")
@@ -25,7 +25,7 @@ def procesar():
 def goSave():
     if request.is_json:
         startSaveData = request.get_json()['startSaveData']
-        respuesta = {'mensaje': 'START SAVE DATA IN FILE:  ' + startSaveData}
+        respuesta = {'startSaveDataInFile': startSaveData}
         collectFrame.setStartSaveData(startSaveData)
         return jsonify(respuesta)
 
@@ -38,7 +38,7 @@ def goSave():
 @app.route('/checkSaveData', methods=['GET'])
 def checkSaveData():
     if request.is_json:
-        respuesta = {'mensaje': collectFrame.getFinishSaveData(), 'person': collectFrame.getPersonWhenSaveData()}
+        respuesta = {'finishSave': collectFrame.getFinishSaveData(), 'person': collectFrame.getPersonWhenSaveData()}
         return jsonify(respuesta)
 
     else:
@@ -48,7 +48,7 @@ def checkSaveData():
 @app.route('/checkPerson', methods=['GET'])
 def checkPerson():
     if request.is_json:
-        respuesta = {'mensaje': collectFrame.getPerson()}
+        respuesta = {'personInCam': collectFrame.getPerson()}
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
