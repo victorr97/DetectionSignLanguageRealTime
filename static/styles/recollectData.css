@@ -70,7 +70,7 @@ select::-webkit-scrollbar-track {
 }
 
 select::-webkit-scrollbar-thumb {
-    background: linear-gradient(90deg, #e6e6e6 0%, #c2c2c2 100%);
+    background: linear-gradient(90deg, rgba(2,0,36,0.9360994397759104) 0%, rgba(0,0,0,0.7820378151260504) 41%, rgba(83,77,85,0.7344187675070029) 100%);
     border-radius: 10px;
     border: 2px solid #f1f1f1;
 }
@@ -116,6 +116,7 @@ select option[value="messageSelect"] {
 
 .imgLetter{
     height: 250px;
+    width: 250px;
 }
 
 #textExampleImg{
@@ -127,7 +128,7 @@ select option[value="messageSelect"] {
 }
 
 #containerImg{
-    display: flex;
+    display: none;
     flex-direction: row;
     gap: 3rem;
     margin-top: 4rem;

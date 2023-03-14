@@ -16,6 +16,7 @@ async function checkFinishSaveData() {
                         resolve(true);
                     }
                     if (data.person === 'False') {
+                        clearInterval(intervalId); // Detiene la llamada a setInterval
                         resolve(false);
                     }
                 })

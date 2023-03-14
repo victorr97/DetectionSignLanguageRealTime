@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let countDown = document.getElementById("countDown");
     let boxCountDown = document.getElementById("boxCountDown");
     let titlePopUp = document.getElementById("titlePopUp");
+    let containerImg = document.getElementById("containerImg");
+    let imgHelp = document.getElementById("imgHelp");
 
     saveMoreData.style.display = "none";
     noSaveMore.style.display = "none";
@@ -51,12 +53,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(result => {
                     if (result === true) {
                         console.log("LETRA ENVIADA AL BACKEND")
-                        //TODO: MOSTRAR IMAGEN DE COMO SE HACE LA LETRA SELECCIONADA
+                        containerImg.style.display = "flex";
+                        const rutaImagen = imgHelp.getAttribute("data-img");
+                        imgHelp.src = rutaImagen.replace("A", selectElement.value);
                     }
                 })
                 .catch(error => {
                     console.log(error);
                 });
+        } else {
+            containerImg.style.display = "flex";
+            const rutaImagen = imgHelp.getAttribute("data-img");
+            imgHelp.src = rutaImagen.replace("A", "DOUBT");
         }
     });
 
@@ -92,9 +100,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                             });
                                     }
                                 })
-                                .catch(error => {
-                                    console.log(error);
-                                });
+                                    .catch(error => {
+                                        console.log(error);
+                                    });
                             }
                         })
                     } else {
@@ -119,9 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function checkLetter() {
-        if (selectElement.value !== "messageSelect") {
-            return true
-        }
+        return selectElement.value !== "messageSelect";
     }
 
     function countdownThreeSeconds(seconds) {
@@ -147,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function changePopUpGoodSave(){
+    function changePopUpGoodSave() {
         boxCountDown.style.display = "none";
         messageSaveData.innerHTML = null;
         titlePopUp.innerHTML = null;
@@ -162,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
         noSaveMore.style.margin = "0";
     }
 
-    function changePopUpWrongSave(){
+    function changePopUpWrongSave() {
         boxCountDown.style.display = "none";
         messageSaveData.innerHTML = null;
         titlePopUp.innerHTML = null;
@@ -177,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
         noSaveMore.style.margin = "0";
     }
 
-    function changeResetPopUp(){
+    function changeResetPopUp() {
         boxCountDown.style.display = "flex";
         countDown.innerHTML = "3";
         messageSaveData.innerHTML = null;

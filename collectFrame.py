@@ -109,7 +109,6 @@ def saveDataSet() -> None:
                     detectPersonWhenSaveData = "False"
                     #Si empieza a guardar datos y no se detecta el usuario dejo de guardar.
                     total.clear()
-                    setFinishSaveData("True")
                     setSelectSign("")
                     setStartSaveData("False")
 
