@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    //INIT VARS
+    /************** GET ELEMENTS *********************/
     const selectElement = document.getElementById("letterSign");
     const textErrorMessage = document.getElementById("textErrorMessage");
     const popup = document.getElementById("popupSaveData");
@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                                     changePopUpGoodSave();
                                                 } else {
                                                     console.log("EL USUARIO HA SALIDO DEL PLANO");
+                                                    changePopUpWrongSave();
                                                 }
                                             })
                                             .catch(error => {
@@ -115,11 +116,6 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("SAVE MORE")
         popup.style.display = "none";
         changeResetPopUp();
-    });
-
-    noSaveMore.addEventListener('click', () => {
-        console.log("NO SAVE MORE")
-
     });
 
     function checkLetter() {
@@ -157,6 +153,21 @@ document.addEventListener('DOMContentLoaded', function () {
         titlePopUp.innerHTML = null;
         titlePopUp.innerHTML = "Se ha guardado correctamente";
         messageSaveData.innerHTML = "Quieres guardar más datos?";
+        saveMoreData.style.display = "flex"
+        noSaveMore.style.display = "flex"
+        containerButtonsPopUp.style.display = "flex";
+        containerButtonsPopUp.style.marginTop = "2%";
+        saveMoreData.style.margin = "0";
+        saveMoreData.style.marginRight = "15%";
+        noSaveMore.style.margin = "0";
+    }
+
+    function changePopUpWrongSave(){
+        boxCountDown.style.display = "none";
+        messageSaveData.innerHTML = null;
+        titlePopUp.innerHTML = null;
+        titlePopUp.innerHTML = "No se ha guardado, has salido del plano";
+        messageSaveData.innerHTML = "Quieres volver a repetir?";
         saveMoreData.style.display = "flex"
         noSaveMore.style.display = "flex"
         containerButtonsPopUp.style.display = "flex";

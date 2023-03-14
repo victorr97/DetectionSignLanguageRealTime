@@ -110,6 +110,28 @@ select option[value="messageSelect"] {
     color: red;
 }
 
+/********************************************
+****************IMG********************
+*********************************************/
+
+.imgLetter{
+    height: 250px;
+}
+
+#textExampleImg{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+#containerImg{
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    margin-top: 4rem;
+}
 
 /********************************************
 ****************POPUP********************
@@ -120,8 +142,8 @@ select option[value="messageSelect"] {
 }
 
 .popup-container {
-    height: 100vh;
     width: 100%;
+    height: 100vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: right;
@@ -135,7 +157,9 @@ select option[value="messageSelect"] {
     background-color: #ffffff;
     padding: 20px 30px;
     width: 40%;
+    height: 20vh;
     border-radius: 15px;
+    margin-bottom: 16rem;
     margin-right: 2%;
     display: flex;
     flex-direction: column;

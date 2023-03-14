@@ -107,6 +107,11 @@ def saveDataSet() -> None:
                 if len(selectSign) != 0 and startSaveData == "True":
                     print("NO SE ESTA GUARDANDO ")
                     detectPersonWhenSaveData = "False"
+                    #Si empieza a guardar datos y no se detecta el usuario dejo de guardar.
+                    total.clear()
+                    setFinishSaveData("True")
+                    setSelectSign("")
+                    setStartSaveData("False")
 
             # Cerrar CAM
             if cv2.waitKey(1) & 0xFF == ord('q'):
