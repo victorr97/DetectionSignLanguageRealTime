@@ -5,7 +5,6 @@ from flask import Flask, render_template, Response, jsonify, request
 
 app = Flask(__name__)
 
-
 # ROUTES POST
 
 @app.route('/procesar', methods=['POST'])
@@ -56,6 +55,11 @@ def checkPerson():
 
 @app.route('/', methods=['GET'])
 def index():
+    return render_template('mainPage.html')
+
+
+@app.route('/main', methods=['GET'])
+def main():
     return render_template('mainPage.html')
 
 

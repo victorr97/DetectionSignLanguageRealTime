@@ -1,70 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Reconocimiento de lenguaje de signos en tiempo real</title>
-    <link rel="shortcut icon" type="image/png" href="{{ url_for('static',filename='resources/slt_icon.ico') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/recollectData.css') }}">
-</head>
-<body>
-<section>
-    <div id="frame">
-        <img src="{{ url_for('recollect') }}"/>
-    </div>
-    <div id="containerSelectUser">
-        <h2 id="textSelectLetter">Selecciona una letra de lenguaje de signos</h2>
-        <form method="POST" action="/procesar">
-            <select name="letterSign" id="letterSign">
-                <option id="selectOption" value="messageSelect">Seleccione una opción</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-                <option value="E">E</option>
-                <option value="F">F</option>
-                <option value="G">G</option>
-                <option value="H">H</option>
-                <option value="I">I</option>
-                <option value="J">J</option>
-                <option value="K">K</option>
-                <option value="L">L</option>
-                <option value="M">M</option>
-                <option value="N">N</option>
-                <option value="O">O</option>
-                <option value="P">P</option>
-                <option value="Q">Q</option>
-                <option value="R">R</option>
-                <option value="S">S</option>
-                <option value="T">T</option>
-                <option value="U">U</option>
-                <option value="V">V</option>
-                <option value="W">W</option>
-                <option value="X">X</option>
-                <option value="Y">Y</option>
-                <option value="Z">Z</option>
-            </select>
-        </form>
-        <p id="textErrorMessage" class="errorMessage"></p>
-        <a id="save" class="saveData">Guardar</a>
-    </div>
-    <div id="popupSaveData">
-        <div class="popup-container">
-            <div id="popUpContainer" class="popup">
-                <h2 id="titlePopUp">Guardando coordenadas en </h2>
-                <div id="boxCountDown">
-                  <h1 id="countDown" class="counter3Seconds">3</h1>
-                </div>
-                <p id="messageSaveData" class="textSaveData"></p>
-                <div id="containerButtonsPopUp" class="rowButtonsPopUp">
-                    <a id="saveMoreData" class="saveData">Sí</a>
-                    <a id="noSaveMore" class="saveData">No</a>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Reconocimiento de lenguaje de signos en tiempo real</title>
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static',filename='resources/slt_icon.ico') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/recollectData.css') }}">
+    </head>
+    <body>
+        <section>
+            <div id="frame">
+                <img src="{{ url_for('recollect') }}"/>
+            </div>
+            <div id="containerSelectUser">
+                <h2 id="textSelectLetter">Selecciona una letra de lenguaje de signos</h2>
+                <form method="POST" action="/procesar">
+                    <select name="letterSign" id="letterSign">
+                        <option id="selectOption" value="messageSelect">Seleccione una opción</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                        <option value="H">H</option>
+                        <option value="I">I</option>
+                        <option value="J">J</option>
+                        <option value="K">K</option>
+                        <option value="L">L</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="O">O</option>
+                        <option value="P">P</option>
+                        <option value="Q">Q</option>
+                        <option value="R">R</option>
+                        <option value="S">S</option>
+                        <option value="T">T</option>
+                        <option value="U">U</option>
+                        <option value="V">V</option>
+                        <option value="W">W</option>
+                        <option value="X">X</option>
+                        <option value="Y">Y</option>
+                        <option value="Z">Z</option>
+                    </select>
+                </form>
+                <p id="textErrorMessage" class="errorMessage"></p>
+                <a id="save" class="saveData">Guardar</a>
+            </div>
+            <div id="popupSaveData">
+                <div class="popup-container">
+                    <div id="popUpContainer" class="popup">
+                        <h2 id="titlePopUp">Guardando coordenadas en </h2>
+                        <div id="boxCountDown">
+                          <h1 id="countDown" class="counter3Seconds">3</h1>
+                        </div>
+                        <p id="messageSaveData" class="textSaveData"></p>
+                        <div id="containerButtonsPopUp" class="rowButtonsPopUp">
+                            <a id="saveMoreData" class="saveData">Sí</a>
+                            <a id="noSaveMore" class="saveData" href="{{ url_for('main') }}">No</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-<script src="{{ url_for('static',filename='js/api.js') }}"></script>
-<script src="{{ url_for('static',filename='js/recollectSign.js') }}"></script>
-</body>
+        </section>
+    <script src="{{ url_for('static',filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/recollectSign.js') }}"></script>
+    </body>
 </html>

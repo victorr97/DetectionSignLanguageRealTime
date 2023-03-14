@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     noSaveMore.addEventListener('click', () => {
         console.log("NO SAVE MORE")
+
     });
 
     function checkLetter() {
@@ -167,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function changeResetPopUp(){
         boxCountDown.style.display = "flex";
+        countDown.innerHTML = "3";
         messageSaveData.innerHTML = null;
         titlePopUp.innerHTML = null;
         titlePopUp.innerHTML = "Guardando coordenadas en ";
