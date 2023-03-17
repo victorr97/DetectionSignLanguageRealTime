@@ -70,7 +70,7 @@ def recollectData():
 
 @app.route('/train', methods=['GET'])
 def train():
-    return "TRAIN"
+    return render_template('train.html')
 
 
 @app.route('/start', methods=['GET'])

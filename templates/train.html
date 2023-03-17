@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reconocimiento de lenguaje de signos en tiempo real</title>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static',filename='resources/slt_icon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/train.css') }}">
+</head>
+<body>
+<section>
+
+    <div id="allPage">
+        <div id="frame">
+            <img src="{{ url_for('result') }}"/>
+        </div>
+        <div class="scroll-container">
+            <div class="scroll-content">
+                <a href="#">
+                    <img src="{{ url_for('static', filename='resources/img/A.JPG') }}">
+                </a>
+                <a href="#">
+                    <img src="{{ url_for('static', filename='resources/img/B.JPG') }}">
+                </a>
+                <a href="#">
+                    <img src="{{ url_for('static', filename='resources/img/C.JPG') }}">
+                </a>
+                <a href="#">
+                    <img src="{{ url_for('static', filename='resources/img/D.JPG') }}">
+                </a>
+                <img src="{{ url_for('static', filename='resources/img/B.JPG') }}">
+                <img src="{{ url_for('static', filename='resources/img/C.JPG') }}">
+                <img src="{{ url_for('static', filename='resources/img/D.JPG') }}">
+                <img src="{{ url_for('static', filename='resources/img/E.JPG') }}">
+                <img src="{{ url_for('static', filename='resources/img/F.JPG') }}">
+                <img src="{{ url_for('static', filename='resources/img/G.JPG') }}">
+                <img src="{{ url_for('static', filename='resources/img/H.JPG') }}">
+                <img src="{{ url_for('static', filename='resources/img/I.JPG') }}">
+                <img src="{{ url_for('static', filename='resources/img/J.JPG') }}">
+                <img src="{{ url_for('static', filename='resources/img/K.JPG') }}">
+                <img src="{{ url_for('static', filename='resources/img/L.JPG') }}">
+                <img src="{{ url_for('static', filename='resources/img/M.JPG') }}">
+                <img src="{{ url_for('static', filename='resources/img/N.JPG') }}">
+            </div>
+            <div class="scroll-button">
+                <button class="scroll-down">&#x2193;</button>
+            </div>
+        </div>
+    </div>
+
+</section>
+<script src="{{ url_for('static',filename='js/train.js') }}"></script>
+</body>
+</html>
