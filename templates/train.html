@@ -12,39 +12,40 @@
 
     <div id="allPage">
         <div id="frame">
-            <img src="{{ url_for('result') }}"/>
+            <img class="frameWebCam" src="{{ url_for('result') }}"/>
         </div>
-        <div class="scroll-container">
-            <div class="scroll-content">
-                <a href="#">
-                    <img src="{{ url_for('static', filename='resources/img/A.JPG') }}">
-                </a>
-                <a href="#">
+        <div class="container">
+            <div id="containerImg" class="scroll-container">
+                <div class="scroll-content">
+                    <a href="#">
+                        <img src="{{ url_for('static', filename='resources/img/A.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img src="{{ url_for('static', filename='resources/img/B.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img src="{{ url_for('static', filename='resources/img/C.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img src="{{ url_for('static', filename='resources/img/D.JPG') }}">
+                    </a>
                     <img src="{{ url_for('static', filename='resources/img/B.JPG') }}">
-                </a>
-                <a href="#">
                     <img src="{{ url_for('static', filename='resources/img/C.JPG') }}">
-                </a>
-                <a href="#">
                     <img src="{{ url_for('static', filename='resources/img/D.JPG') }}">
-                </a>
-                <img src="{{ url_for('static', filename='resources/img/B.JPG') }}">
-                <img src="{{ url_for('static', filename='resources/img/C.JPG') }}">
-                <img src="{{ url_for('static', filename='resources/img/D.JPG') }}">
-                <img src="{{ url_for('static', filename='resources/img/E.JPG') }}">
-                <img src="{{ url_for('static', filename='resources/img/F.JPG') }}">
-                <img src="{{ url_for('static', filename='resources/img/G.JPG') }}">
-                <img src="{{ url_for('static', filename='resources/img/H.JPG') }}">
-                <img src="{{ url_for('static', filename='resources/img/I.JPG') }}">
-                <img src="{{ url_for('static', filename='resources/img/J.JPG') }}">
-                <img src="{{ url_for('static', filename='resources/img/K.JPG') }}">
-                <img src="{{ url_for('static', filename='resources/img/L.JPG') }}">
-                <img src="{{ url_for('static', filename='resources/img/M.JPG') }}">
-                <img src="{{ url_for('static', filename='resources/img/N.JPG') }}">
+                    <img src="{{ url_for('static', filename='resources/img/E.JPG') }}">
+                    <img src="{{ url_for('static', filename='resources/img/F.JPG') }}">
+                    <img src="{{ url_for('static', filename='resources/img/G.JPG') }}">
+                    <img src="{{ url_for('static', filename='resources/img/H.JPG') }}">
+                    <img src="{{ url_for('static', filename='resources/img/I.JPG') }}">
+                    <img src="{{ url_for('static', filename='resources/img/J.JPG') }}">
+                    <img src="{{ url_for('static', filename='resources/img/K.JPG') }}">
+                    <img src="{{ url_for('static', filename='resources/img/L.JPG') }}">
+                    <img src="{{ url_for('static', filename='resources/img/M.JPG') }}">
+                    <img src="{{ url_for('static', filename='resources/img/N.JPG') }}">
+                </div>
             </div>
-            <div class="scroll-button">
-                <button class="scroll-down">&#x2193;</button>
-            </div>
+            <button id="scroll-up" class="button-up">&uarr;</button>
+            <button id="scroll-down" class="button-down">&darr;</button>
         </div>
     </div>
 
