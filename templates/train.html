@@ -5,13 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Reconocimiento de lenguaje de signos en tiempo real</title>
     <link rel="shortcut icon" type="image/png" href="{{ url_for('static',filename='resources/slt_icon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/spinnerLoading.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/train.css') }}">
 </head>
 <body>
 <section>
-
     <div id="allPage">
         <div id="frame">
+            <div id="loading" class="loader-circle">
+                <p class="loader-content">CARGANDO</p>
+                <div class="loader-line-mask">
+                    <div class="loader-line"></div>
+                </div>
+            </div>
             <h2 id="textSelectImg"></h2>
             <img class="frameWebCam" src="{{ url_for('result') }}"/>
         </div>

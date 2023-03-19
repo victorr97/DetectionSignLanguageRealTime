@@ -37,7 +37,7 @@ div#frame {
     width: 70%;
 }
 
-#textSelectImg{
+#textSelectImg {
     color: #efefef;
     display: flex;
     flex-direction: row;
@@ -141,7 +141,7 @@ div#frame {
     opacity: 1;
 }
 
-.notActiveImg{
+.notActiveImg {
     opacity: 0.5;
 }
 

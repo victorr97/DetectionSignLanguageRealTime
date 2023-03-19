@@ -64,7 +64,7 @@ def resultsWeb():
                     (flag, encodedImage) = cv2.imencode(".jpg", image)
                     if not flag:
                         continue
-                    yield (b'--frame\r\n' b'Content-type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n')
+                    yield b'--frame\r\n' b'Content-type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n'
 
                 if (results.pose_landmarks is None) or (results.left_hand_landmarks is None):
                     print("Doesn't detect all points of the person")

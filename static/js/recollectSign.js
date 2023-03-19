@@ -13,6 +13,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let titlePopUp = document.getElementById("titlePopUp");
     let containerImg = document.getElementById("containerImg");
     let imgHelp = document.getElementById("imgHelp");
+    const img = document.querySelector('.frameWebCam');
+    const loading = document.getElementById("loadingRecollect");
+
+    img.addEventListener('load', function () {
+        console.log('La imagen se ha cargado correctamente.');
+        loading.style.display = "none";
+    });
 
     saveMoreData.style.display = "none";
     noSaveMore.style.display = "none";
