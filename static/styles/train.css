@@ -1,5 +1,5 @@
 /********************************************
-****************START PAGE********************
+***********START PAGE - WEBCAM ********************
 *********************************************/
 
 body {
@@ -25,6 +25,24 @@ div#allPage {
     overflow-x: auto;
 }
 
+
+div#frame {
+    width: inherit;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.frameWebCam {
+    width: 70%;
+}
+
+/********************************************
+*************SCROLL IMAGES********************
+*********************************************/
+
+
 .scroll-container {
     flex: 1;
     margin-top: 55px;
@@ -35,85 +53,87 @@ div#allPage {
 }
 
 .scroll-content img {
-  display: block;
-  margin-bottom: 20px;
-  cursor: pointer;
+    display: block;
+    margin-bottom: 20px;
+    cursor: pointer;
 }
 
 .scroll-content img {
-  width: 100%;
-  height: auto;
-  margin-bottom: 5px;
+    margin-bottom: 5px;
     height: 250px;
     width: 250px;
 }
 
 .scroll-button {
-  position: absolute;
-  bottom: 0;
+    position: absolute;
+    bottom: 0;
     right: 15%;
     transform: translateX(-50%);
 }
 
 .scroll-button button {
-  font-size: 20px;
-  background-color: white;
-  border: 1px solid black;
-  border-radius: 50%;
-  padding: 10px;
-  cursor: pointer;
-}
-
-div#frame {
-    width: inherit;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-.frameWebCam{
-    width: 70%;
+    font-size: 20px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  position: relative;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 .button-up,
 .button-down {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #fff;
-  border: 2px solid #777;
-  color: #777;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-  line-height: 36px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 2px solid #777;
+    color: #777;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 36px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
 .button-up:hover,
 .button-down:hover {
-  background-color: #777;
-  color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #777;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .button-up {
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .button-down {
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.activeImg {
+    border: 2px solid red;
+    box-shadow: 0 0 5px red;
+    outline: none;
+    opacity: 1;
+}
+
+.notActiveImg{
+    opacity: 0.5;
+}
+
+a:not(:focus) img:hover,
+a:not(:focus) img:active {
+    opacity: 1;
 }
