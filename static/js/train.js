@@ -1,6 +1,7 @@
 const rightDiv = document.getElementById("containerImg");
 const scrollUpBtn = document.getElementById('scroll-up');
 const scrollDownBtn = document.getElementById('scroll-down');
+const textSelectImg = document.getElementById('textSelectImg');
 const imgsClick = document.querySelectorAll('a');
 
 let scrollPosition = 0;
@@ -20,7 +21,7 @@ imgsClick.forEach(function (element) {
         const img = event.target
         if (img.classList.contains("notActiveImg")){
             img.classList.replace('notActiveImg', 'activeImg')
-            console.log(event.target.alt)
+            textSelectImg.innerHTML = "SIGNO SELECCIONADO PARA PRACTICAR: <strong>" + event.target.alt + "</strong>";
         }
     });
 });
@@ -67,11 +68,6 @@ function scrollSmoothly() {
 
     requestAnimationFrame(animation);
 }
-
-/*
-
-*
-* */
 
 scrollUpBtn.addEventListener('click', handleScrollUp);
 scrollDownBtn.addEventListener('click', handleScrollDown);
