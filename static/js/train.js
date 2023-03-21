@@ -12,6 +12,7 @@ const height3Img = 765;
 
 img.addEventListener('load', function () {
     loading.style.display = "none";
+    textSelectImg.style.display = "flex";
 });
 
 //Agrego un Event Listener click para cada elemento <a> (imagenes)
@@ -43,7 +44,6 @@ function selectLetterGoTrain(letterTrain) {
                 checkLetterIfCorrect()
                     .then(result => {
                         if (result === true) {
-                            console.log("NICE!!!");
                             Swal.fire({
                               title: '¡Correcto!',
                               text: '¡Sigue practicando signos!',
@@ -51,10 +51,16 @@ function selectLetterGoTrain(letterTrain) {
                               confirmButtonText: 'Aceptar',
                               confirmButtonColor: '#3085d6'
                             })
-                            resetLetter()
                         } else {
-                            console.log("MAL!!!");
+                            Swal.fire({
+                              title: '¡Error!',
+                              text: '¡No salgas de la webcam!',
+                              icon: 'error',
+                              confirmButtonText: 'Aceptar',
+                              confirmButtonColor: '#3085d6'
+                            })
                         }
+                        resetLetter()
                     })
                     .catch(error => {
                         console.log(error);

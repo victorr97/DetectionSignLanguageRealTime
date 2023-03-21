@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
         boxCountDown.style.display = "none";
         messageSaveData.innerHTML = null;
         titlePopUp.innerHTML = null;
-        titlePopUp.innerHTML = "No se ha guardado, has salido del plano";
+        titlePopUp.innerHTML = "¡Error! Has salido del plano";
         messageSaveData.innerHTML = "Quieres volver a repetir?";
         saveMoreData.style.display = "flex"
         noSaveMore.style.display = "flex"

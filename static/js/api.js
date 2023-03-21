@@ -142,6 +142,10 @@ async function checkLetterIfCorrect() {
                         clearInterval(intervalId); // Detiene la llamada a setInterval
                         resolve(true);
                     }
+                    if (data.firstTimeRecognisedPerson === 'True' && data.recognisedPerson === 'False') {
+                        clearInterval(intervalId); // Detiene la llamada a setInterval
+                        resolve(false);
+                    }
                 })
                 .catch(error => {
                     console.log(error);

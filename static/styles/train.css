@@ -39,7 +39,7 @@ div#frame {
 
 #textSelectImg {
     color: #efefef;
-    display: flex;
+    display: none;
     flex-direction: row;
     gap: 10px;
     align-items: center;

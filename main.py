@@ -1,12 +1,12 @@
-import results
 import collectFrame
+import trainUser
+import results
 from argparse import ArgumentParser
 from flask import Flask, render_template, Response, jsonify, request
 
 app = Flask(__name__)
 
 # ROUTES POST
-
 @app.route('/procesar', methods=['POST'])
 def procesar():
     if request.is_json:
@@ -37,8 +37,10 @@ def letterTrain():
     if request.is_json:
         letterTrain = request.get_json()['letterTrain']
         respuesta = {'letterTrain': letterTrain}
-        results.setSelectSignTrain(letterTrain)
-        results.setLetterDoneRight("False")
+        trainUser.setSelectSignTrain(letterTrain)
+        trainUser.setLetterDoneRight("False")
+        trainUser.setFirstTimeRecognisedPerson("False")
+        trainUser.resetListLetters()
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
@@ -68,7 +70,7 @@ def checkPerson():
 @app.route('/checkLetter', methods=['GET'])
 def checkLetter():
     if request.is_json:
-        respuesta = {'checkLetter': results.getCountArrayIfCorrect()}
+        respuesta = {'checkLetter': trainUser.getCountArrayIfCorrect(), 'recognisedPerson': trainUser.getRecognisedPerson(), 'firstTimeRecognisedPerson': trainUser.getFirstTimeRecognisedPerson()}
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
@@ -99,14 +101,19 @@ def start():
     return render_template('start.html')
 
 
-@app.route('/result', methods=['GET'])
-def result():
-    return Response(results.resultsWeb(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
 @app.route('/recollect', methods=['GET'])
 def recollect():
     return Response(collectFrame.saveDataSet(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/trainuser', methods=['GET'])
+def trainuser():
+    return Response(trainUser.trainWeb(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/result', methods=['GET'])
+def result():
+    return Response(results.resultsWeb(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':

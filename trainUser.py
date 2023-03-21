@@ -5,17 +5,85 @@ import cv2
 import pandas as pd
 import landmarks
 
+selectSignTrain = ""
+letterDoneRight = "False"
+list_letters_realtime = []
+NUMBER_CORRECT = 20
+recognisedPerson = "False"
+firstTimeRecognisedPerson = "False"
+counter = 0
 
-def resultsWeb():
-    print("*** RESULTS ***")
+
+def getCounter():
+    return counter
+
+
+def setCounter(reset):
+    global counter
+    if reset:
+        counter = 0
+    else:
+        counter += 1
+
+def getFirstTimeRecognisedPerson():
+    return firstTimeRecognisedPerson
+
+
+def setFirstTimeRecognisedPerson(firstTime) -> None:
+    global firstTimeRecognisedPerson
+    firstTimeRecognisedPerson = firstTime
+
+
+def setSelectSignTrain(selectLetterUser) -> None:
+    global selectSignTrain
+    selectSignTrain = selectLetterUser
+
+
+def setLetterDoneRight(letterRight) -> None:
+    global letterDoneRight
+    letterDoneRight = letterRight
+
+
+def getRecognisedPerson():
+    return recognisedPerson
+
+
+def setRecognisedPerson(recognised) -> None:
+    global recognisedPerson
+    recognisedPerson = recognised
+
+
+def getCountArrayIfCorrect():
+    global letterDoneRight
+    global selectSignTrain
+    if list_letters_realtime.count(selectSignTrain) >= NUMBER_CORRECT:
+        letterDoneRight = "True"
+        selectSignTrain = ""
+        resetListLetters()
+    else:
+        letterDoneRight = "False"
+    return letterDoneRight
+
+
+def resetListLetters() -> None:
+    global list_letters_realtime
+    list_letters_realtime = []
+    setCounter(True)
+
+
+def getListLetters():
+    return list_letters_realtime
+
+
+def trainWeb():
+    print("*** TRAIN ***")
     with open('generatedFiles/neuralNetworkAllAlphabet.pkl', 'rb') as f:
+        MAX_ARRAY = 500
         model = joblib.load(f)
 
         mp_drawing = mp.solutions.drawing_utils
         mp_holistic = mp.solutions.holistic
         mp_drawing_styles = mp.solutions.drawing_styles
-
-        recognisedPerson = False
 
         # WEBCAM:
         cap = cv2.VideoCapture(0)
@@ -57,53 +125,37 @@ def resultsWeb():
                 cv2.rectangle(image, (0, 0), (200, 60), (245, 117, 16), -1)
                 cv2.putText(image, 'LETRA', (95, 12), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
                 cv2.putText(image, 'PROB.', (15, 12), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
-                if not recognisedPerson:
+
+                if getRecognisedPerson() == "False":
                     (flag, encodedImage) = cv2.imencode(".jpg", image)
                     if not flag:
                         continue
                     yield b'--frame\r\n' b'Content-type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n'
 
-                # if ((results.face_landmarks is None) or (results.pose_landmarks is None) or (results.left_hand_landmarks is None) or (results.right_hand_landmarks is None)):
                 if (results.pose_landmarks is None) or (results.left_hand_landmarks is None):
-                    print("Doesn't detect all points of the person")
-                    recognisedPerson = False
+                    setRecognisedPerson("False")
                 else:
-                    recognisedPerson = True
+                    setRecognisedPerson("True")
+                    if getCounter() == 0:
+                        setFirstTimeRecognisedPerson("True")
                     row = landmarks.pointsRealTime(results)
                     Z = pd.DataFrame([row])
-
-                    """
-                    #Si el clasificador es RidgeClassifier almaceno el name y la prob. de diferente manera
-                    if isinstance(RidgeClassifier(), type(model.best_estimator_.named_steps.classifier)):
-                        body_language_class = model.predict(Z)[0]
-                        d = model.decision_function(Z)[0]
-                        body_language_prob = np.exp(d) / np.sum(np.exp(d))
-                    else:
-                        body_language_class = model.predict(Z)[0]
-                        body_language_prob = model.predict_proba(Z)[0]
-                    """
 
                     body_language_class = model.predict(Z)[0]
                     body_language_prob = model.predict_proba(Z)[0]
 
-                    """
+                    if getCounter() == MAX_ARRAY:
+                        resetListLetters()
+                        setCounter(True)
 
-                    body_language_class = model.predict(Z)[0]
-                    d = model.decision_function(Z)[0]
-                    body_language_prob = np.exp(d) / np.sum(np.exp(d))
+                    getListLetters().append(body_language_class)
+                    setCounter(False)
 
-                    """
-
-                    print("Selected Class: " + body_language_class)
-                    classes = model.best_estimator_.classes_
-                    probAllClasses = zip(classes, body_language_prob)
-                    for i in probAllClasses:
-                        print(i)
-
-                    coords = tuple(
-                        np.multiply(np.array((results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EAR].x,
-                                              results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EAR].y,
-                                              )), [640, 480]).astype(int))
+                    # print("Selected Class: " + body_language_class)
+                    # classes = model.best_estimator_.classes_
+                    # probAllClasses = zip(classes, body_language_prob)
+                    # for i in probAllClasses:
+                    #     print(i)
 
                     cv2.putText(image, str(round(body_language_prob[np.argmax(body_language_prob)], 2)), (10, 40),
                                 cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
