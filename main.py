@@ -32,6 +32,17 @@ def goSave():
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
 
 
+@app.route('/letterTrain', methods=['POST'])
+def letterTrain():
+    if request.is_json:
+        letterTrain = request.get_json()['letterTrain']
+        respuesta = {'letterTrain': letterTrain}
+        results.setSelectSignTrain(letterTrain)
+        return jsonify(respuesta)
+    else:
+        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
+
+
 # ROUTES GET
 
 @app.route('/checkSaveData', methods=['GET'])

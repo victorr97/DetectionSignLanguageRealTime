@@ -5,6 +5,13 @@ import cv2
 import pandas as pd
 import landmarks
 
+selectSignTrain = ""
+
+
+def setSelectSignTrain(selectLetterUser) -> None:
+    global selectSignTrain
+    selectSignTrain = selectLetterUser
+
 
 def resultsWeb():
     print("*** RESULTS ***")
@@ -77,11 +84,20 @@ def resultsWeb():
                     body_language_class = model.predict(Z)[0]
                     body_language_prob = model.predict_proba(Z)[0]
 
-                    print("Selected Class: " + body_language_class)
-                    classes = model.best_estimator_.classes_
-                    probAllClasses = zip(classes, body_language_prob)
-                    for i in probAllClasses:
-                        print(i)
+                    print("selectSignTrain: " + selectSignTrain)
+                    print("body_language_class: " + body_language_class)
+
+
+                    if selectSignTrain == body_language_class:
+                        print("LO ESTA HACIENDO BIEN")
+                    else:
+                        print("LO ESTA HACIENDO MAL")
+
+                    # print("Selected Class: " + body_language_class)
+                    # classes = model.best_estimator_.classes_
+                    # probAllClasses = zip(classes, body_language_prob)
+                    # for i in probAllClasses:
+                    #     print(i)
 
                     cv2.putText(image, body_language_class, (90, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2,
                                 cv2.LINE_AA)

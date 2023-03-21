@@ -12,7 +12,7 @@ img.addEventListener('load', function () {
     loading.style.display = "none";
 });
 
-// Agrego un Event Listener click para cada elemento <a> (imagenes)
+//Agrego un Event Listener click para cada elemento <a> (imagenes)
 imgsClick.forEach(function (element) {
     element.addEventListener('click', function (event) {
         const allImg = document.querySelectorAll('img');
@@ -27,9 +27,24 @@ imgsClick.forEach(function (element) {
         if (img.classList.contains("notActiveImg")) {
             img.classList.replace('notActiveImg', 'activeImg')
             textSelectImg.innerHTML = "SIGNO SELECCIONADO PARA PRACTICAR: <strong>" + event.target.alt + "</strong>";
+            selectLetterGoTrain(event.target.alt)
         }
     });
 });
+
+function selectLetterGoTrain(letterTrain) {
+    console.log(letterTrain)
+    //Envio letra seleccionada por el usuario al backend
+    letterTrainSelectUser(letterTrain)
+        .then(result => {
+            if (result === true) {
+                console.log("LETRA ENVIADA AL BACKEND")
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
 
 function handleScrollUp() {
     scrollPosition -= height3Img;

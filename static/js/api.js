@@ -100,3 +100,26 @@ function setSaveDataInBackend() {
         });
     });
 }
+
+
+function letterTrainSelectUser(letterTrain) {
+    return new Promise((resolve, reject) => {
+        fetch('/letterTrain', {
+            method: 'POST',
+            body: JSON.stringify({'letterTrain': letterTrain}),
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                //Respuesta del servidor
+                console.log(data);
+                resolve(true);
+            })
+            .catch(error => {
+                console.log(error);
+                reject(false);
+            });
+    });
+}
