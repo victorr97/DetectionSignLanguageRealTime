@@ -7,6 +7,8 @@ import landmarks
 
 selectSignTrain = ""
 letterDoneRight = "False"
+list_letters_realtime = []
+NUMBER_CORRECT = 20
 
 
 def setSelectSignTrain(selectLetterUser) -> None:
@@ -19,8 +21,25 @@ def setLetterDoneRight(letterRight) -> None:
     letterDoneRight = letterRight
 
 
-def getLetterDoneRight():
+def getCountArrayIfCorrect():
+    global letterDoneRight
+    global selectSignTrain
+    if list_letters_realtime.count(selectSignTrain) >= NUMBER_CORRECT:
+        letterDoneRight = "True"
+        selectSignTrain = ""
+        resetListLetters()
+    else:
+        letterDoneRight = "False"
     return letterDoneRight
+
+
+def resetListLetters() -> None:
+    global list_letters_realtime
+    list_letters_realtime = []
+
+
+def getListLetters():
+    return list_letters_realtime
 
 
 def resultsWeb():
@@ -36,6 +55,8 @@ def resultsWeb():
         recognisedPerson = False
 
         # WEBCAM:
+        contador = 0
+        MAX_ARRAY = 500
         cap = cv2.VideoCapture(0)
         if not cap.isOpened():
             print("Failed to open camera")
@@ -73,9 +94,9 @@ def resultsWeb():
                     mp_drawing_styles.get_default_hand_landmarks_style(),
                     mp_drawing_styles.get_default_hand_connections_style())
 
-                cv2.rectangle(image, (0, 0), (250, 60), (245, 117, 16), -1)
-                cv2.putText(image, 'CLASS', (95, 12), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
-                cv2.putText(image, 'PROB', (15, 12), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
+                cv2.rectangle(image, (0, 0), (200, 60), (245, 117, 16), -1)
+                cv2.putText(image, 'LETRA', (95, 12), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
+                cv2.putText(image, 'PROB.', (15, 12), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1, cv2.LINE_AA)
 
                 if not recognisedPerson:
                     (flag, encodedImage) = cv2.imencode(".jpg", image)
@@ -84,7 +105,6 @@ def resultsWeb():
                     yield b'--frame\r\n' b'Content-type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n'
 
                 if (results.pose_landmarks is None) or (results.left_hand_landmarks is None):
-                    print("Doesn't detect all points of the person")
                     recognisedPerson = False
                 else:
                     recognisedPerson = True
@@ -94,15 +114,12 @@ def resultsWeb():
                     body_language_class = model.predict(Z)[0]
                     body_language_prob = model.predict_proba(Z)[0]
 
-                    print("selectSignTrain: " + selectSignTrain)
-                    print("body_language_class: " + body_language_class)
+                    if contador == MAX_ARRAY:
+                        resetListLetters()
+                        contador = 0
 
-
-                    if selectSignTrain == body_language_class:
-                        print("LO ESTA HACIENDO BIEN")
-                        setLetterDoneRight("True")
-                    else:
-                        print("LO ESTA HACIENDO MAL")
+                    getListLetters().append(body_language_class)
+                    contador += 1
 
                     # print("Selected Class: " + body_language_class)
                     # classes = model.best_estimator_.classes_
@@ -110,10 +127,10 @@ def resultsWeb():
                     # for i in probAllClasses:
                     #     print(i)
 
-                    cv2.putText(image, body_language_class, (90, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2,
-                                cv2.LINE_AA)
                     cv2.putText(image, str(round(body_language_prob[np.argmax(body_language_prob)], 2)), (10, 40),
                                 cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+                    cv2.putText(image, body_language_class, (110, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2,
+                                cv2.LINE_AA)
                     (flag, encodedImage) = cv2.imencode(".jpg", image)
 
                     if not flag:

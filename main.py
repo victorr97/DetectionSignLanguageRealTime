@@ -68,7 +68,7 @@ def checkPerson():
 @app.route('/checkLetter', methods=['GET'])
 def checkLetter():
     if request.is_json:
-        respuesta = {'checkLetter': results.getLetterDoneRight()}
+        respuesta = {'checkLetter': results.getCountArrayIfCorrect()}
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})

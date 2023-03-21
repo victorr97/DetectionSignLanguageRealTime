@@ -49,7 +49,7 @@ function selectLetterGoTrain(letterTrain) {
                               text: '¡Sigue practicando signos!',
                               icon: 'success',
                               confirmButtonText: 'Aceptar',
-                              confirmButtonColor: '#F8B627'
+                              confirmButtonColor: '#3085d6'
                             })
                             resetLetter()
                         } else {
