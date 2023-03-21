@@ -8,9 +8,7 @@ const loading = document.getElementById("loading");
 let scrollPosition = 0;
 const height3Img = 765;
 
-
 img.addEventListener('load', function () {
-    console.log('La imagen se ha cargado correctamente.');
     loading.style.display = "none";
 });
 

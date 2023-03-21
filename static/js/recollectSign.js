@@ -7,17 +7,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const noSaveMore = document.getElementById("noSaveMore");
     const containerButtonsPopUp = document.getElementById("containerButtonsPopUp");
     const messageSaveData = document.getElementById("messageSaveData");
+    const loading = document.getElementById("loadingRecollect");
     let buttonSave = document.getElementById('save');
     let countDown = document.getElementById("countDown");
     let boxCountDown = document.getElementById("boxCountDown");
     let titlePopUp = document.getElementById("titlePopUp");
     let containerImg = document.getElementById("containerImg");
     let imgHelp = document.getElementById("imgHelp");
-    const img = document.querySelector('.frameWebCam');
-    const loading = document.getElementById("loadingRecollect");
+    let img = document.getElementById("webCam");
 
     img.addEventListener('load', function () {
-        console.log('La imagen se ha cargado correctamente.');
         loading.style.display = "none";
     });
 
