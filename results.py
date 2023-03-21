@@ -6,11 +6,21 @@ import pandas as pd
 import landmarks
 
 selectSignTrain = ""
+letterDoneRight = "False"
 
 
 def setSelectSignTrain(selectLetterUser) -> None:
     global selectSignTrain
     selectSignTrain = selectLetterUser
+
+
+def setLetterDoneRight(letterRight) -> None:
+    global letterDoneRight
+    letterDoneRight = letterRight
+
+
+def getLetterDoneRight():
+    return letterDoneRight
 
 
 def resultsWeb():
@@ -90,6 +100,7 @@ def resultsWeb():
 
                     if selectSignTrain == body_language_class:
                         print("LO ESTA HACIENDO BIEN")
+                        setLetterDoneRight("True")
                     else:
                         print("LO ESTA HACIENDO MAL")
 

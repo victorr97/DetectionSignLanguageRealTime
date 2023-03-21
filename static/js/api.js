@@ -101,6 +101,7 @@ function setSaveDataInBackend() {
     });
 }
 
+/********** TRAIN ***********/
 
 function letterTrainSelectUser(letterTrain) {
     return new Promise((resolve, reject) => {
@@ -121,5 +122,31 @@ function letterTrainSelectUser(letterTrain) {
                 console.log(error);
                 reject(false);
             });
+    });
+}
+
+async function checkLetterIfCorrect() {
+    return new Promise((resolve, reject) => {
+        let intervalId = setInterval(() => {
+            fetch('/checkLetter', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    //Respuesta del servidor
+                    console.log(data);
+                    if (data.checkLetter === 'True') {
+                        clearInterval(intervalId); // Detiene la llamada a setInterval
+                        resolve(true);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        }, 1000); // Ejecuta cada segundo
     });
 }

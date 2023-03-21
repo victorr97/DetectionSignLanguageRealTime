@@ -1,8 +1,10 @@
+
 const rightDiv = document.getElementById("containerImg");
 const scrollUpBtn = document.getElementById('scroll-up');
 const scrollDownBtn = document.getElementById('scroll-down');
 const textSelectImg = document.getElementById('textSelectImg');
 const imgsClick = document.querySelectorAll('a');
+const allImg = document.querySelectorAll('img');
 const img = document.querySelector('.frameWebCam');
 const loading = document.getElementById("loading");
 let scrollPosition = 0;
@@ -15,7 +17,6 @@ img.addEventListener('load', function () {
 //Agrego un Event Listener click para cada elemento <a> (imagenes)
 imgsClick.forEach(function (element) {
     element.addEventListener('click', function (event) {
-        const allImg = document.querySelectorAll('img');
         //Para todas las imagenes si contiene la clase activeImg activada significa que estaba anteriormente clicada y se ha de substituir
         allImg.forEach(function (imagen) {
             if (imagen.classList.contains("activeImg")) {
@@ -39,11 +40,39 @@ function selectLetterGoTrain(letterTrain) {
         .then(result => {
             if (result === true) {
                 console.log("LETRA ENVIADA AL BACKEND")
+                checkLetterIfCorrect()
+                    .then(result => {
+                        if (result === true) {
+                            console.log("NICE!!!");
+                            Swal.fire({
+                              title: '¡Correcto!',
+                              text: '¡Sigue practicando signos!',
+                              icon: 'success',
+                              confirmButtonText: 'Aceptar',
+                              confirmButtonColor: '#F8B627'
+                            })
+                            resetLetter()
+                        } else {
+                            console.log("MAL!!!");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             }
         })
         .catch(error => {
             console.log(error);
         });
+}
+
+function resetLetter(){
+    textSelectImg.innerHTML = "SIGNO SELECCIONADO PARA PRACTICAR: ";
+    allImg.forEach(function (imagen) {
+        if (imagen.classList.contains("activeImg")) {
+            imagen.classList.replace('activeImg', 'notActiveImg');
+        }
+    });
 }
 
 function handleScrollUp() {

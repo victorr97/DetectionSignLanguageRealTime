@@ -38,6 +38,7 @@ def letterTrain():
         letterTrain = request.get_json()['letterTrain']
         respuesta = {'letterTrain': letterTrain}
         results.setSelectSignTrain(letterTrain)
+        results.setLetterDoneRight("False")
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
@@ -59,6 +60,15 @@ def checkSaveData():
 def checkPerson():
     if request.is_json:
         respuesta = {'personInCam': collectFrame.getPerson()}
+        return jsonify(respuesta)
+    else:
+        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
+
+
+@app.route('/checkLetter', methods=['GET'])
+def checkLetter():
+    if request.is_json:
+        respuesta = {'checkLetter': results.getLetterDoneRight()}
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
