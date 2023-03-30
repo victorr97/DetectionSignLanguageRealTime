@@ -3,6 +3,8 @@ import mediapipe as mp
 import numpy as np
 import cv2
 import pandas as pd
+from sklearn.model_selection import train_test_split
+
 import landmarks
 
 
@@ -10,6 +12,22 @@ def resultsWeb():
     print("*** RESULTS ***")
     with open('generatedFiles/neuralNetworkAllAlphabet.pkl', 'rb') as f:
         model = joblib.load(f)
+
+        # df = pd.read_csv('generatedFiles/coords.csv')
+        # X = df.drop('class', axis=1)
+        # y = df['class']
+        # name = y.array
+        # nameClass = []
+        # [nameClass.append(x) for x in name if x not in nameClass]
+        #
+        # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1234)
+        #
+        # # hacer predicciones en los datos de prueba
+        # y_pred = model.predict(X_test)
+        #
+        # # calcular el accuracy
+        # accuracy = np.mean(y_pred == y_test)
+        # print('Accuracy:', accuracy)
 
         mp_drawing = mp.solutions.drawing_utils
         mp_holistic = mp.solutions.holistic
