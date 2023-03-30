@@ -1,11 +1,12 @@
 import collectFrame
 import trainUser
 import results
-import train
+import trainModel
 from argparse import ArgumentParser
 from flask import Flask, render_template, Response, jsonify, request
 
 app = Flask(__name__)
+
 
 # ROUTES POST
 @app.route('/procesar', methods=['POST'])
@@ -125,7 +126,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.train:
-        train.trainingData()
+        trainModel.trainingData()
     else:
         app.run(host="localhost", debug=True)
 

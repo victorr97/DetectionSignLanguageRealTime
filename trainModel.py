@@ -1,8 +1,10 @@
 import joblib
 import numpy as np
 import pandas as pd
+import warnings
 from matplotlib import pyplot as plt
 from pipelinehelper import PipelineHelper
+from sklearn.exceptions import ConvergenceWarning
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler, MaxAbsScaler
@@ -55,8 +57,19 @@ def gridSearchCrossValidation(X_train, y_train):
         })
     }
 
+    parametersNeuronalNetwork = {
+        'hidden_layer_sizes': [(100,), (150,), (200,)],
+        'activation': ['relu'],
+        'solver': ['adam'],
+        'batch_size': [16, 32, 64],
+        'max_iter': [100, 200, 300],
+    }
+
+
     print("\n***Starting training***\n")
-    gridPipe = GridSearchCV(MLPClassifier(), parameters, scoring='accuracy', cv=10, refit=True)
+    warnings.filterwarnings('ignore', category=ConvergenceWarning)
+    #270 iteraciones para acabar RedNeuronal
+    gridPipe = GridSearchCV(MLPClassifier(), parametersNeuronalNetwork, scoring='accuracy', cv=10, refit=True, verbose=2)
     gridPipe.fit(X_train, y_train)
     print("\n***Finished training***\n")
 
@@ -68,8 +81,8 @@ def confusionMatrix(y_test, y_predict, nameClass) -> None:
     cm_df = pd.DataFrame(cm,
                          index=[nameClass],
                          columns=[nameClass])
-    plt.figure(figsize=(6, 4))
-    sn.set(font_scale=1)  # for label size
+    plt.figure(figsize=(10, 8))
+    sn.set(font_scale=2)  # for label size
     sn.heatmap(cm_df, annot=True, annot_kws={"size": 14})  # font size
     plt.title('Confusion Matrix')
     plt.ylabel('Real Values')
@@ -77,7 +90,7 @@ def confusionMatrix(y_test, y_predict, nameClass) -> None:
     plt.show()
 
 
-def trainingData() -> None:
+def trainingData():
     print("***TRAINING DATA OF COORDS***")
 
     df = pd.read_csv('generatedFiles/dataSet.csv')
@@ -106,7 +119,7 @@ def trainingData() -> None:
     #print("Mejor método:", gridPipe.best_params_['classifier__selected_model'])
     #print("Mejor puntuación:", gridPipe.best_score_)
 
-    with open('generatedFiles/neuralNetworkAllAlphabet.pkl', 'wb') as f:
+    with open('generatedFiles/neuralNetworkDataSet.pkl', 'wb') as f:
         joblib.dump(gridPipe, f, compress=1)
         print("\n*************** GUARDADO MODELO EN ARCHIVO ***************\n")
 
