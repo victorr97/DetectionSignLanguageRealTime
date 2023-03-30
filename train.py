@@ -80,7 +80,7 @@ def confusionMatrix(y_test, y_predict, nameClass) -> None:
 def trainingData() -> None:
     print("***TRAINING DATA OF COORDS***")
 
-    df = pd.read_csv('generatedFiles/coords.csv')
+    df = pd.read_csv('generatedFiles/dataSet.csv')
     X = df.drop('class', axis=1)
     y = df['class']
     name = y.array

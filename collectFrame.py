@@ -40,7 +40,6 @@ def getFinishSaveData():
     return finishSaveData
 
 
-
 def saveDataSet() -> None:
     print("*** SAVE DATA ***")
     mp_drawing = mp.solutions.drawing_utils
@@ -94,6 +93,7 @@ def saveDataSet() -> None:
             if (results.pose_landmarks is not None) and (results.left_hand_landmarks is not None):
                 global detectPerson
                 detectPerson = "True"
+
                 #Si hay letra y podemos empezar a guardar, se almacena en el archivo csv
                 if len(selectSign) != 0 and startSaveData == "True":
                     print("SI SE ESTA GUARDANDO")
@@ -109,7 +109,6 @@ def saveDataSet() -> None:
                     detectPersonWhenSaveData = "False"
                     #Si empieza a guardar datos y no se detecta el usuario dejo de guardar.
                     total.clear()
-                    setSelectSign("")
                     setStartSaveData("False")
 
             # Cerrar CAM
@@ -122,13 +121,12 @@ def saveDataSet() -> None:
 def saveAllDataSignLanguage(row):
     total.append(row)
 
-    if len(total) == 30:
+    if len(total) == 2:
         for i in total:
-            with open('generatedFiles/coords.csv', mode='a+', newline='') as file:
+            with open('generatedFiles/dataSet.csv', mode='a+', newline='') as file:
                 csv_writer = csv.writer(file)
                 csv_writer.writerow(i)
         #Una vez guardado reseteo las variables
         total.clear()
         setFinishSaveData("True")
-        setSelectSign("")
         setStartSaveData("False")

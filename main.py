@@ -1,6 +1,7 @@
 import collectFrame
 import trainUser
 import results
+import train
 from argparse import ArgumentParser
 from flask import Flask, render_template, Response, jsonify, request
 
@@ -25,7 +26,8 @@ def goSave():
     if request.is_json:
         startSaveData = request.get_json()['startSaveData']
         respuesta = {'startSaveDataInFile': startSaveData}
-        collectFrame.setStartSaveData(startSaveData)
+        #collectFrame.setStartSaveData(startSaveData)
+        collectFrame.setStartSaveData("True")
         return jsonify(respuesta)
 
     else:
@@ -117,25 +119,33 @@ def result():
 
 
 if __name__ == '__main__':
-    app.run(host="localhost", debug=True)
 
     parser = ArgumentParser()
-    parser.add_argument('--collect', action='store_true', help="Collects landmarks and stores them in coords.csv file")
-    parser.add_argument('--nameSign', type=str, nargs='?', help="Use to specify which sign you want to save in "
-                                                                "coords.csv")
     parser.add_argument('--train', action='store_true', help="Serves to train the data model")
-
     args = parser.parse_args()
 
-    print(args)
+    if args.train:
+        train.trainingData()
+    else:
+        app.run(host="localhost", debug=True)
 
-    # Control de errores de argumentos
-    if args.collect and args.train:
-        raise TypeError("One argument or the other, not both")
-    elif args.collect and args.nameSign is None:
-        raise TypeError("Missing --nameSign letter")
-    elif args.nameSign is not None and args.collect is False:
-        raise TypeError("Missing --collect")
+
+
+    # parser = ArgumentParser()
+    # parser.add_argument('--collect', action='store_true', help="Collects landmarks and stores them in coords.csv file")
+    # parser.add_argument('--nameSign', type=str, nargs='?', help="Use to specify which sign you want to save in "
+    #                                                             "coords.csv")
+    # parser.add_argument('--train', action='store_true', help="Serves to train the data model")
+    #
+    # args = parser.parse_args()
+    #
+    # # Control de errores de argumentos
+    # if args.collect and args.train:
+    #     raise TypeError("One argument or the other, not both")
+    # elif args.collect and args.nameSign is None:
+    #     raise TypeError("Missing --nameSign letter")
+    # elif args.nameSign is not None and args.collect is False:
+    #     raise TypeError("Missing --collect")
 
     # if args.collect:
     #     # Almaceno los datos en coords.csv
