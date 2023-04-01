@@ -10,7 +10,7 @@ import landmarks
 
 def resultsWeb():
     print("*** RESULTS ***")
-    with open('generatedFiles/neuralNetworkDataSet.pkl', 'rb') as f:
+    with open('generatedFiles/neuralNetwork/neuralNetworkAllAlphabet.pkl', 'rb') as f:
         model = joblib.load(f)
 
         # df = pd.read_csv('generatedFiles/coords.csv')

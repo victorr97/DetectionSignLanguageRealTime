@@ -123,7 +123,7 @@ def saveAllDataSignLanguage(row):
 
     if len(total) == 2:
         for i in total:
-            with open('generatedFiles/dataSet.csv', mode='a+', newline='') as file:
+            with open('generatedFiles/landmarks/dataSet.csv', mode='a+', newline='') as file:
                 csv_writer = csv.writer(file)
                 csv_writer.writerow(i)
         #Una vez guardado reseteo las variables

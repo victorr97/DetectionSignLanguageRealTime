@@ -82,8 +82,8 @@ def confusionMatrix(y_test, y_predict, nameClass) -> None:
                          index=[nameClass],
                          columns=[nameClass])
     plt.figure(figsize=(10, 8))
-    sn.set(font_scale=2)  # for label size
-    sn.heatmap(cm_df, annot=True, annot_kws={"size": 14})  # font size
+    sn.set(font_scale=1)  # for label size
+    sn.heatmap(cm_df, annot=True, annot_kws={"size": 8})  # font size
     plt.title('Confusion Matrix')
     plt.ylabel('Real Values')
     plt.xlabel('Predicted Values')
@@ -93,7 +93,7 @@ def confusionMatrix(y_test, y_predict, nameClass) -> None:
 def trainingData():
     print("***TRAINING DATA OF COORDS***")
 
-    df = pd.read_csv('generatedFiles/dataSet.csv')
+    df = pd.read_csv('generatedFiles/landmarks/dataSet.csv')
     X = df.drop('class', axis=1)
     y = df['class']
     name = y.array
@@ -119,7 +119,7 @@ def trainingData():
     #print("Mejor método:", gridPipe.best_params_['classifier__selected_model'])
     #print("Mejor puntuación:", gridPipe.best_score_)
 
-    with open('generatedFiles/neuralNetworkDataSet.pkl', 'wb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet70landmarks.pkl', 'wb') as f:
         joblib.dump(gridPipe, f, compress=1)
         print("\n*************** GUARDADO MODELO EN ARCHIVO ***************\n")
 

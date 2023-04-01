@@ -31,8 +31,8 @@ def formatLandmarks(puntos) -> None:
     landmarks = ['class']
     for val in range(1, numCoords + 1):
         landmarks += ['x{}'.format(val), 'y{}'.format(val), 'z{}'.format(val), 'v{}'.format(val)]
-    if not os.path.isfile('generatedFiles/dataSet.csv'):
-        with open('generatedFiles/dataSet.csv', mode='w', newline='') as f:
+    if not os.path.isfile('generatedFiles/landmarks/dataSet.csv'):
+        with open('generatedFiles/landmarks/dataSet.csv', mode='w', newline='') as f:
             mywriter = csv.writer(f)
             mywriter.writerow(landmarks)
 

@@ -77,7 +77,7 @@ def getListLetters():
 
 def trainWeb():
     print("*** TRAIN ***")
-    with open('generatedFiles/neuralNetworkAllAlphabet.pkl', 'rb') as f:
+    with open('generatedFiles/neuralNetwork/neuralNetworkAllAlphabet.pkl', 'rb') as f:
         MAX_ARRAY = 500
         model = joblib.load(f)
 
