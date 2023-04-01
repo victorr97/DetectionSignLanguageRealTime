@@ -119,7 +119,7 @@ def trainingData():
     #print("Mejor método:", gridPipe.best_params_['classifier__selected_model'])
     #print("Mejor puntuación:", gridPipe.best_score_)
 
-    with open('generatedFiles/neuralNetwork/dataSet70landmarks.pkl', 'wb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet102landmarks.pkl', 'wb') as f:
         joblib.dump(gridPipe, f, compress=1)
         print("\n*************** GUARDADO MODELO EN ARCHIVO ***************\n")
 

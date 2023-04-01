@@ -1,3 +1,4 @@
 neuralNetworkAllAlphabet --> Train con coords.csv (4 dias)
 neuralNetworkDataSet --> Train con coords.csv (2horas)
 dataSet12landmarks --> Train con dataSet.csv (12 landmarks por letra)
+dataSet102landmarks --> Train con dataSet.csv (12+90 landmarks por letra) -- TODAS VICTOR

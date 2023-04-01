@@ -11,6 +11,7 @@ detectPerson = "False"
 startSaveData = ""
 finishSaveData = "False"
 detectPersonWhenSaveData = "False"
+SAVE_LANDMARKS = 15
 
 
 def setSelectSign(selectUser) -> None:
@@ -121,7 +122,7 @@ def saveDataSet() -> None:
 def saveAllDataSignLanguage(row):
     total.append(row)
 
-    if len(total) == 2:
+    if len(total) == SAVE_LANDMARKS:
         for i in total:
             with open('generatedFiles/landmarks/dataSet.csv', mode='a+', newline='') as file:
                 csv_writer = csv.writer(file)

@@ -54,7 +54,7 @@ function selectLetterGoTrain(letterTrain) {
                         } else {
                             Swal.fire({
                               title: '¡Error!',
-                              text: '¡No salgas de la webcam!',
+                              text: '¡No se detectan las coordenadas en la webcam!',
                               icon: 'error',
                               confirmButtonText: 'Aceptar',
                               confirmButtonColor: '#3085d6'
