@@ -9,8 +9,8 @@ import landmarks
 
 def resultsWeb():
     print("*** RESULTS ***")
-    with open('generatedFiles/neuralNetwork/dataSet192landmarks.pkl', 'rb') as f:
-        model = joblib.load(f)
+    with open('generatedFiles/neuralNetwork/randomForestClassifier.pkl', 'rb') as f:
+        model = joblib.load(f)[5]
 
         mp_drawing = mp.solutions.drawing_utils
         mp_holistic = mp.solutions.holistic
