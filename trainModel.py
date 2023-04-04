@@ -2,7 +2,6 @@ import joblib
 import numpy as np
 import pandas as pd
 import warnings
-from matplotlib import pyplot as plt
 from pipelinehelper import PipelineHelper
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.model_selection import train_test_split, GridSearchCV
@@ -10,12 +9,9 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler, MaxAbsScaler
 from sklearn.linear_model import LogisticRegression, RidgeClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.metrics import accuracy_score, classification_report, roc_curve, roc_auc_score, precision_recall_curve, average_precision_score
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
-import seaborn as sn
 from sklearn.pipeline import Pipeline
-from scipy import stats
 
 
 def gridSearchCrossValidation(X_train, y_train):
@@ -98,20 +94,6 @@ def gridSearchCrossValidation(X_train, y_train):
     return gridPipe
 
 
-def confusionMatrix(y_test, y_predict, nameClass) -> None:
-    cm = confusion_matrix(y_test, y_predict)
-    cm_df = pd.DataFrame(cm,
-                         index=[nameClass],
-                         columns=[nameClass])
-    plt.figure(figsize=(10, 8))
-    sn.set(font_scale=1)  # for label size
-    sn.heatmap(cm_df, annot=True, annot_kws={"size": 8})  # font size
-    plt.title('Confusion Matrix')
-    plt.ylabel('Real Values')
-    plt.xlabel('Predicted Values')
-    plt.show()
-
-
 def trainingData():
     print("***TRAINING DATA OF COORDS***")
 
@@ -124,25 +106,10 @@ def trainingData():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1234)
 
-    X_train_normalized = stats.zscore(X_train, axis=1)
-    X_test_normalized = stats.zscore(X_test, axis=1)
-
-    print("{} -> {}".format("X_train_normalized", X_train_normalized))
-    print("{} -> {}".format("X_test_normalized", X_test_normalized))
-
     gridPipe = gridSearchCrossValidation(X_train, y_train)
 
-    y_predict = gridPipe.predict(X_test)
-    print("Accuracy_score: " + str(accuracy_score(y_test, y_predict)))
-    confusionMatrix(y_test, y_predict, nameClass)
-    print("\nClassification report: \n\n" + classification_report(y_test, y_predict))
-
-    print("\n*************** GridSearchCV - With Pipeline ***************\n")
-    #print("Mejor método:", gridPipe.best_params_['classifier__selected_model'])
-    #print("Mejor puntuación:", gridPipe.best_score_)
-
-    with open('generatedFiles/neuralNetwork/randomForestClassifierTest.pkl', 'wb') as f:
-        joblib.dump((X_train, y_train, X_test, y_test, gridPipe), f, compress=1)
+    with open('generatedFiles/neuralNetwork/randomForestClassifier.pkl', 'wb') as f:
+        joblib.dump((X_train, y_train, X_test, y_test, nameClass, gridPipe), f, compress=1)
         print("\n*************** GUARDADO MODELO EN ARCHIVO ***************\n")
 
     print("\n***FINISHED TRAINING***")

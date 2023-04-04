@@ -2,6 +2,7 @@ import collectFrame
 import trainUser
 import results
 import trainModel
+import dataChartsModel
 from argparse import ArgumentParser
 from flask import Flask, render_template, Response, jsonify, request
 
@@ -123,10 +124,13 @@ if __name__ == '__main__':
 
     parser = ArgumentParser()
     parser.add_argument('--train', action='store_true', help="Serves to train the data model")
+    parser.add_argument('--dataCharts', action='store_true', help="Used to generate graphs of the trained model")
     args = parser.parse_args()
 
     if args.train:
         trainModel.trainingData()
+    if args.dataCharts:
+        dataChartsModel.showCharts()
     else:
         app.run(host="localhost", debug=True)
 
