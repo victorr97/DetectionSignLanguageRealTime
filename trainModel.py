@@ -87,7 +87,7 @@ def gridSearchCrossValidation(X_train, y_train):
     print("\n***Starting training***\n")
     warnings.filterwarnings('ignore', category=ConvergenceWarning)
     #270 iteraciones para acabar RedNeuronal
-    gridPipe = GridSearchCV(RidgeClassifier(), parametersRidgeClassifier, scoring='accuracy', cv=10, refit=True, verbose=2)
+    gridPipe = GridSearchCV(MLPClassifier(), parametersNeuronalNetwork, scoring='accuracy', cv=10, refit=True, verbose=2)
     gridPipe.fit(X_train, y_train)
     print("\n***Finished training***\n")
 
@@ -108,7 +108,7 @@ def trainingData():
 
     gridPipe = gridSearchCrossValidation(X_train, y_train)
 
-    with open('generatedFiles/neuralNetwork/ridgeClassifier.pkl', 'wb') as f:
+    with open('generatedFiles/neuralNetwork/test.pkl', 'wb') as f:
         joblib.dump((X_train, y_train, X_test, y_test, nameClass, gridPipe), f, compress=1)
         print("\n*************** GUARDADO MODELO EN ARCHIVO ***************\n")
 
