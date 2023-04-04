@@ -10,8 +10,9 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler, MaxAbsScaler
 from sklearn.linear_model import LogisticRegression, RidgeClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score, classification_report, roc_curve, roc_auc_score, precision_recall_curve, average_precision_score
 from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
 import seaborn as sn
 from sklearn.pipeline import Pipeline
 from scipy import stats
@@ -65,11 +66,32 @@ def gridSearchCrossValidation(X_train, y_train):
         'max_iter': [100, 200, 300],
     }
 
+    parametersRidgeClassifier = {
+        'alpha': [0.1, 1, 10],
+        'fit_intercept': [True, False],
+        'normalize': [True, False]
+    }
+
+    parametersGradientBoosting = {
+        'learning_rate': [1],
+        'n_estimators': [100],
+        'max_depth': [5],
+        'min_samples_split': [5],
+        'min_samples_leaf': [2]
+    }
+
+    parametersRandomForest = {'n_estimators': [10, 50, 100],
+                              'max_depth': [None, 5, 10],
+                              'min_samples_split': [2, 5, 10]}
+
+    parametersLogisticRegression = {'penalty': ['l1', 'l2'],
+                                    'C': [0.1, 1, 10],
+                                    'solver': ['liblinear']}
 
     print("\n***Starting training***\n")
     warnings.filterwarnings('ignore', category=ConvergenceWarning)
     #270 iteraciones para acabar RedNeuronal
-    gridPipe = GridSearchCV(MLPClassifier(), parametersNeuronalNetwork, scoring='accuracy', cv=10, refit=True, verbose=2)
+    gridPipe = GridSearchCV(RandomForestClassifier(), parametersRandomForest, scoring='accuracy', cv=10, refit=True, verbose=2)
     gridPipe.fit(X_train, y_train)
     print("\n***Finished training***\n")
 
@@ -119,8 +141,8 @@ def trainingData():
     #print("Mejor método:", gridPipe.best_params_['classifier__selected_model'])
     #print("Mejor puntuación:", gridPipe.best_score_)
 
-    with open('generatedFiles/neuralNetwork/dataSet102landmarks.pkl', 'wb') as f:
-        joblib.dump(gridPipe, f, compress=1)
+    with open('generatedFiles/neuralNetwork/randomForestClassifierTest.pkl', 'wb') as f:
+        joblib.dump((X_train, y_train, X_test, y_test, gridPipe), f, compress=1)
         print("\n*************** GUARDADO MODELO EN ARCHIVO ***************\n")
 
     print("\n***FINISHED TRAINING***")

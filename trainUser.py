@@ -25,6 +25,7 @@ def setCounter(reset):
     else:
         counter += 1
 
+
 def getFirstTimeRecognisedPerson():
     return firstTimeRecognisedPerson
 
@@ -77,7 +78,7 @@ def getListLetters():
 
 def trainWeb():
     print("*** TRAIN ***")
-    with open('generatedFiles/neuralNetwork/dataSet102landmarks.pkl', 'rb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet192landmarks.pkl', 'rb') as f:
         MAX_ARRAY = 500
         model = joblib.load(f)
 

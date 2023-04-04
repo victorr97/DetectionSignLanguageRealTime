@@ -1,4 +1,10 @@
-neuralNetworkAllAlphabet --> Train con coords.csv (4 dias)
-neuralNetworkDataSet --> Train con coords.csv (2horas)
-dataSet12landmarks --> Train con dataSet.csv (12 landmarks por letra)
-dataSet102landmarks --> Train con dataSet.csv (12+90 landmarks por letra) -- TODAS VICTOR
+neuralNetworkAllAlphabet --> Train con coords.csv (4 dias) (Signos español & ingles - con muchos parametros)
+neuralNetworkDataSet --> Train con coords.csv (2horas) (Signos español & ingles - con menos parametros)
+
+dataSet se compone solo de signos en español:
+
+dataSet12landmarks --> Train NN con dataSet.csv (12 landmarks por letra)
+dataSet102landmarks --> Train NN con dataSet.csv (12+90 landmarks por letra) -- TODAS VICTOR
+dataSet192landmarks --> Train NN con dataSet.csv (12+90+90 landmarks por letra) -- VICTOR + MONICA
+randomForestClassifier
+gradientBoostingClassifier

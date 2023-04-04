@@ -3,31 +3,14 @@ import mediapipe as mp
 import numpy as np
 import cv2
 import pandas as pd
-from sklearn.model_selection import train_test_split
 
 import landmarks
 
 
 def resultsWeb():
     print("*** RESULTS ***")
-    with open('generatedFiles/neuralNetwork/neuralNetworkAllAlphabet.pkl', 'rb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet192landmarks.pkl', 'rb') as f:
         model = joblib.load(f)
-
-        # df = pd.read_csv('generatedFiles/coords.csv')
-        # X = df.drop('class', axis=1)
-        # y = df['class']
-        # name = y.array
-        # nameClass = []
-        # [nameClass.append(x) for x in name if x not in nameClass]
-        #
-        # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1234)
-        #
-        # # hacer predicciones en los datos de prueba
-        # y_pred = model.predict(X_test)
-        #
-        # # calcular el accuracy
-        # accuracy = np.mean(y_pred == y_test)
-        # print('Accuracy:', accuracy)
 
         mp_drawing = mp.solutions.drawing_utils
         mp_holistic = mp.solutions.holistic
@@ -118,10 +101,6 @@ def resultsWeb():
                     for i in probAllClasses:
                         print(i)
 
-                    coords = tuple(
-                        np.multiply(np.array((results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EAR].x,
-                                              results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EAR].y,
-                                              )), [640, 480]).astype(int))
 
                     cv2.putText(image, str(round(body_language_prob[np.argmax(body_language_prob)], 2)), (10, 40),
                                 cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
