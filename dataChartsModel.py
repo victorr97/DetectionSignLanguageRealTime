@@ -6,12 +6,8 @@ import seaborn as sn
 import joblib
 from scipy import stats
 import numpy as np
-from sklearn.preprocessing import LabelBinarizer
-from scipy import interp
-from scipy.interpolate import make_interp_spline
 from sklearn.preprocessing import label_binarize
 from scipy.interpolate import interp1d
-from sklearn.metrics import precision_recall_curve
 from itertools import cycle
 from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import average_precision_score
@@ -121,9 +117,10 @@ def showCharts() -> None:
         y_predict = gridPipe.predict(X_test)
         print("Accuracy_score: " + str(accuracy_score(y_test, y_predict)))
         confusionMatrix(y_test, y_predict, nameClass)
-        print("\nClassification report: \n\n" + classification_report(y_test, y_predict))
 
         # print("\n*************** GridSearchCV - With Pipeline ***************\n")
         # print("Mejor método:", gridPipe.best_params_['classifier__selected_model'])
         # print("Mejor puntuación:", gridPipe.best_score_)
         ROCandPR(y_test, gridPipe, X_test)
+
+        print("\nClassification report: \n\n" + classification_report(y_test, y_predict))
