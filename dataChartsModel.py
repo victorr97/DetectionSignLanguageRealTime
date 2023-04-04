@@ -12,6 +12,7 @@ from itertools import cycle
 from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import average_precision_score
 
+
 def confusionMatrix(y_test, y_predict, nameClass) -> None:
     cm = confusion_matrix(y_test, y_predict)
     cm_df = pd.DataFrame(cm,
