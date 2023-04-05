@@ -8,7 +8,6 @@ from scipy import stats
 import numpy as np
 from sklearn.preprocessing import label_binarize
 from scipy.interpolate import interp1d
-from itertools import cycle
 from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import average_precision_score
 
@@ -44,10 +43,9 @@ def ROCandPR(y_test, gridPipe, X_test) -> None:
 
     lb = label_binarize(y_test, classes=np.unique(y_test))
     n_classes = lb.shape[1]
-    colors = cycle(
-        ['navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown',
+    colors = ['navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown',
          'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen',
-         'salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen'])
+         'salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen']
     linestyles = ['-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--',
                   '-.', ':', '-', '--', '-.', ':', '-', '--']
 
@@ -59,13 +57,13 @@ def ROCandPR(y_test, gridPipe, X_test) -> None:
     fig, ax2 = plt.subplots(figsize=(10, 8))
 
     base_fpr = np.linspace(0, 1, 50)
-    for i, color in zip(range(n_classes), colors):
+    for i, (color, linestyle) in zip(range(n_classes), zip(colors, linestyles)):
         # Valores de los verdaderos positivos (TPR) y los falsos positivos (FPR)
         fpr, tpr, _ = roc_curve(lb[:, i], y_prob[:, i])
         roc_auc = auc(fpr, tpr)
         tpr_interp = interp1d(fpr, tpr, kind='linear')(base_fpr)
         fpr_interp = base_fpr
-        ax1.plot(fpr_interp, tpr_interp, color=color, linestyle=linestyles[i],
+        ax1.plot(fpr_interp, tpr_interp, color=color, linestyle=linestyle,
                  label='Curva ROC de clase {0} (AUC = {1:0.2f})'.format(chr(ord('A') + i), roc_auc))
 
         precision[i], recall[i], _ = precision_recall_curve(lb[:, i], y_prob[:, i])
@@ -110,7 +108,7 @@ def ROCandPR(y_test, gridPipe, X_test) -> None:
 
 def showCharts() -> None:
     print("*** SHOW CHARTS ***")
-    with open('generatedFiles/neuralNetwork/ridgeClassifier.pkl', 'rb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet192landmarks.pkl', 'rb') as f:
         X_train, y_train, X_test, y_test, nameClass, gridPipe = joblib.load(f)
 
         normalizedData(X_train, X_test)
@@ -125,3 +123,5 @@ def showCharts() -> None:
         ROCandPR(y_test, gridPipe, X_test)
 
         print("\nClassification report: \n\n" + classification_report(y_test, y_predict))
+        #TODO: PCA - LDA (Mejores - peores casos)
+

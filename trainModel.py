@@ -9,8 +9,6 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler, MaxAbsScaler
 from sklearn.linear_model import LogisticRegression, RidgeClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.metrics import confusion_matrix
-import matplotlib.pyplot as plt
 from sklearn.pipeline import Pipeline
 
 
