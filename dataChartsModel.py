@@ -14,8 +14,10 @@ from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import average_precision_score
 from sklearn.manifold import TSNE
 
+
 colors = 'navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown', 'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen', 'salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen'
 linestyles = '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--'
+
 
 def confusionMatrix(y_test, y_predict, nameClass) -> None:
     cm = confusion_matrix(y_test, y_predict)
@@ -115,8 +117,8 @@ def TSNEChart2D(X_train, y_train, nameClass) -> None:
 
     for i, c, label in zip(target_ids, colors, nameClass):
         plt.scatter(x_train_tsne[y_train.array == nameClass[i], 0],
-                   x_train_tsne[y_train.array == nameClass[i], 1],
-                   c=c, label=label, edgecolor="k")
+                    x_train_tsne[y_train.array == nameClass[i], 1],
+                    c=c, label=label, edgecolor="k")
 
     plt.legend(loc="upper right", title="Letras")
     plt.title("TSNE 2 componentes - train")
@@ -157,8 +159,8 @@ def PCAChart2D(X_train, y_train, nameClass) -> None:
 
     for i, c, label in zip(target_ids, colors, nameClass):
         plt.scatter(X_train_pca[y_train.array == nameClass[i], 0],
-                   X_train_pca[y_train.array == nameClass[i], 1],
-                   c=c, label=label, edgecolor="k")
+                    X_train_pca[y_train.array == nameClass[i], 1],
+                    c=c, label=label, edgecolor="k")
 
     plt.legend(loc="best", title="Letras")
     plt.title("PCA con 2 componentes")
@@ -201,8 +203,8 @@ def LDAChart2D(X_train, y_train, nameClass) -> None:
     # Usar lista para asignar colores en scatter plot
     for i, c, label in zip(target_ids, colors, nameClass):
         plt.scatter(x_train_lda[y_train.array == nameClass[i], 0],
-                   x_train_lda[y_train.array == nameClass[i], 1],
-                   c=c, label=label, edgecolor="k")
+                    x_train_lda[y_train.array == nameClass[i], 1],
+                    c=c, label=label, edgecolor="k")
 
     plt.legend(loc="best", title="Letras")
     plt.title("LDA con 2 componentes")
@@ -245,8 +247,8 @@ def SVDChart2D(X_train, y_train, nameClass) -> None:
     # Usar lista para asignar colores en scatter plot
     for i, c, label in zip(target_ids, colors, nameClass):
         plt.scatter(x_train_svd[y_train.array == nameClass[i], 0],
-                   x_train_svd[y_train.array == nameClass[i], 1],
-                   c=c, label=label, edgecolor="k")
+                    x_train_svd[y_train.array == nameClass[i], 1],
+                    c=c, label=label, edgecolor="k")
 
     plt.legend(loc="best", title="Letras")
     plt.title("SVD con 2 componentes")
@@ -280,7 +282,7 @@ def SVDChart3D(X_train, y_train, nameClass) -> None:
 
 def showCharts() -> None:
     print("*** SHOW CHARTS ***")
-    with open('generatedFiles/neuralNetwork/dataSet192landmarksV4.pkl', 'rb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet192landmarks.pkl', 'rb') as f:
         X_train, y_train, X_test, y_test, nameClass, gridPipe = joblib.load(f)
 
         normalizedData(X_train, X_test)

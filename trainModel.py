@@ -79,7 +79,7 @@ def gridSearchCrossValidation(X_train, y_train):
 
     range_components = list(range(1, 10))
 
-    pipe = Pipeline([
+    pipeMlpc = Pipeline([
         ('dim', 'passthrough'),
         ('clf', MLPClassifier()),
     ])
@@ -108,7 +108,7 @@ def gridSearchCrossValidation(X_train, y_train):
     print("\n***Starting training***\n")
     warnings.filterwarnings('ignore', category=ConvergenceWarning)
     #270 iteraciones para acabar RedNeuronal
-    gridPipe = GridSearchCV(pipe, param_grid_pipe, scoring='accuracy', cv=10, refit=True, verbose=2)
+    gridPipe = GridSearchCV(pipeMlpc, param_grid_pipe, scoring='accuracy', cv=10, refit=True, verbose=2)
     gridPipe.fit(X_train, y_train)
     print("\n***Finished training***\n")
 
@@ -129,7 +129,7 @@ def trainingData():
 
     gridPipe = gridSearchCrossValidation(X_train, y_train)
 
-    with open('generatedFiles/neuralNetwork/dataSet192landmarksV4.pkl', 'wb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet192landmarks.pkl', 'wb') as f:
         joblib.dump((X_train, y_train, X_test, y_test, nameClass, gridPipe), f, compress=1)
         print("\n*************** GUARDADO MODELO EN ARCHIVO ***************\n")
 
