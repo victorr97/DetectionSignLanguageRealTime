@@ -1,4 +1,5 @@
 from sklearn.decomposition import PCA
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.linear_model import RidgeClassifier
 from sklearn.metrics import accuracy_score, classification_report, roc_curve, auc, confusion_matrix
 import pandas as pd
@@ -147,10 +148,11 @@ def TSNEChart3D(X_train, X_test, y_test, nameClass) -> None:
     plt.show()
 
 
-def PCA2D(gridPipe, X_train, y_train, nameClass) -> None:
+def PCAChart2D(gridPipe, X_train, y_train, nameClass) -> None:
     print("********* PCA - 2D *********")
     modelPCA = gridPipe.best_estimator_.named_steps['dim']
     X_train_pca = modelPCA.transform(X_train)
+
     # PCA CON 2 DIMENSIONES
     X_train_pca_2d = X_train_pca[:, :2]
     target_ids = range(len(nameClass))
@@ -190,14 +192,60 @@ def PCAChart3D(X_train, X_test, y_test, nameClass) -> None:
     plt.show()
 
 
+def LDAChart2D(X_train, y_train, nameClass) -> None:
+    print("********* LDA - 2D *********")
+    modelLDA = LinearDiscriminantAnalysis(n_components=len(nameClass) - 1)
+    x_train_lda = modelLDA.fit_transform(X_train, y_train)
+
+    target_ids = range(len(nameClass))
+
+    # Usar lista para asignar colores en scatter plot
+    for i, c, label in zip(target_ids, colors, nameClass):
+        plt.scatter(x_train_lda[y_train.array == nameClass[i], 0],
+                   x_train_lda[y_train.array == nameClass[i], 1],
+                   c=c, label=label, edgecolor="k")
+
+    plt.legend(loc="best", title="Números")
+    plt.title("LDA con 2 componentes")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.show()
+
+
+def LDAChart3D(X_train, X_test, y_test, y_train, nameClass) -> None:
+    print("********* LDA - 3D *********")
+    lda3d = LinearDiscriminantAnalysis(n_components=len(nameClass) - 1)
+    lda3d.fit(X_train, y_train)
+    x_train_lda_3d_both = lda3d.transform(X_test)
+
+    ax = plt.axes(projection='3d')
+    target_ids = range(len(nameClass))
+
+    # Usar lista para asignar colores en scatter plot
+    for i, c, label in zip(target_ids, colors, nameClass):
+        ax.scatter(x_train_lda_3d_both[y_test.array == nameClass[i], 0],
+                   x_train_lda_3d_both[y_test.array == nameClass[i], 1], x_train_lda_3d_both[y_test.array == nameClass[i], 2],
+                   c=c, label=label, edgecolor="k")
+
+    ax.legend(loc='best', title="Letras")
+    plt.title("LDA 3 componentes")
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.set_zlabel("Z")
+    plt.show()
+
+
+
 def showCharts() -> None:
     print("*** SHOW CHARTS ***")
     with open('generatedFiles/neuralNetwork/dataSet192landmarksV4.pkl', 'rb') as f:
         X_train, y_train, X_test, y_test, nameClass, gridPipe = joblib.load(f)
-        PCA2D(gridPipe, X_train, y_train, nameClass)
-        PCAChart3D(X_train, X_test, y_test, nameClass)
-        #TSNEChart2D(X_train, y_train, nameClass)
-        #TSNEChart3D(X_train, X_test, y_test, nameClass)
+        #PCAChart2D(gridPipe, X_train, y_train, nameClass)
+        #PCAChart3D(X_train, X_test, y_test, nameClass)
+        LDAChart2D(X_train, y_train, nameClass)
+        LDAChart3D(X_train, X_test, y_test, y_train, nameClass)
+        TSNEChart2D(X_train, y_train, nameClass)
+        TSNEChart3D(X_train, X_test, y_test, nameClass)
 
         normalizedData(X_train, X_test)
 
