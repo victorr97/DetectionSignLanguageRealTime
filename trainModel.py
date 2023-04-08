@@ -3,7 +3,10 @@ import numpy as np
 import pandas as pd
 import warnings
 from pipelinehelper import PipelineHelper
+from sklearn.decomposition import PCA, TruncatedSVD
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.exceptions import ConvergenceWarning
+from sklearn.manifold import TSNE
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler, MaxAbsScaler
@@ -52,14 +55,6 @@ def gridSearchCrossValidation(X_train, y_train):
         })
     }
 
-    parametersNeuronalNetwork = {
-        'hidden_layer_sizes': [(100,), (150,), (200,)],
-        'activation': ['relu'],
-        'solver': ['adam'],
-        'batch_size': [16, 32, 64],
-        'max_iter': [100, 200, 300],
-    }
-
     parametersRidgeClassifier = {
         'alpha': [0.1, 1, 10],
         'fit_intercept': [True, False],
@@ -82,10 +77,38 @@ def gridSearchCrossValidation(X_train, y_train):
                                     'C': [0.1, 1, 10],
                                     'solver': ['liblinear']}
 
+    range_components = list(range(1, 10))
+
+    pipe = Pipeline([
+        ('dim', 'passthrough'),
+        ('clf', MLPClassifier()),
+    ])
+
+
+    param_grid_pipe = [
+        {
+            'dim': [PCA(), TruncatedSVD(), LinearDiscriminantAnalysis(), TSNE()],
+            'dim__n_components': range_components,
+            'clf__hidden_layer_sizes': [(100,), (150,), (200,)],
+            'clf__activation': ['relu'],
+            'clf__solver': ['adam'],
+            'clf__batch_size': [16, 32, 64],
+            'clf__max_iter': [100, 200, 300],
+        }
+    ]
+
+    parametersNeuronalNetwork = {
+        'hidden_layer_sizes': [(100,), (150,), (200,)],
+        'activation': ['relu'],
+        'solver': ['adam'],
+        'batch_size': [16, 32, 64],
+        'max_iter': [100, 200, 300],
+    }
+
     print("\n***Starting training***\n")
     warnings.filterwarnings('ignore', category=ConvergenceWarning)
     #270 iteraciones para acabar RedNeuronal
-    gridPipe = GridSearchCV(MLPClassifier(), parametersNeuronalNetwork, scoring='accuracy', cv=10, refit=True, verbose=2)
+    gridPipe = GridSearchCV(pipe, param_grid_pipe, scoring='accuracy', cv=10, refit=True, verbose=2)
     gridPipe.fit(X_train, y_train)
     print("\n***Finished training***\n")
 
@@ -106,7 +129,7 @@ def trainingData():
 
     gridPipe = gridSearchCrossValidation(X_train, y_train)
 
-    with open('generatedFiles/neuralNetwork/test.pkl', 'wb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet192landmarksV4.pkl', 'wb') as f:
         joblib.dump((X_train, y_train, X_test, y_test, nameClass, gridPipe), f, compress=1)
         print("\n*************** GUARDADO MODELO EN ARCHIVO ***************\n")
 

@@ -10,6 +10,8 @@ from sklearn.preprocessing import label_binarize
 from scipy.interpolate import interp1d
 from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import average_precision_score
+from sklearn.manifold import TSNE
+from sklearn.cluster import KMeans
 
 
 def confusionMatrix(y_test, y_predict, nameClass) -> None:
@@ -44,8 +46,8 @@ def ROCandPR(y_test, gridPipe, X_test) -> None:
     lb = label_binarize(y_test, classes=np.unique(y_test))
     n_classes = lb.shape[1]
     colors = ['navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown',
-         'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen',
-         'salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen']
+              'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen',
+              'salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen']
     linestyles = ['-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--',
                   '-.', ':', '-', '--', '-.', ':', '-', '--']
 
@@ -71,7 +73,6 @@ def ROCandPR(y_test, gridPipe, X_test) -> None:
 
         ax2.plot(recall[i], precision[i], color=color, lw=2,
                  label='Curva PR de la clase {0} (AP = {1:0.2f})'.format(chr(ord('A') + i), average_precision[i]))
-
 
     # Calcula la curva ROC macro media
     fpr_macro, tpr_macro, _ = roc_curve(lb.ravel(), y_prob.ravel())
@@ -106,10 +107,93 @@ def ROCandPR(y_test, gridPipe, X_test) -> None:
     plt.show()
 
 
+def TSNEChart2D(X_train, y_train, nameClass) -> None:
+    print("********* TNSE - 2D *********")
+    tsne_model = TSNE(n_components=2, perplexity=5, learning_rate=10, n_iter=5000, verbose=2)
+    x_train_tsne = tsne_model.fit_transform(X_train)
+
+    colors = 'navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown', 'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen','salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen'
+    target_ids = range(len(nameClass))
+    plt.figure(figsize=(6, 5))
+
+    # Usar lista para asignar colores en scatter plot
+    for i, c, label in zip(target_ids, colors, nameClass):
+        plt.scatter(x_train_tsne[y_train.array == nameClass[i], 0],
+                   x_train_tsne[y_train.array == nameClass[i], 1],
+                   c=c, label=label, edgecolor="k")
+
+    plt.legend(loc="upper right", title="Letras")
+    plt.title("TSNE 2 componentes - train")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.show()
+
+
+def TSNEChart3D(X_train, X_test, y_test, nameClass) -> None:
+    print("********* TNSE - 3D *********")
+    tsne3d = TSNE(n_components=3, perplexity=5, learning_rate=10, n_iter=5000, verbose=2)
+    x_train_tsne_3d_both = tsne3d.fit_transform(np.concatenate([X_train, X_test]))
+    x_train_tsne_3d_both = x_train_tsne_3d_both[X_train.shape[0]:, ]
+
+    # Crear una lista de colores predefinidos
+
+    colors = 'navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown', 'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen','salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen'
+
+    ax = plt.axes(projection='3d')
+    target_ids = range(len(nameClass))
+
+    # Usar lista para asignar colores en scatter plot
+    for i, c, label in zip(target_ids, colors, nameClass):
+        ax.scatter(x_train_tsne_3d_both[y_test.array == nameClass[i], 0],
+                   x_train_tsne_3d_both[y_test.array == nameClass[i], 1], x_train_tsne_3d_both[y_test.array == nameClass[i], 2],
+                   c=c, label=label, edgecolor="k")
+
+    ax.legend(loc='best', title="Letras")
+    plt.title("TSNE 3 componentes - train")
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.set_zlabel("Z")
+    plt.show()
+
+
+def PCA(gridPipe, X_train, y_train, nameClass) -> None:
+    modelPCA = gridPipe.best_estimator_.named_steps['dim']
+    X_train_pca = modelPCA.transform(X_train)
+    # Array que contiene la proporción de varianza explicada por cada componente principal
+    variance_ratios = modelPCA.explained_variance_ratio_
+    print(variance_ratios)
+    X_train_pca_2d = X_train_pca[:, :2]
+
+    # Crear un diccionario que mapea cada letra a su posición en el alfabeto
+    letter_to_index = {letter: i for i, letter in enumerate(nameClass)}
+
+    print(letter_to_index)
+    print(nameClass)
+
+    # Crear una lista de colores predefinidos
+    colors = ['navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown',
+              'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen',
+              'salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen']
+
+    # Graficar las características en un gráfico de dispersión
+    for i, letter in enumerate(nameClass):
+        plt.scatter(X_train_pca_2d[y_train == letter_to_index[letter], 0],
+                    X_train_pca_2d[y_train == letter_to_index[letter], 1],
+                    color=colors[i], label=letter)
+
+    plt.legend(loc="best", title="Números")
+    plt.title("PCA con 2 componentes")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.show()
+
+
 def showCharts() -> None:
     print("*** SHOW CHARTS ***")
-    with open('generatedFiles/neuralNetwork/dataSet192landmarks.pkl', 'rb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet192landmarksV4.pkl', 'rb') as f:
         X_train, y_train, X_test, y_test, nameClass, gridPipe = joblib.load(f)
+        TSNEChart2D(X_train, y_train, nameClass)
+        TSNEChart3D(X_train, X_test, y_test, nameClass)
 
         normalizedData(X_train, X_test)
 
@@ -123,5 +207,4 @@ def showCharts() -> None:
         ROCandPR(y_test, gridPipe, X_test)
 
         print("\nClassification report: \n\n" + classification_report(y_test, y_predict))
-        #TODO: PCA - LDA (Mejores - peores casos)
-
+        # TODO: PCA - LDA (Mejores - peores casos)
