@@ -1,3 +1,4 @@
+from sklearn.decomposition import PCA
 from sklearn.linear_model import RidgeClassifier
 from sklearn.metrics import accuracy_score, classification_report, roc_curve, auc, confusion_matrix
 import pandas as pd
@@ -11,8 +12,9 @@ from scipy.interpolate import interp1d
 from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import average_precision_score
 from sklearn.manifold import TSNE
-from sklearn.cluster import KMeans
 
+colors = 'navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown', 'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen', 'salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen'
+linestyles = '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--'
 
 def confusionMatrix(y_test, y_predict, nameClass) -> None:
     cm = confusion_matrix(y_test, y_predict)
@@ -45,11 +47,6 @@ def ROCandPR(y_test, gridPipe, X_test) -> None:
 
     lb = label_binarize(y_test, classes=np.unique(y_test))
     n_classes = lb.shape[1]
-    colors = ['navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown',
-              'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen',
-              'salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen']
-    linestyles = ['-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--',
-                  '-.', ':', '-', '--', '-.', ':', '-', '--']
 
     precision = dict()
     recall = dict()
@@ -59,7 +56,8 @@ def ROCandPR(y_test, gridPipe, X_test) -> None:
     fig, ax2 = plt.subplots(figsize=(10, 8))
 
     base_fpr = np.linspace(0, 1, 50)
-    for i, (color, linestyle) in zip(range(n_classes), zip(colors, linestyles)):
+
+    for i, color, linestyle in zip(range(n_classes), colors, linestyles):
         # Valores de los verdaderos positivos (TPR) y los falsos positivos (FPR)
         fpr, tpr, _ = roc_curve(lb[:, i], y_prob[:, i])
         roc_auc = auc(fpr, tpr)
@@ -111,12 +109,9 @@ def TSNEChart2D(X_train, y_train, nameClass) -> None:
     print("********* TNSE - 2D *********")
     tsne_model = TSNE(n_components=2, perplexity=5, learning_rate=10, n_iter=5000, verbose=2)
     x_train_tsne = tsne_model.fit_transform(X_train)
-
-    colors = 'navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown', 'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen','salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen'
     target_ids = range(len(nameClass))
     plt.figure(figsize=(6, 5))
 
-    # Usar lista para asignar colores en scatter plot
     for i, c, label in zip(target_ids, colors, nameClass):
         plt.scatter(x_train_tsne[y_train.array == nameClass[i], 0],
                    x_train_tsne[y_train.array == nameClass[i], 1],
@@ -135,10 +130,6 @@ def TSNEChart3D(X_train, X_test, y_test, nameClass) -> None:
     x_train_tsne_3d_both = tsne3d.fit_transform(np.concatenate([X_train, X_test]))
     x_train_tsne_3d_both = x_train_tsne_3d_both[X_train.shape[0]:, ]
 
-    # Crear una lista de colores predefinidos
-
-    colors = 'navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown', 'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen','salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen'
-
     ax = plt.axes(projection='3d')
     target_ids = range(len(nameClass))
 
@@ -156,30 +147,18 @@ def TSNEChart3D(X_train, X_test, y_test, nameClass) -> None:
     plt.show()
 
 
-def PCA(gridPipe, X_train, y_train, nameClass) -> None:
+def PCA2D(gridPipe, X_train, y_train, nameClass) -> None:
+    print("********* PCA - 2D *********")
     modelPCA = gridPipe.best_estimator_.named_steps['dim']
     X_train_pca = modelPCA.transform(X_train)
-    # Array que contiene la proporción de varianza explicada por cada componente principal
-    variance_ratios = modelPCA.explained_variance_ratio_
-    print(variance_ratios)
+    # PCA CON 2 DIMENSIONES
     X_train_pca_2d = X_train_pca[:, :2]
+    target_ids = range(len(nameClass))
 
-    # Crear un diccionario que mapea cada letra a su posición en el alfabeto
-    letter_to_index = {letter: i for i, letter in enumerate(nameClass)}
-
-    print(letter_to_index)
-    print(nameClass)
-
-    # Crear una lista de colores predefinidos
-    colors = ['navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown',
-              'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen',
-              'salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen']
-
-    # Graficar las características en un gráfico de dispersión
-    for i, letter in enumerate(nameClass):
-        plt.scatter(X_train_pca_2d[y_train == letter_to_index[letter], 0],
-                    X_train_pca_2d[y_train == letter_to_index[letter], 1],
-                    color=colors[i], label=letter)
+    for i, c, label in zip(target_ids, colors, nameClass):
+        plt.scatter(X_train_pca_2d[y_train.array == nameClass[i], 0],
+                   X_train_pca_2d[y_train.array == nameClass[i], 1],
+                   c=c, label=label, edgecolor="k")
 
     plt.legend(loc="best", title="Números")
     plt.title("PCA con 2 componentes")
@@ -188,12 +167,37 @@ def PCA(gridPipe, X_train, y_train, nameClass) -> None:
     plt.show()
 
 
+def PCAChart3D(X_train, X_test, y_test, nameClass) -> None:
+    print("********* PCA - 3D *********")
+    pca3d = PCA(n_components=3)
+    x_train_pca_3d_both = pca3d.fit_transform(np.concatenate([X_train, X_test]))
+    x_train_pca_3d_both = x_train_pca_3d_both[X_train.shape[0]:, ]
+
+    ax = plt.axes(projection='3d')
+    target_ids = range(len(nameClass))
+
+    # Usar lista para asignar colores en scatter plot
+    for i, c, label in zip(target_ids, colors, nameClass):
+        ax.scatter(x_train_pca_3d_both[y_test.array == nameClass[i], 0],
+                   x_train_pca_3d_both[y_test.array == nameClass[i], 1], x_train_pca_3d_both[y_test.array == nameClass[i], 2],
+                   c=c, label=label, edgecolor="k")
+
+    ax.legend(loc='best', title="Letras")
+    plt.title("PCA 3 componentes - train")
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.set_zlabel("Z")
+    plt.show()
+
+
 def showCharts() -> None:
     print("*** SHOW CHARTS ***")
     with open('generatedFiles/neuralNetwork/dataSet192landmarksV4.pkl', 'rb') as f:
         X_train, y_train, X_test, y_test, nameClass, gridPipe = joblib.load(f)
-        TSNEChart2D(X_train, y_train, nameClass)
-        TSNEChart3D(X_train, X_test, y_test, nameClass)
+        PCA2D(gridPipe, X_train, y_train, nameClass)
+        PCAChart3D(X_train, X_test, y_test, nameClass)
+        #TSNEChart2D(X_train, y_train, nameClass)
+        #TSNEChart3D(X_train, X_test, y_test, nameClass)
 
         normalizedData(X_train, X_test)
 
