@@ -1,4 +1,4 @@
-from sklearn.decomposition import PCA
+from sklearn.decomposition import PCA, TruncatedSVD
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.linear_model import RidgeClassifier
 from sklearn.metrics import accuracy_score, classification_report, roc_curve, auc, confusion_matrix
@@ -89,7 +89,7 @@ def ROCandPR(y_test, gridPipe, X_test) -> None:
              label='Curva PR media (AP = {0:0.2f})'.format(average_precision["micro"]))
 
     # Configura la leyenda, los ejes y el título
-    ax1.legend(loc='lower right')
+    ax1.legend(loc='best')
     ax1.set_xlim([0.0, 1.0])
     ax1.set_ylim([0.0, 1.0])
     ax1.set_xlabel('Tasa de Falsos Positivos')
@@ -101,17 +101,17 @@ def ROCandPR(y_test, gridPipe, X_test) -> None:
     ax2.set_ylim([0.0, 1.05])
     ax2.set_xlim([0.0, 1.0])
     ax2.set_title('Curva PR')
-    ax2.legend(loc='lower right')
+    ax2.legend(loc='best')
 
     plt.show()
 
 
 def TSNEChart2D(X_train, y_train, nameClass) -> None:
     print("********* TNSE - 2D *********")
-    tsne_model = TSNE(n_components=2, perplexity=5, learning_rate=10, n_iter=5000, verbose=2)
+    tsne_model = TSNE(n_components=2, perplexity=5, learning_rate=10, n_iter=2500, verbose=2)
     x_train_tsne = tsne_model.fit_transform(X_train)
     target_ids = range(len(nameClass))
-    plt.figure(figsize=(6, 5))
+    plt.figure(figsize=(12, 8))
 
     for i, c, label in zip(target_ids, colors, nameClass):
         plt.scatter(x_train_tsne[y_train.array == nameClass[i], 0],
@@ -125,19 +125,19 @@ def TSNEChart2D(X_train, y_train, nameClass) -> None:
     plt.show()
 
 
-def TSNEChart3D(X_train, X_test, y_test, nameClass) -> None:
+def TSNEChart3D(X_train, y_train, nameClass) -> None:
     print("********* TNSE - 3D *********")
-    tsne3d = TSNE(n_components=3, perplexity=5, learning_rate=10, n_iter=5000, verbose=2)
-    x_train_tsne_3d_both = tsne3d.fit_transform(np.concatenate([X_train, X_test]))
-    x_train_tsne_3d_both = x_train_tsne_3d_both[X_train.shape[0]:, ]
+    tsne3d = TSNE(n_components=3, perplexity=5, learning_rate=10, n_iter=2500, verbose=2)
+    x_train_tsne = tsne3d.fit_transform(X_train)
+    plt.figure(figsize=(12, 8))
 
     ax = plt.axes(projection='3d')
     target_ids = range(len(nameClass))
 
     # Usar lista para asignar colores en scatter plot
     for i, c, label in zip(target_ids, colors, nameClass):
-        ax.scatter(x_train_tsne_3d_both[y_test.array == nameClass[i], 0],
-                   x_train_tsne_3d_both[y_test.array == nameClass[i], 1], x_train_tsne_3d_both[y_test.array == nameClass[i], 2],
+        ax.scatter(x_train_tsne[y_train.array == nameClass[i], 0],
+                   x_train_tsne[y_train.array == nameClass[i], 1], x_train_tsne[y_train.array == nameClass[i], 2],
                    c=c, label=label, edgecolor="k")
 
     ax.legend(loc='best', title="Letras")
@@ -148,40 +148,38 @@ def TSNEChart3D(X_train, X_test, y_test, nameClass) -> None:
     plt.show()
 
 
-def PCAChart2D(gridPipe, X_train, y_train, nameClass) -> None:
+def PCAChart2D(X_train, y_train, nameClass) -> None:
     print("********* PCA - 2D *********")
-    modelPCA = gridPipe.best_estimator_.named_steps['dim']
-    X_train_pca = modelPCA.transform(X_train)
-
-    # PCA CON 2 DIMENSIONES
-    X_train_pca_2d = X_train_pca[:, :2]
+    pca = PCA(n_components=2).fit(X_train)
+    X_train_pca = pca.transform(X_train)
     target_ids = range(len(nameClass))
+    plt.figure(figsize=(12, 8))
 
     for i, c, label in zip(target_ids, colors, nameClass):
-        plt.scatter(X_train_pca_2d[y_train.array == nameClass[i], 0],
-                   X_train_pca_2d[y_train.array == nameClass[i], 1],
+        plt.scatter(X_train_pca[y_train.array == nameClass[i], 0],
+                   X_train_pca[y_train.array == nameClass[i], 1],
                    c=c, label=label, edgecolor="k")
 
-    plt.legend(loc="best", title="Números")
+    plt.legend(loc="best", title="Letras")
     plt.title("PCA con 2 componentes")
     plt.xlabel("X")
     plt.ylabel("Y")
     plt.show()
 
 
-def PCAChart3D(X_train, X_test, y_test, nameClass) -> None:
+def PCAChart3D(X_train, y_train, nameClass) -> None:
     print("********* PCA - 3D *********")
-    pca3d = PCA(n_components=3)
-    x_train_pca_3d_both = pca3d.fit_transform(np.concatenate([X_train, X_test]))
-    x_train_pca_3d_both = x_train_pca_3d_both[X_train.shape[0]:, ]
+    pca3d = PCA(n_components=3).fit(X_train)
+    X_train_pca = pca3d.transform(X_train)
+    plt.figure(figsize=(12, 8))
 
     ax = plt.axes(projection='3d')
     target_ids = range(len(nameClass))
 
     # Usar lista para asignar colores en scatter plot
     for i, c, label in zip(target_ids, colors, nameClass):
-        ax.scatter(x_train_pca_3d_both[y_test.array == nameClass[i], 0],
-                   x_train_pca_3d_both[y_test.array == nameClass[i], 1], x_train_pca_3d_both[y_test.array == nameClass[i], 2],
+        ax.scatter(X_train_pca[y_train.array == nameClass[i], 0],
+                   X_train_pca[y_train.array == nameClass[i], 1], X_train_pca[y_train.array == nameClass[i], 2],
                    c=c, label=label, edgecolor="k")
 
     ax.legend(loc='best', title="Letras")
@@ -196,6 +194,7 @@ def LDAChart2D(X_train, y_train, nameClass) -> None:
     print("********* LDA - 2D *********")
     modelLDA = LinearDiscriminantAnalysis(n_components=len(nameClass) - 1)
     x_train_lda = modelLDA.fit_transform(X_train, y_train)
+    plt.figure(figsize=(12, 8))
 
     target_ids = range(len(nameClass))
 
@@ -205,26 +204,26 @@ def LDAChart2D(X_train, y_train, nameClass) -> None:
                    x_train_lda[y_train.array == nameClass[i], 1],
                    c=c, label=label, edgecolor="k")
 
-    plt.legend(loc="best", title="Números")
+    plt.legend(loc="best", title="Letras")
     plt.title("LDA con 2 componentes")
     plt.xlabel("X")
     plt.ylabel("Y")
     plt.show()
 
 
-def LDAChart3D(X_train, X_test, y_test, y_train, nameClass) -> None:
+def LDAChart3D(X_train, y_train, nameClass) -> None:
     print("********* LDA - 3D *********")
     lda3d = LinearDiscriminantAnalysis(n_components=len(nameClass) - 1)
-    lda3d.fit(X_train, y_train)
-    x_train_lda_3d_both = lda3d.transform(X_test)
+    x_train_lda_3d = lda3d.fit_transform(X_train, y_train)
+    plt.figure(figsize=(12, 8))
 
     ax = plt.axes(projection='3d')
     target_ids = range(len(nameClass))
 
     # Usar lista para asignar colores en scatter plot
     for i, c, label in zip(target_ids, colors, nameClass):
-        ax.scatter(x_train_lda_3d_both[y_test.array == nameClass[i], 0],
-                   x_train_lda_3d_both[y_test.array == nameClass[i], 1], x_train_lda_3d_both[y_test.array == nameClass[i], 2],
+        ax.scatter(x_train_lda_3d[y_train.array == nameClass[i], 0],
+                   x_train_lda_3d[y_train.array == nameClass[i], 1], x_train_lda_3d[y_train.array == nameClass[i], 2],
                    c=c, label=label, edgecolor="k")
 
     ax.legend(loc='best', title="Letras")
@@ -235,28 +234,74 @@ def LDAChart3D(X_train, X_test, y_test, y_train, nameClass) -> None:
     plt.show()
 
 
+def SVDChart2D(X_train, y_train, nameClass) -> None:
+    print("********* SVD - 2D *********")
+    modelSVD = TruncatedSVD(n_components=2)
+    x_train_svd = modelSVD.fit_transform(X_train)
+    plt.figure(figsize=(12, 8))
+
+    target_ids = range(len(nameClass))
+
+    # Usar lista para asignar colores en scatter plot
+    for i, c, label in zip(target_ids, colors, nameClass):
+        plt.scatter(x_train_svd[y_train.array == nameClass[i], 0],
+                   x_train_svd[y_train.array == nameClass[i], 1],
+                   c=c, label=label, edgecolor="k")
+
+    plt.legend(loc="best", title="Letras")
+    plt.title("SVD con 2 componentes")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.show()
+
+
+def SVDChart3D(X_train, y_train, nameClass) -> None:
+    print("********* SVD - 3D *********")
+    modelSVD = TruncatedSVD(n_components=3)
+    x_train_svd_3d = modelSVD.fit_transform(X_train)
+    plt.figure(figsize=(12, 8))
+
+    ax = plt.axes(projection='3d')
+    target_ids = range(len(nameClass))
+
+    # Usar lista para asignar colores en scatter plot
+    for i, c, label in zip(target_ids, colors, nameClass):
+        ax.scatter(x_train_svd_3d[y_train.array == nameClass[i], 0],
+                   x_train_svd_3d[y_train.array == nameClass[i], 1], x_train_svd_3d[y_train.array == nameClass[i], 2],
+                   c=c, label=label, edgecolor="k")
+
+    ax.legend(loc='best', title="Letras")
+    plt.title("SVD 3 componentes")
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.set_zlabel("Z")
+    plt.show()
+
 
 def showCharts() -> None:
     print("*** SHOW CHARTS ***")
     with open('generatedFiles/neuralNetwork/dataSet192landmarksV4.pkl', 'rb') as f:
         X_train, y_train, X_test, y_test, nameClass, gridPipe = joblib.load(f)
-        #PCAChart2D(gridPipe, X_train, y_train, nameClass)
-        #PCAChart3D(X_train, X_test, y_test, nameClass)
-        LDAChart2D(X_train, y_train, nameClass)
-        LDAChart3D(X_train, X_test, y_test, y_train, nameClass)
-        TSNEChart2D(X_train, y_train, nameClass)
-        TSNEChart3D(X_train, X_test, y_test, nameClass)
 
         normalizedData(X_train, X_test)
 
         y_predict = gridPipe.predict(X_test)
         print("Accuracy_score: " + str(accuracy_score(y_test, y_predict)))
+
         confusionMatrix(y_test, y_predict, nameClass)
 
-        # print("\n*************** GridSearchCV - With Pipeline ***************\n")
-        # print("Mejor método:", gridPipe.best_params_['classifier__selected_model'])
-        # print("Mejor puntuación:", gridPipe.best_score_)
+        print("\nClassification report: \n\n" + classification_report(y_test, y_predict))
+
         ROCandPR(y_test, gridPipe, X_test)
 
-        print("\nClassification report: \n\n" + classification_report(y_test, y_predict))
-        # TODO: PCA - LDA (Mejores - peores casos)
+        PCAChart2D(X_train, y_train, nameClass)
+        PCAChart3D(X_train, y_train, nameClass)
+
+        LDAChart2D(X_train, y_train, nameClass)
+        LDAChart3D(X_train, y_train, nameClass)
+
+        SVDChart2D(X_train, y_train, nameClass)
+        SVDChart3D(X_train, y_train, nameClass)
+
+        TSNEChart2D(X_train, y_train, nameClass)
+        TSNEChart3D(X_train, y_train, nameClass)
