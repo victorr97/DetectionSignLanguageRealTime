@@ -1,12 +1,12 @@
 const rightDiv = document.getElementById("containerImg");
 const textSelectImg = document.getElementById('textSelectImg');
 const imgsClick = document.querySelectorAll('a');
-const allImg = document.querySelectorAll('img');
 const img = document.querySelector('.frameWebCam');
 const loading = document.getElementById("loading");
 let scrollPosition = 0;
 const height3Img = 765;
 let activeIndex = 0;
+
 
 img.addEventListener('load', function () {
     loading.style.display = "none";
@@ -16,25 +16,14 @@ img.addEventListener('load', function () {
 });
 
 function firstLetter(letter) {
-    console.log(imgsClick[activeIndex])
-    imgsClick[activeIndex].classList.replace('notActiveImg', 'activeImg');
-    if (imgsClick[activeIndex].classList.contains("notActiveImg")) {
-        imgsClick[activeIndex].classList.replace('notActiveImg', 'activeImg');
-        console.log("changed")
-        console.log(imgsClick[activeIndex])
-    }
-
+    imgsClick[activeIndex].firstElementChild.classList.replace('notActiveImg', 'activeImg');
     textSelectImg.innerHTML = "SIGNO PARA REALIZAR: <strong>" + letter + "</strong>";
 }
 
 function updateActiveImage() {
-
     // Cambiamos la clase del elemento activo actual a "notActiveImg"
-    imgsClick[activeIndex].classList.replace('activeImg', 'notActiveImg');
-
-    // Incrementamos el índice del elemento activo
+    imgsClick[activeIndex].firstElementChild.classList.replace('activeImg', 'notActiveImg');
     activeIndex++;
-
     // Cambiamos la clase del nuevo elemento activo a "activeImg"
     imgsClick[activeIndex].classList.replace('notActiveImg', 'activeImg');
 }
@@ -52,7 +41,7 @@ function countDownStartGame() {
             const timer = setInterval(() => {
                 counter--;
                 if (counter === 0) {
-                    countdown.textContent = 'YA!';
+                    countdown.textContent = '¡YA!';
                     countdown.classList.add('highlight');
                     setTimeout(() => {
                         countdown.textContent = '';
@@ -77,15 +66,6 @@ function countDownStartGame() {
     });
 }
 
-
-function resetLetter() {
-    textSelectImg.innerHTML = "SIGNO: ";
-    allImg.forEach(function (imagen) {
-        if (imagen.classList.contains("activeImg")) {
-            imagen.classList.replace('activeImg', 'notActiveImg');
-        }
-    });
-}
 
 function handleScrollUp() {
     scrollPosition -= height3Img;
