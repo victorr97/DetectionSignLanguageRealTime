@@ -19,7 +19,15 @@
                     <div class="loader-line"></div>
                 </div>
             </div>
-            <h2 id="textSelectImg"></h2>
+            <div id="infoSign">
+                <div class="counter">
+                    <p class="textCounter"> TIEMPO TRANSCURRIDO </p>
+                    <div class="contador">
+                        <span id="minutos">00</span>:<span id="segundos">00</span>
+                    </div>
+                </div>
+                <h2 id="textSelectImg"></h2>
+            </div>
             <img class="frameWebCam" src="{{ url_for('trainuser') }}"/>
         </div>
         <div class="container">

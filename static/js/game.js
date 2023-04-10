@@ -1,23 +1,25 @@
 const rightDiv = document.getElementById("containerImg");
 const textSelectImg = document.getElementById('textSelectImg');
+const infoSign = document.getElementById('infoSign');
 const imgsClick = document.querySelectorAll('a');
 const img = document.querySelector('.frameWebCam');
 const loading = document.getElementById("loading");
 let scrollPosition = 0;
-const height3Img = 765;
+const heightImg = 235;
 let activeIndex = 0;
 
 
 img.addEventListener('load', function () {
     loading.style.display = "none";
+    infoSign.style.display = "flex";
     textSelectImg.style.display = "flex";
-    firstLetter("A")
+    imgsClick[activeIndex].firstElementChild.classList.replace('notActiveImg', 'activeImg');
+    selectLetter()
     countDownStartGame()
 });
 
-function firstLetter(letter) {
-    imgsClick[activeIndex].firstElementChild.classList.replace('notActiveImg', 'activeImg');
-    textSelectImg.innerHTML = "SIGNO PARA REALIZAR: <strong>" + letter + "</strong>";
+function selectLetter() {
+    textSelectImg.innerHTML = "SIGNO PARA REALIZAR: <strong>" + imgsClick[activeIndex].firstElementChild.alt + "</strong>";
 }
 
 function updateActiveImage() {
@@ -25,7 +27,7 @@ function updateActiveImage() {
     imgsClick[activeIndex].firstElementChild.classList.replace('activeImg', 'notActiveImg');
     activeIndex++;
     // Cambiamos la clase del nuevo elemento activo a "activeImg"
-    imgsClick[activeIndex].classList.replace('notActiveImg', 'activeImg');
+    imgsClick[activeIndex].firstElementChild.classList.replace('notActiveImg', 'activeImg');
 }
 
 function countDownStartGame() {
@@ -62,18 +64,67 @@ function countDownStartGame() {
         backdrop: false,
         showConfirmButton: false
     }).then(() => {
-        console.log("EMPIEZA EL JUEGO")
+        startGame()
     });
 }
 
+function startGame() {
+    const tiempoInicio = Date.now();
+    let formatoHora = false;
+    setInterval(function () {
+        setCounter(tiempoInicio, formatoHora);
+    }, 1000);
+    updateActiveImage()
+    selectLetter()
+    handleScrollDown()
+    //TODO: Enviar peticion backend de la letra
+    checkLetterInGame()
+        .then(result => {
+            if (result === true) {
+                Swal.fire({
+                    title: '¡Correcto!',
+                    text: '¡Sigue practicando signos!',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#3085d6'
+                })
+            } else {
+                Swal.fire({
+                    title: '¡Error!',
+                    text: '¡No se detectan las coordenadas en la webcam!',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#3085d6'
+                })
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
 
-function handleScrollUp() {
-    scrollPosition -= height3Img;
-    scrollSmoothly();
+function setCounter(tiempoInicio, formatoHora) {
+    const tiempoActual = Date.now();
+    const tiempoTranscurrido = tiempoActual - tiempoInicio;
+    const horas = Math.floor(tiempoTranscurrido / 3600000);
+    const minutos = Math.floor((tiempoTranscurrido % 3600000) / 60000);
+    const segundos = Math.floor((tiempoTranscurrido % 60000) / 1000);
+
+    if (horas >= 1) {
+        formatoHora = true;
+    }
+
+    if (formatoHora) {
+        document.getElementById("minutos").innerHTML = horas.toString().padStart(2, "0");
+        document.getElementById("segundos").innerHTML = minutos.toString().padStart(2, "0") + ":" + segundos.toString().padStart(2, "0");
+    } else {
+        document.getElementById("minutos").innerHTML = minutos.toString().padStart(2, "0");
+        document.getElementById("segundos").innerHTML = segundos.toString().padStart(2, "0");
+    }
 }
 
 function handleScrollDown() {
-    scrollPosition += height3Img;
+    scrollPosition += heightImg;
     scrollSmoothly();
 }
 
@@ -111,3 +162,4 @@ function scrollSmoothly() {
 
     requestAnimationFrame(animation);
 }
+

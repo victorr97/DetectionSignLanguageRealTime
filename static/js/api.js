@@ -154,3 +154,35 @@ async function checkLetterIfCorrect() {
         }, 1000); // Ejecuta cada segundo
     });
 }
+
+/********** GAME ***********/
+
+async function checkLetterInGame() {
+    return new Promise((resolve, reject) => {
+        let intervalId = setInterval(() => {
+            fetch('/checkLetterInGame', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    //Respuesta del servidor
+                    console.log(data);
+                    if (data.checkLetter === 'True') {
+                        clearInterval(intervalId); // Detiene la llamada a setInterval
+                        resolve(true);
+                    }
+                    if (data.firstTimeRecognisedPerson === 'True' && data.recognisedPerson === 'False') {
+                        clearInterval(intervalId); // Detiene la llamada a setInterval
+                        resolve(false);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    reject(error);
+                });
+        }, 1000); // Ejecuta cada segundo
+    });
+}
