@@ -1,6 +1,6 @@
 import collectFrame
 import trainUser
-import results
+import game
 import trainModel
 import dataChartsModel
 from argparse import ArgumentParser
@@ -102,7 +102,7 @@ def train():
 
 @app.route('/start', methods=['GET'])
 def start():
-    return render_template('start.html')
+    return render_template('game.html')
 
 
 @app.route('/recollect', methods=['GET'])
@@ -115,9 +115,9 @@ def trainuser():
     return Response(trainUser.trainWeb(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-@app.route('/result', methods=['GET'])
-def result():
-    return Response(results.resultsWeb(), mimetype='multipart/x-mixed-replace; boundary=frame')
+@app.route('/letterGame', methods=['GET'])
+def letterGame():
+    return Response(game.gameWeb(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':
