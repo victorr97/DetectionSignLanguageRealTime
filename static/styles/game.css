@@ -67,7 +67,7 @@ div#frame {
 .scroll-content img {
     display: block;
     margin-bottom: 20px;
-    cursor: pointer;
+    cursor: default;
 }
 
 .scroll-content img {
@@ -91,9 +91,4 @@ div#frame {
 
 .notActiveImg {
     opacity: 0.5;
-}
-
-a:not(:focus) img:hover,
-a:not(:focus) img:active {
-    opacity: 1;
 }
