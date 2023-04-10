@@ -5,14 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Reconocimiento de lenguaje de signos en tiempo real</title>
     <link rel="shortcut icon" type="image/png" href="{{ url_for('static',filename='resources/slt_icon.ico') }}">
+    <script src="{{ url_for('static',filename='js/CDN/sweetalert2.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/spinnerLoading.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/game.css') }}">
 </head>
 <body>
-    <section>
+<section>
+    <div id="allPage">
         <div id="frame">
-            <img src="{{ url_for('letterGame') }}"/>
+            <div id="loading" class="loader-circle">
+                <p class="loader-content">CARGANDO</p>
+                <div class="loader-line-mask">
+                    <div class="loader-line"></div>
+                </div>
+            </div>
+            <h2 id="textSelectImg"></h2>
+            <img class="frameWebCam" src="{{ url_for('trainuser') }}"/>
         </div>
-    </section>
+        <div class="container">
+            <div id="containerImg" class="scroll-container">
+                <div class="scroll-content">
+                    <a href="#">
+                        <img class="notActiveImg" alt="A" src="{{ url_for('static', filename='resources/img/A.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="B" src="{{ url_for('static', filename='resources/img/B.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="C" src="{{ url_for('static', filename='resources/img/C.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="D" src="{{ url_for('static', filename='resources/img/D.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="E" src="{{ url_for('static', filename='resources/img/E.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="F" src="{{ url_for('static', filename='resources/img/F.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="G" src="{{ url_for('static', filename='resources/img/G.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="H" src="{{ url_for('static', filename='resources/img/H.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="I" src="{{ url_for('static', filename='resources/img/I.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="J" src="{{ url_for('static', filename='resources/img/J.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="K" src="{{ url_for('static', filename='resources/img/K.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="L" src="{{ url_for('static', filename='resources/img/L.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="M" src="{{ url_for('static', filename='resources/img/M.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="N" src="{{ url_for('static', filename='resources/img/N.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="O" src="{{ url_for('static', filename='resources/img/O.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="P" src="{{ url_for('static', filename='resources/img/P.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="Q" src="{{ url_for('static', filename='resources/img/Q.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="R" src="{{ url_for('static', filename='resources/img/R.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="S" src="{{ url_for('static', filename='resources/img/S.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="T" src="{{ url_for('static', filename='resources/img/T.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="U" src="{{ url_for('static', filename='resources/img/U.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="V" src="{{ url_for('static', filename='resources/img/V.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="W" src="{{ url_for('static', filename='resources/img/W.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="X" src="{{ url_for('static', filename='resources/img/X.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="Y" src="{{ url_for('static', filename='resources/img/Y.JPG') }}">
+                    </a>
+                    <a href="#">
+                        <img class="notActiveImg" alt="Z" src="{{ url_for('static', filename='resources/img/Z.JPG') }}">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <script src="{{ url_for('static',filename='js/api.js') }}"></script>
 <script src="{{ url_for('static',filename='js/game.js') }}"></script>
 </body>
