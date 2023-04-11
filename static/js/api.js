@@ -157,6 +157,28 @@ async function checkLetterIfCorrect() {
 
 /********** GAME ***********/
 
+function letterGameSelect(letterTrain) {
+    return new Promise((resolve, reject) => {
+        fetch('/letterGame', {
+            method: 'POST',
+            body: JSON.stringify({'letterTrain': letterTrain}),
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                //Respuesta del servidor
+                console.log(data);
+                resolve(true);
+            })
+            .catch(error => {
+                console.log(error);
+                reject(false);
+            });
+    });
+}
+
 async function checkLetterInGame() {
     return new Promise((resolve, reject) => {
         let intervalId = setInterval(() => {
