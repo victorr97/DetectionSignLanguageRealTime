@@ -7,6 +7,7 @@ const loading = document.getElementById("loading");
 let scrollPosition = 0;
 const heightImg = 235;
 let activeIndex = 0;
+let tiempoGlobal = "00:00";
 
 
 img.addEventListener('load', function () {
@@ -97,10 +98,27 @@ function recursiveFunction() {
                             updateActiveImage();
                             selectLetter();
                             handleScrollDown();
-                            if (letterGame !== 'Z') {
+                            if (letterGame !== 'C') {
                                 recursiveFunction(); // Llamar la función recursivamente
                             } else {
-                                //TODO: FINISH GAME POPUP
+                                //TODO: RESET COUNTER
+                                Swal.fire({
+                                    title: '¡Felicitaciones!',
+                                    text: 'Completaste el juego en ' + tiempoGlobal + ' segundos.',
+                                    icon: 'success',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Volver a jugar',
+                                    cancelButtonText: 'Cancelar'
+                                }).then((result) => {
+                                    // Si el usuario hizo clic en "Volver a jugar"
+                                    if (result.isConfirmed) {
+                                        //TODO: RESET IMGS AND START GAME
+                                        startGame()
+                                    } else if (result.isDismissed) {
+                                        // Redirigir al usuario a la página 'mainPage.html'
+                                        window.location.href = mainPageUrl;
+                                    }
+                                })
                             }
                         } else {
                             Swal.fire({
@@ -112,8 +130,6 @@ function recursiveFunction() {
                             });
                             if (letterGame !== 'Z') {
                                 recursiveFunction(); // Llamar la función recursivamente
-                            } else {
-                                //TODO: FINISH GAME POPUP
                             }
                         }
                     })
@@ -138,9 +154,11 @@ function setCounter(tiempoInicio, formatoHora) {
     if (formatoHora) {
         document.getElementById("minutos").innerHTML = horas.toString().padStart(2, "0");
         document.getElementById("segundos").innerHTML = minutos.toString().padStart(2, "0") + ":" + segundos.toString().padStart(2, "0");
+        tiempoGlobal = horas.toString().padStart(2, "0") + ":" + minutos.toString().padStart(2, "0") + ":" + segundos.toString().padStart(2, "0");
     } else {
         document.getElementById("minutos").innerHTML = minutos.toString().padStart(2, "0");
         document.getElementById("segundos").innerHTML = segundos.toString().padStart(2, "0");
+        tiempoGlobal = minutos.toString().padStart(2, "0") + ":" + segundos.toString().padStart(2, "0");
     }
 }
 
