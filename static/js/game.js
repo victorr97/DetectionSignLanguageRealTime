@@ -74,41 +74,53 @@ function startGame() {
     setInterval(function () {
         setCounter(tiempoInicio, formatoHora);
     }, 1000);
-    let letterGame = imgsClick[activeIndex].firstElementChild.alt
+
+    recursiveFunction()
+}
+
+function recursiveFunction() {
+    let letterGame = imgsClick[activeIndex].firstElementChild.alt;
     letterTrainSelectUser(letterGame)
         .then(result => {
             if (result === true) {
-                console.log("LETRA ENVIADA AL BACKEND")
+                console.log("LETRA ENVIADA AL BACKEND");
                 checkLetterIfCorrect()
                     .then(result => {
                         if (result === true) {
                             Swal.fire({
-                              title: '¡Correcto!',
-                              text: '¡Sigue practicando signos!',
-                              icon: 'success',
-                              confirmButtonText: 'Aceptar',
-                              confirmButtonColor: '#3085d6'
-                            })
-                            updateActiveImage()
-                            selectLetter()
-                            handleScrollDown()
+                                title: '¡Correcto!',
+                                text: '¡Sigue practicando signos!',
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 1000
+                            });
+                            updateActiveImage();
+                            selectLetter();
+                            handleScrollDown();
+                            if (letterGame !== 'Z') {
+                                recursiveFunction(); // Llamar la función recursivamente
+                            } else {
+                                //TODO: FINISH GAME POPUP
+                            }
                         } else {
                             Swal.fire({
-                              title: '¡Error!',
-                              text: '¡No se detectan las coordenadas en la webcam!',
-                              icon: 'error',
-                              confirmButtonText: 'Aceptar',
-                              confirmButtonColor: '#3085d6'
-                            })
+                                title: '¡Error!',
+                                text: '¡No se detectan las coordenadas en la webcam!',
+                                icon: 'error',
+                                showConfirmButton: false,
+                                timer: 1000
+                            });
+                            if (letterGame !== 'Z') {
+                                recursiveFunction(); // Llamar la función recursivamente
+                            } else {
+                                //TODO: FINISH GAME POPUP
+                            }
                         }
                     })
                     .catch(error => {
                         console.log(error);
                     });
             }
-        })
-        .catch(error => {
-            console.log(error);
         });
 }
 

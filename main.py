@@ -40,7 +40,7 @@ def letterTrain():
     if request.is_json:
         letterTrain = request.get_json()['letterTrain']
         respuesta = {'letterTrain': letterTrain}
-        trainUser.setSelectSignTrain(letterTrain)
+        trainUser.setSelectSign(letterTrain)
         trainUser.setLetterDoneRight("False")
         trainUser.setFirstTimeRecognisedPerson("False")
         trainUser.resetListLetters()
@@ -96,11 +96,13 @@ def recollectData():
 
 @app.route('/train', methods=['GET'])
 def train():
+    trainUser.setSelectSign("")
     return render_template('train.html')
 
 
 @app.route('/start', methods=['GET'])
 def start():
+    trainUser.setSelectSign("")
     return render_template('game.html')
 
 

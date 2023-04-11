@@ -35,7 +35,7 @@ def setFirstTimeRecognisedPerson(firstTime) -> None:
     firstTimeRecognisedPerson = firstTime
 
 
-def setSelectSignTrain(selectLetterUser) -> None:
+def setSelectSign(selectLetterUser) -> None:
     global selectSign
     selectSign = selectLetterUser
 
@@ -43,6 +43,10 @@ def setSelectSignTrain(selectLetterUser) -> None:
 def setLetterDoneRight(letterRight) -> None:
     global letterDoneRight
     letterDoneRight = letterRight
+
+
+def getSelectSignTrain():
+    return selectSign
 
 
 def getRecognisedPerson():
@@ -158,10 +162,12 @@ def trainWeb():
                     # for i in probAllClasses:
                     #     print(i)
 
-                    cv2.putText(image, str(round(body_language_prob[np.argmax(body_language_prob)], 2)), (10, 40),
-                                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
-                    cv2.putText(image, body_language_class, (110, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2,
-                                cv2.LINE_AA)
+                    #Si no hay letra muestro la info
+                    if len(getSelectSignTrain()):
+                        cv2.putText(image, str(round(body_language_prob[np.argmax(body_language_prob)], 2)), (10, 40),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+                        cv2.putText(image, body_language_class, (110, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2,
+                                    cv2.LINE_AA)
                     (flag, encodedImage) = cv2.imencode(".jpg", image)
 
                     if not flag:
