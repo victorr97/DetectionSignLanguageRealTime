@@ -6,6 +6,7 @@ const img = document.querySelector('.frameWebCam');
 const loading = document.getElementById("loading");
 let scrollPosition = 0;
 const heightImg = 235;
+const NUMBER_IMG = 26;
 let activeIndex = 0;
 let tiempoGlobal = "00:00";
 let contador;
@@ -29,6 +30,12 @@ function updateActiveImage() {
     imgsClick[activeIndex].firstElementChild.classList.replace('activeImg', 'notActiveImg');
     activeIndex++;
     // Cambiamos la clase del nuevo elemento activo a "activeImg"
+    imgsClick[activeIndex].firstElementChild.classList.replace('notActiveImg', 'activeImg');
+}
+
+function updateLastActiveImage(){
+    imgsClick[activeIndex].firstElementChild.classList.replace('activeImg', 'notActiveImg');
+    activeIndex = 0;
     imgsClick[activeIndex].firstElementChild.classList.replace('notActiveImg', 'activeImg');
 }
 
@@ -85,7 +92,6 @@ function recursiveFunction() {
     letterTrainSelectUser(letterGame)
         .then(result => {
             if (result === true) {
-                console.log("LETRA ENVIADA AL BACKEND");
                 checkLetterIfCorrect()
                     .then(result => {
                         if (result === true) {
@@ -96,13 +102,13 @@ function recursiveFunction() {
                                 showConfirmButton: false,
                                 timer: 1000
                             });
-                            updateActiveImage();
-                            selectLetter();
-                            handleScrollDown();
-                            if (letterGame !== 'C') {
+                            if (letterGame !== 'Z') {
+                                updateActiveImage();
+                                selectLetter();
+                                handleScrollDown();
                                 recursiveFunction(); // Llamar la función recursivamente
                             } else {
-                                detenerContador()
+                                stopCounter()
                                 Swal.fire({
                                     title: '¡Felicitaciones!',
                                     text: 'Completaste el juego en ' + tiempoGlobal + ' segundos.',
@@ -113,7 +119,7 @@ function recursiveFunction() {
                                 }).then((result) => {
                                     // Si el usuario hizo clic en "Volver a jugar"
                                     if (result.isConfirmed) {
-                                        //TODO: RESET IMGS AND START GAME
+                                        resetGame()
                                         startGame()
                                     } else if (result.isDismissed) {
                                         // Redirigir al usuario a la página 'mainPage.html'
@@ -163,13 +169,24 @@ function setCounter(tiempoInicio, formatoHora) {
     }
 }
 
-function detenerContador() {
+function resetGame() {
+    updateLastActiveImage()
+    selectLetter()
+    handleScrollUp()
+}
+
+function stopCounter() {
     clearInterval(contador);
 }
 
 function handleScrollDown() {
     scrollPosition += heightImg;
     scrollSmoothly();
+}
+
+function handleScrollUp() {
+    scrollPosition -= heightImg * NUMBER_IMG - 1;
+    scrollSmoothly()
 }
 
 /*
