@@ -157,11 +157,11 @@ async function checkLetterIfCorrect() {
 
 /********** GAME ***********/
 
-function letterGameSelect(letterTrain) {
+function letterGameSelect(letterGame) {
     return new Promise((resolve, reject) => {
-        fetch('/letterGame', {
+        fetch('/selectLetterGame', {
             method: 'POST',
-            body: JSON.stringify({'letterTrain': letterTrain}),
+            body: JSON.stringify({'letterGame': letterGame}),
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
             }

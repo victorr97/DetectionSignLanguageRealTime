@@ -1,4 +1,3 @@
-
 const rightDiv = document.getElementById("containerImg");
 const scrollUpBtn = document.getElementById('scroll-up');
 const scrollDownBtn = document.getElementById('scroll-down');
