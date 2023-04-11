@@ -75,13 +75,36 @@ function startGame() {
         setCounter(tiempoInicio, formatoHora);
     }, 1000);
     let letterGame = imgsClick[activeIndex].firstElementChild.alt
-    letterGameSelect(letterGame)
+    letterTrainSelectUser(letterGame)
         .then(result => {
             if (result === true) {
                 console.log("LETRA ENVIADA AL BACKEND")
-                updateActiveImage()
-                selectLetter()
-                handleScrollDown()
+                checkLetterIfCorrect()
+                    .then(result => {
+                        if (result === true) {
+                            Swal.fire({
+                              title: '¡Correcto!',
+                              text: '¡Sigue practicando signos!',
+                              icon: 'success',
+                              confirmButtonText: 'Aceptar',
+                              confirmButtonColor: '#3085d6'
+                            })
+                            updateActiveImage()
+                            selectLetter()
+                            handleScrollDown()
+                        } else {
+                            Swal.fire({
+                              title: '¡Error!',
+                              text: '¡No se detectan las coordenadas en la webcam!',
+                              icon: 'error',
+                              confirmButtonText: 'Aceptar',
+                              confirmButtonColor: '#3085d6'
+                            })
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             }
         })
         .catch(error => {

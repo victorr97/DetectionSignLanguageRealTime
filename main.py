@@ -1,6 +1,5 @@
 import collectFrame
 import trainUser
-import game
 import trainModel
 import dataChartsModel
 from argparse import ArgumentParser
@@ -56,9 +55,9 @@ def selectLetterGame():
         letterGame = request.get_json()['letterGame']
         respuesta = {'letterGame': letterGame}
         game.setSelectSignGame(letterGame)
-        # game.setLetterDoneRight("False")
-        # game.setFirstTimeRecognisedPerson("False")
-        # game.resetListLetters()
+        game.setLetterDoneRight("False")
+        game.setFirstTimeRecognisedPerson("False")
+        game.resetListLetters()
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
@@ -88,6 +87,15 @@ def checkPerson():
 def checkLetter():
     if request.is_json:
         respuesta = {'checkLetter': trainUser.getCountArrayIfCorrect(), 'recognisedPerson': trainUser.getRecognisedPerson(), 'firstTimeRecognisedPerson': trainUser.getFirstTimeRecognisedPerson()}
+        return jsonify(respuesta)
+    else:
+        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
+
+
+@app.route('/checkLetterInGame', methods=['GET'])
+def checkLetterInGame():
+    if request.is_json:
+        respuesta = {'checkLetter': game.getCountArrayIfCorrect(), 'recognisedPerson': game.getRecognisedPerson(), 'firstTimeRecognisedPerson': game.getFirstTimeRecognisedPerson()}
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
@@ -130,7 +138,7 @@ def trainuser():
 
 @app.route('/letterGame', methods=['GET'])
 def letterGame():
-    return Response(game.gameWeb(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(trainUser.trainWeb(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':
