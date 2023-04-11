@@ -8,6 +8,7 @@ let scrollPosition = 0;
 const heightImg = 235;
 let activeIndex = 0;
 let tiempoGlobal = "00:00";
+let contador;
 
 
 img.addEventListener('load', function () {
@@ -72,11 +73,11 @@ function countDownStartGame() {
 function startGame() {
     const tiempoInicio = Date.now();
     let formatoHora = false;
-    setInterval(function () {
+    contador = setInterval(function () {
         setCounter(tiempoInicio, formatoHora);
     }, 1000);
 
-    recursiveFunction()
+    recursiveFunction(contador)
 }
 
 function recursiveFunction() {
@@ -101,7 +102,7 @@ function recursiveFunction() {
                             if (letterGame !== 'C') {
                                 recursiveFunction(); // Llamar la función recursivamente
                             } else {
-                                //TODO: RESET COUNTER
+                                detenerContador()
                                 Swal.fire({
                                     title: '¡Felicitaciones!',
                                     text: 'Completaste el juego en ' + tiempoGlobal + ' segundos.',
@@ -160,6 +161,10 @@ function setCounter(tiempoInicio, formatoHora) {
         document.getElementById("segundos").innerHTML = segundos.toString().padStart(2, "0");
         tiempoGlobal = minutos.toString().padStart(2, "0") + ":" + segundos.toString().padStart(2, "0");
     }
+}
+
+function detenerContador() {
+    clearInterval(contador);
 }
 
 function handleScrollDown() {
