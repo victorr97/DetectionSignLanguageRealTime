@@ -5,7 +5,7 @@ import cv2
 import pandas as pd
 import landmarks
 
-selectSignTrain = ""
+selectSign = ""
 letterDoneRight = "False"
 list_letters_realtime = []
 NUMBER_CORRECT = 20
@@ -36,8 +36,8 @@ def setFirstTimeRecognisedPerson(firstTime) -> None:
 
 
 def setSelectSignTrain(selectLetterUser) -> None:
-    global selectSignTrain
-    selectSignTrain = selectLetterUser
+    global selectSign
+    selectSign = selectLetterUser
 
 
 def setLetterDoneRight(letterRight) -> None:
@@ -56,10 +56,10 @@ def setRecognisedPerson(recognised) -> None:
 
 def getCountArrayIfCorrect():
     global letterDoneRight
-    global selectSignTrain
-    if list_letters_realtime.count(selectSignTrain) >= NUMBER_CORRECT:
+    global selectSign
+    if list_letters_realtime.count(selectSign) >= NUMBER_CORRECT:
         letterDoneRight = "True"
-        selectSignTrain = ""
+        selectSign = ""
         resetListLetters()
     else:
         letterDoneRight = "False"

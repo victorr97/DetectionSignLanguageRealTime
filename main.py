@@ -49,19 +49,6 @@ def letterTrain():
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
 
 
-@app.route('/selectLetterGame', methods=['POST'])
-def selectLetterGame():
-    if request.is_json:
-        letterGame = request.get_json()['letterGame']
-        respuesta = {'letterGame': letterGame}
-        game.setSelectSignGame(letterGame)
-        game.setLetterDoneRight("False")
-        game.setFirstTimeRecognisedPerson("False")
-        game.resetListLetters()
-        return jsonify(respuesta)
-    else:
-        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
-
 # ROUTES GET
 
 @app.route('/checkSaveData', methods=['GET'])
@@ -87,15 +74,6 @@ def checkPerson():
 def checkLetter():
     if request.is_json:
         respuesta = {'checkLetter': trainUser.getCountArrayIfCorrect(), 'recognisedPerson': trainUser.getRecognisedPerson(), 'firstTimeRecognisedPerson': trainUser.getFirstTimeRecognisedPerson()}
-        return jsonify(respuesta)
-    else:
-        return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
-
-
-@app.route('/checkLetterInGame', methods=['GET'])
-def checkLetterInGame():
-    if request.is_json:
-        respuesta = {'checkLetter': game.getCountArrayIfCorrect(), 'recognisedPerson': game.getRecognisedPerson(), 'firstTimeRecognisedPerson': game.getFirstTimeRecognisedPerson()}
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
