@@ -82,11 +82,17 @@ function resetLetter(){
 
 function handleScrollUp() {
     scrollPosition -= height3Img;
+    if (scrollPosition < 0) {
+        scrollPosition = 0;
+    }
     scrollSmoothly();
 }
 
 function handleScrollDown() {
     scrollPosition += height3Img;
+    if (scrollPosition > 6120) {
+        scrollPosition = 6120;
+    }
     scrollSmoothly();
 }
 
