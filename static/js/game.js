@@ -185,8 +185,9 @@ function handleScrollDown() {
 }
 
 function handleScrollUp() {
-    scrollPosition -= heightImg * NUMBER_IMG - 1;
+    scrollPosition -= heightImg * NUMBER_IMG;
     scrollSmoothly()
+    scrollPosition = 0
 }
 
 /*
