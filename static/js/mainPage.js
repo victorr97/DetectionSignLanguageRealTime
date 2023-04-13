@@ -1,24 +1,40 @@
 /************** EFFECT 3 BUTTONS MAINPAGE *********************/
 
-$(".button_su_inner").on("animationend", function () {
-    $(this).off("animationend"); // remove the event listener to prevent multiple firings
-    // Add your JavaScript code here to trigger after animation
-    $(".button_su_inner").mouseenter(function (e) {
-        let parentOffset = $(this).offset();
-        let relX = e.pageX - parentOffset.left;
-        let relY = e.pageY - parentOffset.top;
-        $(this).prev(".su_button_circle").css({"left": relX, "top": relY});
-        $(this).prev(".su_button_circle").removeClass("desplode-circle");
-        $(this).prev(".su_button_circle").addClass("explode-circle");
-    }).mouseleave(function (e) {
-        let parentOffset = $(this).offset();
-        let relX = e.pageX - parentOffset.left;
-        let relY = e.pageY - parentOffset.top;
-        $(this).prev(".su_button_circle").css({"left": relX, "top": relY});
-        $(this).prev(".su_button_circle").removeClass("explode-circle");
-        $(this).prev(".su_button_circle").addClass("desplode-circle");
+// Obtener todos los elementos .button_su_inner
+let buttonInners = document.querySelectorAll(".button_su_inner");
+
+// Agregar un controlador de eventos a cada elemento
+buttonInners.forEach(function (buttonInner) {
+    // Agregar controlador de eventos 'animationend'
+    buttonInner.addEventListener("animationend", function () {
+        // Eliminar el controlador de eventos para evitar múltiples ejecuciones
+        buttonInner.removeEventListener("animationend", arguments.callee);
+
+        // Agregar controladores de eventos 'mouseenter' y 'mouseleave'
+        buttonInner.addEventListener("mouseenter", mouseEnterHandler);
+        buttonInner.addEventListener("mouseleave", mouseLeaveHandler);
     });
 });
+
+function mouseEnterHandler(e) {
+    let parentOffset = this.offsetParent.getBoundingClientRect();
+    let relX = e.pageX - parentOffset.left;
+    let relY = e.pageY - parentOffset.top;
+    this.previousElementSibling.style.left = relX + "px";
+    this.previousElementSibling.style.top = relY + "px";
+    this.previousElementSibling.classList.remove("desplode-circle");
+    this.previousElementSibling.classList.add("explode-circle");
+}
+
+function mouseLeaveHandler(e) {
+  let parentOffset = this.offsetParent.getBoundingClientRect();
+  let relX = e.pageX - parentOffset.left;
+  let relY = e.pageY - parentOffset.top;
+  this.previousElementSibling.style.left = relX + "px";
+  this.previousElementSibling.style.top = relY + "px";
+  this.previousElementSibling.classList.remove("explode-circle");
+  this.previousElementSibling.classList.add("desplode-circle");
+}
 
 /************** GET ELEMENTS *********************/
 const clickBtnRecollect = document.getElementById("clickBtnRecollect");
