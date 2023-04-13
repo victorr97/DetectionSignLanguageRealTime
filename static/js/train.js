@@ -8,15 +8,38 @@ const img = document.querySelector('.frameWebCam');
 const loading = document.getElementById("loading");
 let scrollPosition = 0;
 const height3Img = 765;
+let imageClicked = false;
 
 img.addEventListener('load', function () {
     loading.style.display = "none";
     textSelectImg.style.display = "flex";
 });
 
+setTimeout(function () {
+    if (!imageClicked) {
+        Swal.fire({
+            icon: 'warning',
+            title: '¡Atención!',
+            text: 'Para empezar el entrenamiento, debes seleccionar una imagen',
+            showConfirmButton: false,
+            timer: 3000,
+            background: '#fff',
+            customClass: {
+                title: 'my-title-class',
+                popup: 'my-popup-class'
+            },
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+}, 6000);
+
 //Agrego un Event Listener click para cada elemento <a> (imagenes)
 imgsClick.forEach(function (element) {
     element.addEventListener('click', function (event) {
+        imageClicked = true;
         //Para todas las imagenes si contiene la clase activeImg activada significa que estaba anteriormente clicada y se ha de substituir
         allImg.forEach(function (imagen) {
             if (imagen.classList.contains("activeImg")) {
@@ -44,19 +67,19 @@ function selectLetterGoTrain(letterTrain) {
                     .then(result => {
                         if (result === true) {
                             Swal.fire({
-                              title: '¡Correcto!',
-                              text: '¡Sigue practicando signos!',
-                              icon: 'success',
-                              confirmButtonText: 'Aceptar',
-                              confirmButtonColor: '#3085d6'
+                                title: '¡Correcto!',
+                                text: '¡Sigue practicando signos!',
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar',
+                                confirmButtonColor: '#3085d6'
                             })
                         } else {
                             Swal.fire({
-                              title: '¡Error!',
-                              text: '¡No se detectan las coordenadas en la webcam!',
-                              icon: 'error',
-                              confirmButtonText: 'Aceptar',
-                              confirmButtonColor: '#3085d6'
+                                title: '¡Error!',
+                                text: '¡No se detectan las coordenadas en la webcam!',
+                                icon: 'error',
+                                confirmButtonText: 'Aceptar',
+                                confirmButtonColor: '#3085d6'
                             })
                         }
                         resetLetter()
@@ -71,7 +94,7 @@ function selectLetterGoTrain(letterTrain) {
         });
 }
 
-function resetLetter(){
+function resetLetter() {
     textSelectImg.innerHTML = "SIGNO SELECCIONADO PARA PRACTICAR: ";
     allImg.forEach(function (imagen) {
         if (imagen.classList.contains("activeImg")) {
