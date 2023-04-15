@@ -85,20 +85,22 @@ document.addEventListener('DOMContentLoaded', function () {
                             setSaveDataInBackend().then(result => {
                                 if (result === true) {
                                     console.log("GUARDANDO DATOS");
+                                    messageSaveData.style.display = "block";
+                                    messageSaveData.innerHTML = "<strong>Guardando datos...</strong> no se mueva porfavor.";
                                     checkFinishSaveData().then(result => {
-                                            if (result === true) {
-                                                console.log("GUARDADO DATOS CORRECTAMENTE");
-                                                changePopUpGoodSave();
-                                            } else if (result === false) {
-                                                console.log("EL USUARIO HA SALIDO DEL PLANO");
-                                                changePopUpWrongSave();
-                                            } else {
-                                                console.log("EL USUARIO HA REALIZADO MAL EL SIGNO");
-                                                changePopUpWrongSign();
-                                            }
-                                        }).catch(error => {
-                                            console.log(error);
-                                        });
+                                        if (result === true) {
+                                            console.log("GUARDADO DATOS CORRECTAMENTE");
+                                            changePopUpGoodSave();
+                                        } else if (result === false) {
+                                            console.log("EL USUARIO HA SALIDO DEL PLANO");
+                                            changePopUpWrongSave();
+                                        } else {
+                                            console.log("EL USUARIO HA REALIZADO MAL EL SIGNO");
+                                            changePopUpWrongSign();
+                                        }
+                                    }).catch(error => {
+                                        console.log(error);
+                                    });
                                 }
                             }).catch(error => {
                                 console.log(error);
@@ -147,8 +149,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     isCountdownFinished = true
                     clearInterval(x);
                     countDown.innerHTML = "0";
-                    messageSaveData.style.display = "block";
-                    messageSaveData.innerHTML = "<strong>Guardando datos...</strong> no se mueva porfavor.";
                     resolve(true);
                 }
             }, 1000);
@@ -182,6 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
         noSaveMore.style.display = "flex"
         containerButtonsPopUp.style.display = "flex";
         containerButtonsPopUp.style.marginTop = "2%";
+        messageSaveData.style.display = "block";
         popUpContainer.style.height = "25vh";
         popUpContainer.style.marginBottom = "19rem";
         saveMoreData.style.margin = "0";
