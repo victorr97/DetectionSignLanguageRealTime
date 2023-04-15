@@ -105,9 +105,8 @@ select option[value="messageSelect"] {
     cursor: auto;
 }
 
-.errorMessage{
-    display: none;
-    color: red;
+img#webCam {
+    height: 720px;
 }
 
 /********************************************
@@ -157,7 +156,7 @@ select option[value="messageSelect"] {
 .popup {
     background-color: #ffffff;
     padding: 20px 30px;
-    width: 40%;
+    width: 33%;
     height: 20vh;
     border-radius: 15px;
     margin-bottom: 16rem;
@@ -170,6 +169,7 @@ select option[value="messageSelect"] {
 .popup > h2 {
     font-size: 1.6rem;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .popup > p {

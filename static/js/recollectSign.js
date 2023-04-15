@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     /************** GET ELEMENTS *********************/
     const selectElement = document.getElementById("letterSign");
-    const textErrorMessage = document.getElementById("textErrorMessage");
     const popup = document.getElementById("popupSaveData");
     const saveMoreData = document.getElementById("saveMoreData");
     const noSaveMore = document.getElementById("noSaveMore");
@@ -48,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function () {
         selectElement.size = 1;
         selectElement.blur();
         selectElement.style.backgroundColor = '#FFF';
-        textErrorMessage.style.display = "none"
 
         //Compruebo que la letra sea correcta
         if (checkLetter()) {
@@ -82,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(result => {
                     if (result === true) {
                         console.log("PERSONA EN WEBCAM");
-                        textErrorMessage.style.display = "none"
                         popup.style.display = 'block';
                         //Cuenta 3 segundos
                         countdownThreeSeconds(4).then(result => {
@@ -116,16 +113,24 @@ document.addEventListener('DOMContentLoaded', function () {
                         })
                     } else {
                         console.log("PERSONA NO ESTA EN LA WEBCAM")
-                        textErrorMessage.style.display = "block"
-                        textErrorMessage.innerHTML = "Por favor, colócate frente a la cámara y asegúrate <br> de que tu mano derecha esté en la posición correcta antes de continuar.";
+                        Swal.fire({
+                            title: '¡Importante!',
+                            text: 'Por favor, colócate frente a la cámara y asegúrate de que tu mano derecha esté en la posición correcta antes de continuar.',
+                            icon: 'warning',
+                            confirmButtonText: 'Entendido'
+                        })
                     }
                 })
                 .catch(error => {
                     console.log(error);
                 });
         } else {
-            textErrorMessage.style.display = "block";
-            textErrorMessage.innerHTML = "Parece que no has seleccionado ninguna letra. <br> Por favor, selecciona una letra antes de continuar.";
+            Swal.fire({
+                title: '¡Atención!',
+                text: 'Parece que no has seleccionado ninguna letra. Por favor, selecciona una letra antes de continuar.',
+                icon: 'error',
+                confirmButtonText: 'Entendido'
+            })
         }
     });
 
