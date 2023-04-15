@@ -119,7 +119,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 title: '¡Atención!',
                 text: 'Parece que no has seleccionado ninguna letra. Por favor, selecciona una letra antes de continuar.',
                 icon: 'error',
-                confirmButtonText: 'Entendido'
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#3085d6'
             })
         }
     });

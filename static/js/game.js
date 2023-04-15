@@ -115,7 +115,9 @@ function recursiveFunction() {
                                     icon: 'success',
                                     showCancelButton: true,
                                     confirmButtonText: 'Volver a jugar',
-                                    cancelButtonText: 'Cancelar'
+                                    cancelButtonText: 'Cancelar',
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33'
                                 }).then((result) => {
                                     // Si el usuario hizo clic en "Volver a jugar"
                                     if (result.isConfirmed) {
