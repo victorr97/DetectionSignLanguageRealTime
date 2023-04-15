@@ -89,64 +89,61 @@ function startGame() {
 
 function recursiveFunction() {
     let letterGame = imgsClick[activeIndex].firstElementChild.alt;
-    letterTrainSelectUser(letterGame)
-        .then(result => {
-            if (result === true) {
-                checkLetterIfCorrect()
-                    .then(result => {
-                        if (result === true) {
-                            Swal.fire({
-                                title: '¡Correcto!',
-                                text: '¡Sigue practicando signos!',
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 1000
-                            });
-                            if (letterGame !== 'Z') {
-                                updateActiveImage();
-                                selectLetter();
-                                handleScrollDown();
-                                recursiveFunction(); // Llamar la función recursivamente
-                            } else {
-                                stopCounter()
-                                Swal.fire({
-                                    title: '¡Felicitaciones!',
-                                    text: 'Completaste el juego en ' + tiempoGlobal + ' segundos.',
-                                    icon: 'success',
-                                    showCancelButton: true,
-                                    confirmButtonText: 'Volver a jugar',
-                                    cancelButtonText: 'Cancelar',
-                                    confirmButtonColor: '#3085d6',
-                                    cancelButtonColor: '#d33'
-                                }).then((result) => {
-                                    // Si el usuario hizo clic en "Volver a jugar"
-                                    if (result.isConfirmed) {
-                                        resetGame()
-                                        startGame()
-                                    } else if (result.isDismissed) {
-                                        // Redirigir al usuario a la página 'mainPage.html'
-                                        window.location.href = mainPageUrl;
-                                    }
-                                })
-                            }
-                        } else {
-                            Swal.fire({
-                                title: '¡Error!',
-                                text: '¡No se detectan las coordenadas en la webcam!',
-                                icon: 'error',
-                                showConfirmButton: false,
-                                timer: 1000
-                            });
-                            if (letterGame !== 'Z') {
-                                recursiveFunction(); // Llamar la función recursivamente
-                            }
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
+    letterTrainSelectUser(letterGame).then(result => {
+        if (result === true) {
+            checkLetterIfCorrect().then(result => {
+                if (result === true) {
+                    Swal.fire({
+                        title: '¡Correcto!',
+                        text: '¡Sigue practicando signos!',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000
                     });
-            }
-        });
+                    if (letterGame !== 'Z') {
+                        updateActiveImage();
+                        selectLetter();
+                        handleScrollDown();
+                        recursiveFunction(); // Llamar la función recursivamente
+                    } else {
+                        stopCounter()
+                        Swal.fire({
+                            title: '¡Felicitaciones!',
+                            text: 'Completaste el juego en ' + tiempoGlobal + ' segundos.',
+                            icon: 'success',
+                            showCancelButton: true,
+                            confirmButtonText: 'Volver a jugar',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33'
+                        }).then((result) => {
+                            // Si el usuario hizo clic en "Volver a jugar"
+                            if (result.isConfirmed) {
+                                resetGame()
+                                startGame()
+                            } else if (result.isDismissed) {
+                                // Redirigir al usuario a la página 'mainPage.html'
+                                window.location.href = mainPageUrl;
+                            }
+                        })
+                    }
+                } else {
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: '¡No se detectan las coordenadas en la webcam!',
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                    if (letterGame !== 'Z') {
+                        recursiveFunction(); // Llamar la función recursivamente
+                    }
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+    });
 }
 
 function setCounter(tiempoInicio, formatoHora) {
