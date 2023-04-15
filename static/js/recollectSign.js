@@ -100,13 +100,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                                     console.log("EL USUARIO HA SALIDO DEL PLANO");
                                                     changePopUpWrongSave();
                                                 } else {
-                                                    Swal.fire({
-                                                        title: "¡Atención!",
-                                                        text: "El signo que ingresaste es incorrecto y no se puede guardar.",
-                                                        icon: "warning",
-                                                        showConfirmButton: false,
-                                                        timer: 3000
-                                                    });
+                                                    console.log("EL USUARIO HA REALIZADO MAL EL SIGNO");
+                                                    changePopUpWrongSign();
                                                 }
                                             })
                                             .catch(error => {
@@ -187,6 +182,21 @@ document.addEventListener('DOMContentLoaded', function () {
         messageSaveData.innerHTML = null;
         titlePopUp.innerHTML = null;
         titlePopUp.innerHTML = "¡Error! Has salido del plano";
+        messageSaveData.innerHTML = "Quieres volver a repetir?";
+        saveMoreData.style.display = "flex"
+        noSaveMore.style.display = "flex"
+        containerButtonsPopUp.style.display = "flex";
+        containerButtonsPopUp.style.marginTop = "2%";
+        saveMoreData.style.margin = "0";
+        saveMoreData.style.marginRight = "15%";
+        noSaveMore.style.margin = "0";
+    }
+
+    function changePopUpWrongSign() {
+        boxCountDown.style.display = "none";
+        messageSaveData.innerHTML = null;
+        titlePopUp.innerHTML = null;
+        titlePopUp.innerHTML = "¡Error! El signo que ingresaste es incorrecto y no se puede guardar";
         messageSaveData.innerHTML = "Quieres volver a repetir?";
         saveMoreData.style.display = "flex"
         noSaveMore.style.display = "flex"

@@ -120,15 +120,13 @@ def saveDataSet() -> None:
                         row = landmarks.pointsRealTime(results)
                         Z = pd.DataFrame([row])
                         body_language_class = model.predict(Z)[0]
+                        print(body_language_class)
 
-                        #Lo que me esta poniendo el usuario es la letra que dice
+                        #Compruebo que el signo se haga correctamente
                         if body_language_class == selectSign:
-                            print(body_language_class)
                             row.insert(0, selectSign)
                             saveAllDataSignLanguage(row)
                         else:
-                            print("NO SE GUARDA")
-                            print(body_language_class)
                             totalIncorrect.append(row)
                             if len(totalIncorrect) == SAVE_LANDMARKS:
                                 totalIncorrect.clear()
