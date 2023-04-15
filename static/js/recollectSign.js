@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const popup = document.getElementById("popupSaveData");
     const saveMoreData = document.getElementById("saveMoreData");
     const noSaveMore = document.getElementById("noSaveMore");
+    const popUpContainer = document.getElementById("popUpContainer");
     const containerButtonsPopUp = document.getElementById("containerButtonsPopUp");
     const messageSaveData = document.getElementById("messageSaveData");
     const loading = document.getElementById("loadingRecollect");
@@ -76,54 +77,44 @@ document.addEventListener('DOMContentLoaded', function () {
         //Si hay letra compruebo si la persona esta bien posicionado
         if (checkLetter()) {
             // Enviado una solicitud Fetch al backend para comprobar si la persona esta en la camara
-            checkPerson()
-                .then(result => {
-                    if (result === true) {
-                        console.log("PERSONA EN WEBCAM");
-                        popup.style.display = 'block';
-                        //Cuenta 3 segundos
-                        countdownThreeSeconds(4).then(result => {
-                            if (result === true) {
-                                console.log("COUNTER FINISHED");
-                                setSaveDataInBackend().then(result => {
-                                    if (result === true) {
-                                        console.log("GUARDANDO DATOS")
-                                        checkFinishSaveData()
-                                            .then(result => {
-                                                if (result === true) {
-                                                    console.log("GUARDADO DATOS CORRECTAMENTE");
-                                                    changePopUpGoodSave();
-                                                } else if (result === false) {
-                                                    console.log("EL USUARIO HA SALIDO DEL PLANO");
-                                                    changePopUpWrongSave();
-                                                } else {
-                                                    console.log("EL USUARIO HA REALIZADO MAL EL SIGNO");
-                                                    changePopUpWrongSign();
-                                                }
-                                            })
-                                            .catch(error => {
-                                                console.log(error);
-                                            });
-                                    }
-                                })
-                                    .catch(error => {
-                                        console.log(error);
-                                    });
-                            }
-                        })
-                    } else {
-                        console.log("PERSONA NO ESTA EN LA WEBCAM")
-                        Swal.fire({
-                            title: '¡Importante!',
-                            text: 'Por favor, colócate frente a la cámara y asegúrate de que tu mano derecha esté en la posición correcta antes de continuar.',
-                            icon: 'warning',
-                            confirmButtonText: 'Entendido'
-                        })
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+            popup.style.display = 'block';
+            //Cuenta 3 segundos
+            countdownThreeSeconds(4).then(result => {
+                if (result === true) {
+                    console.log("COUNTER FINISHED");
+                    checkPerson().then(result => {
+                        if (result === true) {
+                            console.log("PERSONA EN WEBCAM");
+                            setSaveDataInBackend().then(result => {
+                                if (result === true) {
+                                    console.log("GUARDANDO DATOS");
+                                    checkFinishSaveData().then(result => {
+                                            if (result === true) {
+                                                console.log("GUARDADO DATOS CORRECTAMENTE");
+                                                changePopUpGoodSave();
+                                            } else if (result === false) {
+                                                console.log("EL USUARIO HA SALIDO DEL PLANO");
+                                                changePopUpWrongSave();
+                                            } else {
+                                                console.log("EL USUARIO HA REALIZADO MAL EL SIGNO");
+                                                changePopUpWrongSign();
+                                            }
+                                        }).catch(error => {
+                                            console.log(error);
+                                        });
+                                }
+                            }).catch(error => {
+                                console.log(error);
+                            });
+                        } else {
+                            console.log("PERSONA NO ESTA EN LA WEBCAM")
+                            changePopUpPersonIsNotPositioned()
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                }
+            })
         } else {
             Swal.fire({
                 title: '¡Atención!',
@@ -177,6 +168,25 @@ document.addEventListener('DOMContentLoaded', function () {
         noSaveMore.style.display = "flex"
         containerButtonsPopUp.style.display = "flex";
         containerButtonsPopUp.style.marginTop = "2%";
+        popUpContainer.style.height = "20vh";
+        popUpContainer.style.marginBottom = "16rem";
+        saveMoreData.style.margin = "0";
+        saveMoreData.style.marginRight = "15%";
+        noSaveMore.style.margin = "0";
+    }
+
+    function changePopUpPersonIsNotPositioned() {
+        boxCountDown.style.display = "none";
+        messageSaveData.innerHTML = null;
+        titlePopUp.innerHTML = null;
+        titlePopUp.innerHTML = "¡Error! Por favor, colócate frente a la cámara y asegúrate de que tu mano derecha esté en la posición correcta antes de continuar.\n";
+        messageSaveData.innerHTML = "Quieres volver a repetir?";
+        saveMoreData.style.display = "flex"
+        noSaveMore.style.display = "flex"
+        containerButtonsPopUp.style.display = "flex";
+        containerButtonsPopUp.style.marginTop = "2%";
+        popUpContainer.style.height = "25vh";
+        popUpContainer.style.marginBottom = "19rem";
         saveMoreData.style.margin = "0";
         saveMoreData.style.marginRight = "15%";
         noSaveMore.style.margin = "0";
@@ -192,6 +202,8 @@ document.addEventListener('DOMContentLoaded', function () {
         noSaveMore.style.display = "flex"
         containerButtonsPopUp.style.display = "flex";
         containerButtonsPopUp.style.marginTop = "2%";
+        popUpContainer.style.height = "20vh";
+        popUpContainer.style.marginBottom = "16rem";
         saveMoreData.style.margin = "0";
         saveMoreData.style.marginRight = "15%";
         noSaveMore.style.margin = "0";
@@ -207,6 +219,8 @@ document.addEventListener('DOMContentLoaded', function () {
         noSaveMore.style.display = "flex"
         containerButtonsPopUp.style.display = "flex";
         containerButtonsPopUp.style.marginTop = "2%";
+        popUpContainer.style.height = "20vh";
+        popUpContainer.style.marginBottom = "16rem";
         saveMoreData.style.margin = "0";
         saveMoreData.style.marginRight = "15%";
         noSaveMore.style.margin = "0";
@@ -218,6 +232,8 @@ document.addEventListener('DOMContentLoaded', function () {
         messageSaveData.innerHTML = null;
         titlePopUp.innerHTML = null;
         titlePopUp.innerHTML = "Guardando coordenadas en ";
+        popUpContainer.style.height = "20vh";
+        popUpContainer.style.marginBottom = "16rem";
         saveMoreData.style.display = "none"
         noSaveMore.style.display = "none"
     }
