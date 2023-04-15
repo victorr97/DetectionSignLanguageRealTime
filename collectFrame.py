@@ -16,6 +16,7 @@ finishSaveData = "False"
 savedSignError = "False"
 detectPersonWhenSaveData = "False"
 SAVE_LANDMARKS = 15
+ERROR_LANDMARKS = 25
 
 
 def setSelectSign(selectUser) -> None:
@@ -128,7 +129,7 @@ def saveDataSet() -> None:
                             saveAllDataSignLanguage(row)
                         else:
                             totalIncorrect.append(row)
-                            if len(totalIncorrect) == SAVE_LANDMARKS:
+                            if len(totalIncorrect) == ERROR_LANDMARKS:
                                 totalIncorrect.clear()
                                 setSavedSignError("True")
                 else:

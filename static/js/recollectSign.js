@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
         //Compruebo que la letra sea correcta
         if (checkLetter()) {
             e.preventDefault();
-
             //Envio letra seleccionada por el usuario al backend
             procesarDatos(selectElement.value)
                 .then(result => {
@@ -67,9 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log(error);
                 });
         } else {
-            containerImg.style.display = "flex";
-            const rutaImagen = imgHelp.getAttribute("data-img");
-            imgHelp.src = rutaImagen.replace("A", "DOUBT");
+            containerImg.style.display = "none";
         }
     });
 
