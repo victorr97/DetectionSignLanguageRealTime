@@ -35,24 +35,3 @@ def formatLandmarks(puntos) -> None:
         with open('generatedFiles/landmarks/dataSet.csv', mode='w', newline='') as f:
             mywriter = csv.writer(f)
             mywriter.writerow(landmarks)
-
-
-def collectPointsRow(puntos, class_name):
-    # puntosCara = puntos.face_landmarks.landmark
-    # face_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosCara]).flatten())
-
-    # puntosPose = puntos.pose_landmarks.landmark
-    # pose_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosPose]).flatten())
-
-    puntosManoIzq = puntos.left_hand_landmarks.landmark
-    manoIzq_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosManoIzq]).flatten())
-
-    #puntosManoDer = puntos.right_hand_landmarks.landmark
-    #manoDer_row = list(np.array([[landmark.x, landmark.y, landmark.z, landmark.visibility] for landmark in puntosManoDer]).flatten())
-
-    # row = face_row+pose_row+manoIzq_row+manoDer_row
-    row = manoIzq_row
-
-    row.insert(0, class_name)
-
-    return row
