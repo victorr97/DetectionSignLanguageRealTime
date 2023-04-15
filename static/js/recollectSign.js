@@ -96,9 +96,17 @@ document.addEventListener('DOMContentLoaded', function () {
                                                 if (result === true) {
                                                     console.log("GUARDADO DATOS CORRECTAMENTE");
                                                     changePopUpGoodSave();
-                                                } else {
+                                                } else if (result === false) {
                                                     console.log("EL USUARIO HA SALIDO DEL PLANO");
                                                     changePopUpWrongSave();
+                                                } else {
+                                                    Swal.fire({
+                                                        title: "¡Atención!",
+                                                        text: "El signo que ingresaste es incorrecto y no se puede guardar.",
+                                                        icon: "warning",
+                                                        showConfirmButton: false,
+                                                        timer: 3000
+                                                    });
                                                 }
                                             })
                                             .catch(error => {

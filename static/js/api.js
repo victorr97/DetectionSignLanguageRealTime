@@ -12,12 +12,15 @@ async function checkFinishSaveData() {
                     //Respuesta del servidor
                     console.log(data);
                     if (data.finishSave === 'True') {
-                        clearInterval(intervalId); // Detiene la llamada a setInterval
+                        clearInterval(intervalId);
                         resolve(true);
                     }
                     if (data.person === 'False') {
-                        clearInterval(intervalId); // Detiene la llamada a setInterval
+                        clearInterval(intervalId);
                         resolve(false);
+                    }
+                    if (data.errorSign === 'True'){
+                        resolve(null); // Utilizo null para indicar el estado de error
                     }
                 })
                 .catch(error => {

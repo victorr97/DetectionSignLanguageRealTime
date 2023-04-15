@@ -13,6 +13,7 @@ selectSign = ""
 detectPerson = "False"
 startSaveData = ""
 finishSaveData = "False"
+savedSignError = "False"
 detectPersonWhenSaveData = "False"
 SAVE_LANDMARKS = 15
 
@@ -42,6 +43,15 @@ def setFinishSaveData(saveData):
 
 def getFinishSaveData():
     return finishSaveData
+
+
+def setSavedSignError(saveData):
+    global savedSignError
+    savedSignError = saveData
+
+
+def getSavedSignError():
+    return savedSignError
 
 
 def saveDataSet() -> None:
@@ -121,10 +131,8 @@ def saveDataSet() -> None:
                             print(body_language_class)
                             totalIncorrect.append(row)
                             if len(totalIncorrect) == SAVE_LANDMARKS:
-                                print("POPUP WARNING USER")
-
-
-
+                                totalIncorrect.clear()
+                                setSavedSignError("True")
                 else:
                     detectPerson = "False"
                     if len(selectSign) != 0 and startSaveData == "True":

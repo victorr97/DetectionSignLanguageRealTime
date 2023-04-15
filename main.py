@@ -17,6 +17,7 @@ def procesar():
         collectFrame.setSelectSign(letterSign)
         # Reset var FinishSaveData
         collectFrame.setFinishSaveData("False")
+        collectFrame.setSavedSignError("False")
         return jsonify(respuesta)
     else:
         return jsonify({'mensaje': 'La solicitud no es una solicitud JSON'})
@@ -54,7 +55,7 @@ def letterTrain():
 @app.route('/checkSaveData', methods=['GET'])
 def checkSaveData():
     if request.is_json:
-        respuesta = {'finishSave': collectFrame.getFinishSaveData(), 'person': collectFrame.getPersonWhenSaveData()}
+        respuesta = {'finishSave': collectFrame.getFinishSaveData(), 'person': collectFrame.getPersonWhenSaveData(), 'errorSign': collectFrame.getSavedSignError()}
         return jsonify(respuesta)
 
     else:
