@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Enviado una solicitud Fetch al backend para comprobar si la persona esta en la camara
             popup.style.display = 'block';
             //Cuenta 3 segundos
-            countdownThreeSeconds(4).then(result => {
+            countDownSeconds(3).then(result => {
                 if (result === true) {
                     console.log("COUNTER FINISHED");
                     checkPerson().then(result => {
@@ -135,24 +135,17 @@ document.addEventListener('DOMContentLoaded', function () {
         return selectElement.value !== "messageSelect";
     }
 
-    function countdownThreeSeconds(seconds) {
-        const countDownDate = new Date().getTime() + seconds * 1000;
-        // Actualiza contador cada 1seg
+    function countDownSeconds(seconds){
         return new Promise((resolve, reject) => {
-            let x = setInterval(() => {
-                const now = new Date().getTime();
-                let distance = countDownDate - now;
-
-                //  Cálculo del tiempo segundos
-                countDown.innerHTML = Math.floor((distance % (1000 * 60)) / 1000).toString();
-
-                if (distance < 0) {
-                    isCountdownFinished = true
-                    clearInterval(x);
-                    countDown.innerHTML = "0";
-                    resolve(true);
-                }
-            }, 1000);
+            const timer = setInterval(() => {
+                    seconds--;
+                    countDown.innerHTML = seconds
+                    if (seconds === 0) {
+                        clearInterval(timer);
+                        isCountdownFinished = true
+                        resolve(true);
+                    }
+                }, 1000);
         });
     }
 
