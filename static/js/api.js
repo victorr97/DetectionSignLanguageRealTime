@@ -1,3 +1,11 @@
+/**
+ ************************** RECOLLECTSIGN ****************************
+ * La función checkFinishSaveData comprueba si se esta guardando los datos correctamente en el dataSet
+ * @returns {Promise<boolean>} - Promesa que resuelve a un booleano indicando varias casuisticas
+ * Promesa = True : Indica que se ha almacenado correctamente en el dataSet
+ * Promesa = False : Indica que el usuario ha salido del plano mientras se guardaban los datos
+ * Promesa = null : Indica que el usuario no esta realizando correctamente el signo seleccionado
+ */
 async function checkFinishSaveData() {
     return new Promise((resolve, reject) => {
         let intervalId = setInterval(() => {
@@ -19,7 +27,7 @@ async function checkFinishSaveData() {
                         clearInterval(intervalId);
                         resolve(false);
                     }
-                    if (data.errorSign === 'True'){
+                    if (data.errorSign === 'True') {
                         resolve(null); // Utilizo null para indicar el estado de error
                     }
                 })
@@ -27,10 +35,16 @@ async function checkFinishSaveData() {
                     console.log(error);
                     reject(error);
                 });
-        }, 1000); // Ejecutar cada segundo
+        }, 1000); // Ejecuta cada segundo
     });
 }
 
+/**
+ ************************** RECOLLECTSIGN ****************************
+ * La función procesarDatos envia la letra seleccionada por el usuario al servidor.
+ * @param {string} letterSign - La letra que se procesará.
+ * @returns {Promise<boolean>} - Promesa que resuelve a un booleano indicando si la letra se guardo correctamente o no.
+ */
 function procesarDatos(letterSign) {
     return new Promise((resolve, reject) => {
         fetch('/procesar', {
@@ -53,6 +67,11 @@ function procesarDatos(letterSign) {
     });
 }
 
+/**
+ ************************** RECOLLECTSIGN ****************************
+ * La función checkPerson comprueba si la persona se encuentra en la cámara al empezar a guardar datos.
+ * @returns {Promise<boolean>} - Promesa que resuelve a un booleano indicando si el usuario se encuentra bien posicionado en la cámara o no.
+ */
 function checkPerson() {
     return new Promise((resolve, reject) => {
         fetch('/checkPerson', {
@@ -78,34 +97,43 @@ function checkPerson() {
     });
 }
 
+/**
+ ************************** RECOLLECTSIGN ****************************
+ * La función setSaveDataInBackend indica al backend que ya puede empezar a almacenar datos
+ * @returns {Promise<boolean>} - Promesa que resuelve a un booleano indicando que va a empezar a almacenar datos.
+ */
 function setSaveDataInBackend() {
     return new Promise((resolve, reject) => {
-            fetch('/goSave', {
-        method: 'POST',
-        body: JSON.stringify({'startSaveData': "True"}),
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8'
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            //Respuesta del servidor
-            console.log(data);
-            if (data.startSaveDataInFile === 'True'){
-                resolve(true);
-            } else {
-                resolve(false);
+        fetch('/goSave', {
+            method: 'POST',
+            body: JSON.stringify({'startSaveData': "True"}),
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
             }
         })
-        .catch(error => {
-            console.log(error);
-            reject(false)
-        });
+            .then(response => response.json())
+            .then(data => {
+                //Respuesta del servidor
+                console.log(data);
+                if (data.startSaveDataInFile === 'True') {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                reject(false)
+            });
     });
 }
 
-/********** TRAIN & GAME ***********/
-
+/**
+ ************************** TRAIN && GAME ****************************
+ * La función letterTrainSelectUser envia la letra seleccionada por el usuario al servidor.
+ * @param {string} letterTrain - La letra que se procesará.
+ * @returns {Promise<boolean>} - Promesa que resuelve a un booleano indicando si la letra se guardo correctamente o no.
+ */
 function letterTrainSelectUser(letterTrain) {
     return new Promise((resolve, reject) => {
         fetch('/letterTrain', {
@@ -128,6 +156,13 @@ function letterTrainSelectUser(letterTrain) {
     });
 }
 
+/**
+ ************************** TRAIN && GAME ****************************
+ * La función checkLetterIfCorrect comprueba si el usuario ha realizado correctamente la letra que esta realizando
+ * @returns {Promise<boolean>} - Promesa que resuelve a un booleano indicando si la letra se ha realizado correctamente
+ * Promesa = True : Indica que el usuario ha estado realizado correctamente la letra seleccionada de train o game.
+ * Promesa = False : Indica que el usuario ha sido reconocido al principio y ha salido del plano cuando se estaba comprobando si hacia bien el signo.
+ */
 async function checkLetterIfCorrect() {
     return new Promise((resolve, reject) => {
         let intervalId = setInterval(() => {
