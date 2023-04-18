@@ -1,9 +1,12 @@
+
+
 const rightDiv = document.getElementById("containerImg");
 const textSelectImg = document.getElementById('textSelectImg');
 const infoSign = document.getElementById('infoSign');
 const imgsClick = document.querySelectorAll('a');
 const img = document.querySelector('.frameWebCam');
 const loading = document.getElementById("loading");
+
 let scrollPosition = 0;
 const heightImg = 235;
 const NUMBER_IMG = 26;
@@ -178,23 +181,29 @@ function stopCounter() {
     clearInterval(contador);
 }
 
+/**
+ * Esta función se llama cuando el usuario ha realizado correctamente el signo y ha de hacer el siguiente
+ */
 function handleScrollDown() {
-    scrollPosition += heightImg;
-    scrollSmoothly();
+    scrollPosition += heightImg; //Sumo la altura de la imagen al valor de la posición de desplazamiento actual
+    scrollSmoothly(500); //Creo un efecto de scroll suave hacia esa nueva posición.
 }
 
+/**
+ * Esta función se llama cuando el usuario ha realizado todos los signos y quiere volver a empezar el juego
+ */
 function handleScrollUp() {
-    scrollPosition -= heightImg * NUMBER_IMG;
-    scrollSmoothly()
-    scrollPosition = 0
+    scrollPosition -= heightImg * NUMBER_IMG; //Resto la altura de todas las imagen al valor de la posición de desplazamiento actual
+    scrollSmoothly(1500); //Creo un efecto de scroll suave hacia la posición principal.
+    scrollPosition = 0;
 }
 
 /*
 * La función scrollSmoothly calcula la distancia entre la posición actual y la posición deseada y hace un efecto de scrolling.
 */
-function scrollSmoothly() {
+function scrollSmoothly(time) {
     const targetPosition = scrollPosition;
-    const duration = 500; //500ms
+    const duration = time; //500ms o 1,5s
     const startPosition = rightDiv.scrollTop;
     const distance = targetPosition - startPosition;
     let startTime = null;
