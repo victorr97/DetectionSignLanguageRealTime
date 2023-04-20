@@ -2,9 +2,6 @@
  ************************** RECOLLECTSIGN ****************************
  * La función checkFinishSaveData comprueba si se esta guardando los datos correctamente en el dataSet
  * @returns {Promise<boolean>} - Promesa que resuelve a un booleano indicando varias casuisticas
- * Promesa = True : Indica que se ha almacenado correctamente en el dataSet
- * Promesa = False : Indica que el usuario ha salido del plano mientras se guardaban los datos
- * Promesa = null : Indica que el usuario no esta realizando correctamente el signo seleccionado
  */
 async function checkFinishSaveData() {
     return new Promise((resolve, reject) => {
@@ -21,14 +18,17 @@ async function checkFinishSaveData() {
                     console.log(data);
                     if (data.finishSave === 'True') {
                         clearInterval(intervalId);
+                        // Promesa = True : Indica que se ha almacenado correctamente en el dataSet
                         resolve(true);
                     }
                     if (data.person === 'False') {
                         clearInterval(intervalId);
+                        // Promesa = False : Indica que el usuario ha salido del plano mientras se guardaban los datos
                         resolve(false);
                     }
                     if (data.errorSign === 'True') {
-                        resolve(null); // Utilizo null para indicar el estado de error
+                        // Promesa = null : Indica que el usuario no esta realizando correctamente el signo seleccionado
+                        resolve(null);
                     }
                 })
                 .catch(error => {
@@ -58,6 +58,7 @@ function procesarDatos(letterSign) {
             .then(data => {
                 //Respuesta del servidor
                 console.log(data);
+                // Promesa = True : Indica si la letra se guardo correctamente o no.
                 resolve(true);
             })
             .catch(error => {
@@ -85,6 +86,7 @@ function checkPerson() {
                 //Respuesta del servidor
                 console.log(data);
                 if (data.personInCam === 'True') {
+                    //
                     resolve(true);
                 } else {
                     resolve(false);
@@ -116,8 +118,10 @@ function setSaveDataInBackend() {
                 //Respuesta del servidor
                 console.log(data);
                 if (data.startSaveDataInFile === 'True') {
+                    // Promesa = True : Indica que va a empezar a almacenar datos.
                     resolve(true);
                 } else {
+                    // Promesa = False : Indica que aun no va a empezar a almacenar datos.
                     resolve(false);
                 }
             })
@@ -147,6 +151,7 @@ function letterTrainSelectUser(letterTrain) {
             .then(data => {
                 //Respuesta del servidor
                 console.log(data);
+                // Promesa = True : Indica si la letra se guardo correctamente o no.
                 resolve(true);
             })
             .catch(error => {
@@ -160,8 +165,6 @@ function letterTrainSelectUser(letterTrain) {
  ************************** TRAIN && GAME ****************************
  * La función checkLetterIfCorrect comprueba si el usuario ha realizado correctamente la letra que esta realizando
  * @returns {Promise<boolean>} - Promesa que resuelve a un booleano indicando si la letra se ha realizado correctamente
- * Promesa = True : Indica que el usuario ha estado realizado correctamente la letra seleccionada de train o game.
- * Promesa = False : Indica que el usuario ha sido reconocido al principio y ha salido del plano cuando se estaba comprobando si hacia bien el signo.
  */
 async function checkLetterIfCorrect() {
     return new Promise((resolve, reject) => {
@@ -178,10 +181,12 @@ async function checkLetterIfCorrect() {
                     console.log(data);
                     if (data.checkLetter === 'True') {
                         clearInterval(intervalId); // Detiene la llamada a setInterval
+                        // Promesa = True : Indica que el usuario ha estado realizado correctamente la letra seleccionada de train o game.
                         resolve(true);
                     }
                     if (data.firstTimeRecognisedPerson === 'True' && data.recognisedPerson === 'False') {
                         clearInterval(intervalId); // Detiene la llamada a setInterval
+                        // Promesa = False : Indica que el usuario ha sido reconocido al principio y ha salido del plano cuando se estaba comprobando si hacia bien el signo.
                         resolve(false);
                     }
                 })
