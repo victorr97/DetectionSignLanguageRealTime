@@ -57,7 +57,7 @@ def getSavedSignError():
 
 def saveDataSet() -> None:
     print("*** SAVE DATA ***")
-    with open('generatedFiles/neuralNetwork/dataSet282landmarks.pkl', 'rb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet282landmarksV2.pkl', 'rb') as f:
         model = joblib.load(f)[5]
 
         mp_drawing = mp.solutions.drawing_utils

@@ -1,5 +1,3 @@
-
-
 const rightDiv = document.getElementById("containerImg");
 const textSelectImg = document.getElementById('textSelectImg');
 const infoSign = document.getElementById('infoSign');
@@ -36,7 +34,7 @@ function updateActiveImage() {
     imgsClick[activeIndex].firstElementChild.classList.replace('notActiveImg', 'activeImg');
 }
 
-function updateLastActiveImage(){
+function updateLastActiveImage() {
     imgsClick[activeIndex].firstElementChild.classList.replace('activeImg', 'notActiveImg');
     activeIndex = 0;
     imgsClick[activeIndex].firstElementChild.classList.replace('notActiveImg', 'activeImg');
@@ -171,12 +169,18 @@ function setCounter(tiempoInicio, formatoHora) {
     }
 }
 
+/**
+ * Esta función resetea el juego una vez ha acabado de hacer todas las letras
+ */
 function resetGame() {
-    updateLastActiveImage()
-    selectLetter()
-    handleScrollUp()
+    updateLastActiveImage() //Cambia el css de seleccion de imagen de la ultima a la primera y actualiza el indice
+    selectLetter() //Muestra la primera letra seleccionada
+    handleScrollUp() //Hace el efecto de scroll hacia arriba
 }
 
+/**
+ * Esta función para el contador sin resetearlo
+ */
 function stopCounter() {
     clearInterval(contador);
 }
@@ -198,9 +202,9 @@ function handleScrollUp() {
     scrollPosition = 0;
 }
 
-/*
-* La función scrollSmoothly calcula la distancia entre la posición actual y la posición deseada y hace un efecto de scrolling.
-*/
+/**
+ * La función scrollSmoothly calcula la distancia entre la posición actual y la posición deseada y hace un efecto de scrolling.
+ */
 function scrollSmoothly(time) {
     const targetPosition = scrollPosition;
     const duration = time; //500ms o 1,5s

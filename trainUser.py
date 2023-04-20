@@ -82,7 +82,7 @@ def getListLetters():
 
 def trainWeb():
     print("*** TRAIN ***")
-    with open('generatedFiles/neuralNetwork/dataSet282landmarks.pkl', 'rb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet282landmarksV2.pkl', 'rb') as f:
         MAX_ARRAY = 500
         model = joblib.load(f)[5]
 

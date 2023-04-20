@@ -105,10 +105,23 @@ def gridSearchCrossValidation(X_train, y_train):
         'max_iter': [100, 200, 300],
     }
 
+    param_grid_pipe_NN = [
+        {
+            'dim': [PCA(), TruncatedSVD(), LinearDiscriminantAnalysis(), TSNE()],
+            'dim__n_components': range_components,
+            'clf__hidden_layer_sizes': [(150, 80, 40)],
+            'clf__activation': ['relu'],
+            'clf__solver': ['adam'],
+            'clf__batch_size': [16, 32, 64],
+            'clf__max_iter': [100, 200, 300],
+        }
+    ]
+
+
     print("\n***Starting training***\n")
     warnings.filterwarnings('ignore', category=ConvergenceWarning)
     #270 iteraciones para acabar RedNeuronal
-    gridPipe = GridSearchCV(pipeMlpc, param_grid_pipe, scoring='accuracy', cv=10, refit=True, verbose=2)
+    gridPipe = GridSearchCV(pipeMlpc, param_grid_pipe_NN, scoring='accuracy', cv=10, refit=True, verbose=2)
     gridPipe.fit(X_train, y_train)
     print("\n***Finished training***\n")
 
@@ -129,7 +142,7 @@ def trainingData():
 
     gridPipe = gridSearchCrossValidation(X_train, y_train)
 
-    with open('generatedFiles/neuralNetwork/dataSet282landmarks.pkl', 'wb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet282landmarksV2.pkl', 'wb') as f:
         joblib.dump((X_train, y_train, X_test, y_test, nameClass, gridPipe), f, compress=1)
         print("\n*************** GUARDADO MODELO EN ARCHIVO ***************\n")
 

@@ -282,7 +282,7 @@ def SVDChart3D(X_train, y_train, nameClass) -> None:
 
 def showCharts() -> None:
     print("*** SHOW CHARTS ***")
-    with open('generatedFiles/neuralNetwork/dataSet282landmarks.pkl', 'rb') as f:
+    with open('generatedFiles/neuralNetwork/dataSet282landmarksV2.pkl', 'rb') as f:
         X_train, y_train, X_test, y_test, nameClass, gridPipe = joblib.load(f)
 
         normalizedData(X_train, X_test)
