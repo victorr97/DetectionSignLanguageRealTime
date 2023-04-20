@@ -177,7 +177,9 @@ function recursiveFunction() {
 }
 
 /**
- * Esta función resetea se ejecuta cada segundo actualizando el contador del juego
+ * Esta función, llamada setCounter, actualiza el contador del juego cada segundo.
+ * @param {number} tiempoInicio - El tiempo de inicio del juego, en milisegundos.
+ * @param {boolean} formatoHora - Indica si se debe utilizar el formato HH:MM:SS (si el tiempo de juego ha superado 1 hora).
  */
 function setCounter(tiempoInicio, formatoHora) {
     const tiempoActual = Date.now();
@@ -274,4 +276,3 @@ function scrollSmoothly(time) {
     // Se llama a requestAnimationFrame para iniciar la animación
     requestAnimationFrame(animation);
 }
-
