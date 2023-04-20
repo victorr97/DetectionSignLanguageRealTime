@@ -1,10 +1,12 @@
+//Variables que seleccionan elementos de HTML mediante el ID
 const rightDiv = document.getElementById("containerImg");
 const textSelectImg = document.getElementById('textSelectImg');
 const infoSign = document.getElementById('infoSign');
-const imgsClick = document.querySelectorAll('a');
-const img = document.querySelector('.frameWebCam');
 const loading = document.getElementById("loading");
+const imgsClick = document.querySelectorAll('a'); //Selecciona todos los elementos 'a' y los almacena en un NodeList
+const img = document.querySelector('.frameWebCam'); //Selecciona el primer elemento con la clase "frameWebCam"
 
+//Variables de control
 let scrollPosition = 0;
 const heightImg = 235;
 const NUMBER_IMG = 26;
@@ -12,20 +14,26 @@ let activeIndex = 0;
 let tiempoGlobal = "00:00";
 let contador;
 
-
+// Cuando la webcam ha terminado de cargarse, se ejecuta el juego
 img.addEventListener('load', function () {
     loading.style.display = "none";
     infoSign.style.display = "flex";
     textSelectImg.style.display = "flex";
-    imgsClick[activeIndex].firstElementChild.classList.replace('notActiveImg', 'activeImg');
-    selectLetter()
-    countDownStartGame()
+    imgsClick[activeIndex].firstElementChild.classList.replace('notActiveImg', 'activeImg'); //Mostramos la primera imagen seleccionada
+    selectLetter() //Mostramos al usuario que signo ha de realizar
+    countDownStartGame() //Mostramos el popUp de la cuenta atras para empezar el juego
 });
 
+/**
+ * Esta función muestra el signo que ha de realizar el usuario
+ */
 function selectLetter() {
     textSelectImg.innerHTML = "SIGNO PARA REALIZAR: <strong>" + imgsClick[activeIndex].firstElementChild.alt + "</strong>";
 }
 
+/**
+ * Esta función reemplaza la imagen seleccionada por la siguiente
+ */
 function updateActiveImage() {
     // Cambiamos la clase del elemento activo actual a "notActiveImg"
     imgsClick[activeIndex].firstElementChild.classList.replace('activeImg', 'notActiveImg');
@@ -34,12 +42,18 @@ function updateActiveImage() {
     imgsClick[activeIndex].firstElementChild.classList.replace('notActiveImg', 'activeImg');
 }
 
+/**
+ * Esta función reemplaza la ultima imagen seleccionada por la primera (reset)
+ */
 function updateLastActiveImage() {
     imgsClick[activeIndex].firstElementChild.classList.replace('activeImg', 'notActiveImg');
     activeIndex = 0;
     imgsClick[activeIndex].firstElementChild.classList.replace('notActiveImg', 'activeImg');
 }
 
+/**
+ * Esta función muestra un popUp de 6 segundos para indicar al usuario que va a empezar la partida
+ */
 function countDownStartGame() {
     Swal.fire({
         title: 'Prepárate para jugar en',
@@ -74,25 +88,38 @@ function countDownStartGame() {
         backdrop: false,
         showConfirmButton: false
     }).then(() => {
+        //Una vez ha acabado el tiempo empieza el juego
         startGame()
     });
 }
 
+/**
+ * Esta función hace empezar el juego
+ */
 function startGame() {
     const tiempoInicio = Date.now();
     let formatoHora = false;
+    //Tenemos el contador en una variable global para ir controlando su estado, aqui se va actualizando su valor cada 1 segundo.
     contador = setInterval(function () {
         setCounter(tiempoInicio, formatoHora);
     }, 1000);
 
-    recursiveFunction(contador)
+    //Llamamos a la funcion recursiva que se encarga de ir cambiando de letra si es correcta
+    recursiveFunction()
 }
 
+/**
+ * Esta función recursiva se encarga de enviar automaticamente la siguiente letra que tiene que hacer el usuario al backend
+ * y hace las comprobaciones de que esta haciendo la letra correctamente.
+ */
 function recursiveFunction() {
+    //Guardamos la letra que tiene que hacer el usuario y la enviamos al backend
     let letterGame = imgsClick[activeIndex].firstElementChild.alt;
     letterTrainSelectUser(letterGame).then(result => {
         if (result === true) {
+            //Si la letra se ha enviado correctamente vamos comprobando hasta que sea correcto
             checkLetterIfCorrect().then(result => {
+                //Si el usuario ha realizado la letra correctamente se muestra el popUp de correcto
                 if (result === true) {
                     Swal.fire({
                         title: '¡Correcto!',
@@ -101,12 +128,14 @@ function recursiveFunction() {
                         showConfirmButton: false,
                         timer: 1000
                     });
+                    //Si la letra no es la 'Z' actualizamos la imagen, la letra a hacer, hacemos el efecto de scroll y volvemos a hacer lo mismo con la siguient letra
                     if (letterGame !== 'Z') {
                         updateActiveImage();
                         selectLetter();
                         handleScrollDown();
-                        recursiveFunction(); // Llamar la función recursivamente
+                        recursiveFunction(); // Llamada la función recursivamente con la siguiente letra
                     } else {
+                        //Si la letra es la Z significa que ha acabado el juego, paramos contador y mostramos popUp al usuario
                         stopCounter()
                         Swal.fire({
                             title: '¡Felicitaciones!',
@@ -118,10 +147,10 @@ function recursiveFunction() {
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33'
                         }).then((result) => {
-                            // Si el usuario hizo clic en "Volver a jugar"
+                            // Si el usuario hizo clic en "Volver a jugar" se resetea el juego y vuelve a empezar
                             if (result.isConfirmed) {
                                 resetGame()
-                                startGame()
+                                countDownStartGame()
                             } else if (result.isDismissed) {
                                 // Redirigir al usuario a la página 'mainPage.html'
                                 window.location.href = mainPageUrl;
@@ -147,6 +176,9 @@ function recursiveFunction() {
     });
 }
 
+/**
+ * Esta función resetea se ejecuta cada segundo actualizando el contador del juego
+ */
 function setCounter(tiempoInicio, formatoHora) {
     const tiempoActual = Date.now();
     const tiempoTranscurrido = tiempoActual - tiempoInicio;
@@ -158,6 +190,7 @@ function setCounter(tiempoInicio, formatoHora) {
         formatoHora = true;
     }
 
+    //Si el juego ha llegado a la hora cambiamos el formato a HH:MM:SS
     if (formatoHora) {
         document.getElementById("minutos").innerHTML = horas.toString().padStart(2, "0");
         document.getElementById("segundos").innerHTML = minutos.toString().padStart(2, "0") + ":" + segundos.toString().padStart(2, "0");
@@ -207,16 +240,20 @@ function handleScrollUp() {
  */
 function scrollSmoothly(time) {
     const targetPosition = scrollPosition;
-    const duration = time; //500ms o 1,5s
+    const duration = time; // Puede ser 500ms o 1.5s, dependiendo del valor que se pase como argumento
     const startPosition = rightDiv.scrollTop;
     const distance = targetPosition - startPosition;
     let startTime = null;
 
+    // Es la función que se encarga de animar el desplazamiento
     function animation(currentTime) {
         if (startTime === null) {
             startTime = currentTime;
         }
+        // Se calcula el tiempo transcurrido desde el inicio de la animación
         const elapsedTime = currentTime - startTime;
+
+        // Se establece la posición de desplazamiento utilizando la función "scrolling"
         rightDiv.scrollTop = scrolling(elapsedTime, startPosition, distance, duration);
         if (elapsedTime < duration) {
             // Utilizo requestAnimationFrame para animar gradualmente la posición de desplazamiento.
@@ -234,6 +271,7 @@ function scrollSmoothly(time) {
         return (-distance / 2) * (elapsedTime * (elapsedTime - 2) - 1) + startPosition;
     }
 
+    // Se llama a requestAnimationFrame para iniciar la animación
     requestAnimationFrame(animation);
 }
 
