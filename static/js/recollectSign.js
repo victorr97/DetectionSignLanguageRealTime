@@ -65,22 +65,25 @@ buttonSave.addEventListener('click', () => {
 saveMoreData.addEventListener('click', () => {
     console.log("SAVE MORE")
     popup.style.display = "none";
-    changeResetPopUp();
+    changeResetPopUp(); //Reseteo el PopUp cuando el usuario quiere almacenar más signos.
 });
 
+/**
+ * Esta función envia el signo seleccionado por el usuario al backend y cambia la imagen de ejemplo
+ */
 function sendSignBackend() {
     //Compruebo que la letra sea correcta (A-Z)
-    if (checkLetter()) {
-        e.preventDefault();
+    if (checkLetter()) { // Si la letra es correcta
+        e.preventDefault(); // Evita que se envíe el formulario
         //Envio letra seleccionada por el usuario al backend
-        procesarDatos(selectElement.value)
+        procesarDatos(selectElement.value) // Envía la letra seleccionada por el usuario al backend
             .then(result => {
-                if (result === true) {
+                if (result === true) { // Si se ha enviado correctamente
                     console.log("LETRA ENVIADA AL BACKEND")
-                    containerImg.style.display = "flex";
-                    const rutaImagen = imgHelp.getAttribute("data-img");
+                    containerImg.style.display = "flex"; // Muestra la imagen del signo de ejemplo
+                    const rutaImagen = imgHelp.getAttribute("data-img"); // Obtiene la ruta de la imagen del signo de ejemplo
                     //Cargo la ruta de la img por la seleccionada
-                    imgHelp.src = rutaImagen.replace("A", selectElement.value);
+                    imgHelp.src = rutaImagen.replace("A", selectElement.value); // Carga la ruta de la imagen por la seleccionada
                 }
             })
             .catch(error => {
@@ -88,36 +91,38 @@ function sendSignBackend() {
             });
     } else {
         //Si el usuario ha seleccionado la casilla por defecto no muestro la imagen del signo de ejemplo
-        containerImg.style.display = "none";
+        containerImg.style.display = "none"; // Oculta la imagen del signo de ejemplo
     }
 }
 
+/**
+ * Esta función se encarga de guardar las coordenadas en el dataSet del backend
+ */
 function saveData() {
     //Si hay letra compruebo si la persona esta bien posicionado
     if (checkLetter()) {
-        // Enviado una solicitud Fetch al backend para comprobar si la persona esta en la camara
         popup.style.display = 'block';
-        //Cuenta 3 segundos
+        //Cuenta 3 segundos, si result es true significa que ha acabado el contador
         countDownSeconds(3).then(result => {
             if (result === true) {
                 console.log("COUNTER FINISHED");
+                // Envio una solicitud Fetch al backend para comprobar si la persona esta en la camara
                 checkPerson().then(result => {
                     if (result === true) {
-                        console.log("PERSONA EN WEBCAM");
+                        console.log("USUARIO EN WEBCAM");
+                        // Envio una solicitud Fetch al backend indicando que ya se pueden guardar datos
                         setSaveDataInBackend().then(result => {
                             if (result === true) {
                                 console.log("GUARDANDO DATOS");
                                 messageSaveData.style.display = "block";
                                 messageSaveData.innerHTML = "<strong>Guardando datos...</strong> no se mueva porfavor.";
+                                //Compruebo el estado del almacenamiento de coordenadas al dataSet
                                 checkFinishSaveData().then(result => {
-                                    if (result === true) {
-                                        console.log("GUARDADO DATOS CORRECTAMENTE");
+                                    if (result === true) { //Indica que se ha guardado los datos correctamente
                                         changePopUpGoodSave();
-                                    } else if (result === false) {
-                                        console.log("EL USUARIO HA SALIDO DEL PLANO");
+                                    } else if (result === false) { //Indica que el usuario ha salido del plano mientras se almacenaban las coordenadas
                                         changePopUpWrongSave();
-                                    } else {
-                                        console.log("EL USUARIO HA REALIZADO MAL EL SIGNO");
+                                    } else {  //Indica que el usuario ha realizado un signo distinto respecto al seleccionado
                                         changePopUpWrongSign();
                                     }
                                 }).catch(error => {
@@ -128,8 +133,7 @@ function saveData() {
                             console.log(error);
                         });
                     } else {
-                        console.log("PERSONA NO ESTA EN LA WEBCAM")
-                        changePopUpPersonIsNotPositioned()
+                        changePopUpPersonIsNotPositioned();  //Indica que el usuario no se encuentra ubicado en la webcam al principio
                     }
                 }).catch(error => {
                     console.log(error);
@@ -137,6 +141,7 @@ function saveData() {
             }
         })
     } else {
+        //Muestro un popUp indicando al usuario que no ha seleccionado ninguna letra.
         Swal.fire({
             title: '¡Atención!',
             text: 'Parece que no has seleccionado ninguna letra. Por favor, selecciona una letra antes de continuar.',
@@ -147,24 +152,38 @@ function saveData() {
     }
 }
 
+/**
+ * Esta función comprueba si el usuario ha seleccionado la letra correcta (A-Z)
+ */
 function checkLetter() {
     return selectElement.value !== "messageSelect";
 }
 
+/**
+ * Esta función se encarga de hacer una cuenta atrás.
+ * @param {int} seconds - Los segundos que tiene que tener la cuenta atrás.
+ */
 function countDownSeconds(seconds) {
     return new Promise((resolve, reject) => {
+        // Crea un temporizador que se ejecuta cada 1000ms (1 segundo)
         const timer = setInterval(() => {
+            // Resta 1 segundo del contador
             seconds--;
-            countDown.innerHTML = seconds
+            // Actualiza el valor del contador en la pantalla
+            countDown.innerHTML = seconds;
+            // Si el contador llega a 0, detiene el temporizador y resuelve la promesa indicando que ya ha finalizado de contar
             if (seconds === 0) {
                 clearInterval(timer);
-                isCountdownFinished = true
+                isCountdownFinished = true;
                 resolve(true);
             }
         }, 1000);
     });
 }
 
+/**
+ * Esta función muestra el popUp indicando que se ha guardado correctamente en el dataSet
+ */
 function changePopUpGoodSave() {
     boxCountDown.style.display = "none";
     messageSaveData.innerHTML = null;
@@ -182,6 +201,9 @@ function changePopUpGoodSave() {
     noSaveMore.style.margin = "0";
 }
 
+/**
+ * Esta función muestra el popUp indicando que el usuario no esta bien posicionado al principio
+ */
 function changePopUpPersonIsNotPositioned() {
     boxCountDown.style.display = "none";
     messageSaveData.innerHTML = null;
@@ -200,6 +222,9 @@ function changePopUpPersonIsNotPositioned() {
     noSaveMore.style.margin = "0";
 }
 
+/**
+ * Esta función muestra el popUp indicando que ha habido un error y el usuario ha salido del plano mientras se estaban guardando las coordenadas
+ */
 function changePopUpWrongSave() {
     boxCountDown.style.display = "none";
     messageSaveData.innerHTML = null;
@@ -217,6 +242,9 @@ function changePopUpWrongSave() {
     noSaveMore.style.margin = "0";
 }
 
+/**
+ * Esta función muestra el popUp indicando que ha habido un error y el usuario esta realizando un signo diferente al seleccionado
+ */
 function changePopUpWrongSign() {
     boxCountDown.style.display = "none";
     messageSaveData.innerHTML = null;
@@ -234,6 +262,9 @@ function changePopUpWrongSign() {
     noSaveMore.style.margin = "0";
 }
 
+/**
+ * Esta función muestra resetea el popUp para cuando el usuario quiere seguir guardando datos
+ */
 function changeResetPopUp() {
     boxCountDown.style.display = "flex";
     countDown.innerHTML = "3";
