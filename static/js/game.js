@@ -14,6 +14,8 @@ let activeIndex = 0;
 let tiempoGlobal = "00:00";
 let contador;
 
+/************** LISTENER - LOAD IMG *********************/
+
 // Cuando la webcam ha terminado de cargarse, se ejecuta el juego
 img.addEventListener('load', function () {
     loading.style.display = "none";
