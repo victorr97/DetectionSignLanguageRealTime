@@ -1,25 +1,35 @@
 # DetectionSignLanguageRealTime
+
 TFG - Víctor Vallés
 
-Ejecutar el siguiente comando para instalar todas las dependencias del proyecto:
+## Instalación
+
+Ejecuta el siguiente comando para instalar todas las dependencias del proyecto:
 
 pip install -r requirements.txt
 
+## Uso
 
-Una vez instaladas las dependencias podemos utilizar una serie de comandos.
+Una vez instaladas las dependencias, puedes utilizar los siguientes comandos:
 
-Si queremos ejecutar la página web, se ha de utilizar el comando:
+### Ejecutar la página web
+
+Para ejecutar la página web, utiliza el siguiente comando:
 
 python .\main.py
 
-Acceder a la web: http://localhost:5000
+Accede a la web desde tu navegador: [http://localhost:5000](http://localhost:5000)
 
+### Entrenar el modelo de datos
 
-Si queremos entrenar el modelo de datos, se ha de utilizar el comando:
+Si deseas entrenar el modelo de datos, utiliza el siguiente comando:
 
 python .\main.py --train
 
+### Visualizar las gráficas del modelo entrenado
 
-Si queremos ver las gráficas del modelo entrenado, se ha de utilizar el comando:
+Si deseas ver las gráficas del modelo entrenado, utiliza el siguiente comando:
 
 python .\main.py --dataCharts
+
+¡Disfruta del proyecto!
