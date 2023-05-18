@@ -129,7 +129,7 @@ if __name__ == '__main__':
 
     if args.train:
         trainModel.trainingData()
-    if args.dataCharts:
+    elif args.dataCharts:
         dataChartsModel.showCharts()
     else:
         app.run(host="localhost", debug=True)

@@ -8,6 +8,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.manifold import TSNE
 from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler, MaxAbsScaler
 from sklearn.linear_model import LogisticRegression, RidgeClassifier
@@ -16,8 +17,6 @@ from sklearn.pipeline import Pipeline
 
 
 def gridSearchCrossValidation(X_train, y_train):
-    # k_range = list(range(1, 11))
-    # weight_options = ['uniform', 'distance']
 
     pipe = Pipeline([
         ('scaler', PipelineHelper([
@@ -25,7 +24,7 @@ def gridSearchCrossValidation(X_train, y_train):
             ('max', MaxAbsScaler()),
         ])),
         ('classifier', PipelineHelper([
-            # ('knn', KNeighborsClassifier()),
+            ('knn', KNeighborsClassifier()),
             ('rc', RidgeClassifier()),
             ('gb', GradientBoostingClassifier()),
             ('rf', RandomForestClassifier()),
@@ -37,6 +36,9 @@ def gridSearchCrossValidation(X_train, y_train):
                   'alpha': 10.0 ** -np.arange(1, 10), 'hidden_layer_sizes': np.arange(10, 15),
                   'random_state': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
 
+    k_range = list(range(1, 11))
+    weight_options = ['uniform', 'distance']
+
     param_grid_pipe = {
         'scaler__selected_model': pipe.named_steps['scaler'].generate({
             'std__with_mean': [True, False],
@@ -44,8 +46,8 @@ def gridSearchCrossValidation(X_train, y_train):
             'max__copy': [True],
         }),
         'classifier__selected_model': pipe.named_steps['classifier'].generate({
-            # 'knn__n_neighbors': k_range,
-            # 'knn__weights': weight_options,
+            'knn__n_neighbors': k_range,
+            'knn__weights': weight_options,
             'rc__alpha': [1.0],
             'rc__solver': ['auto'],
             'gb__n_estimators': [100],
@@ -75,7 +77,7 @@ def gridSearchCrossValidation(X_train, y_train):
 
     parametersLogisticRegression = {'penalty': ['l1', 'l2'],
                                     'C': [0.1, 1, 10],
-                                    'solver': ['liblinear']}
+                                    'solver': ['sag', 'lbfgs']}
 
     range_components = list(range(1, 10))
 
@@ -121,7 +123,7 @@ def gridSearchCrossValidation(X_train, y_train):
     print("\n***Starting training***\n")
     warnings.filterwarnings('ignore', category=ConvergenceWarning)
     #270 iteraciones para acabar RedNeuronal
-    gridPipe = GridSearchCV(MLPClassifier(), parametersNeuronalNetwork, scoring='accuracy', cv=10, refit=True, verbose=2)
+    gridPipe = GridSearchCV(LogisticRegression(), parametersLogisticRegression, scoring='accuracy', cv=10, refit=True, verbose=2)
     gridPipe.fit(X_train, y_train)
     print("\n***Finished training***\n")
 
@@ -142,7 +144,7 @@ def trainingData():
 
     gridPipe = gridSearchCrossValidation(X_train, y_train)
 
-    with open('generatedFiles/neuralNetwork/dataSet282landmarksV3.pkl', 'wb') as f:
+    with open('generatedFiles/LR/dataSet282landmarks.pkl', 'wb') as f:
         joblib.dump((X_train, y_train, X_test, y_test, nameClass, gridPipe), f, compress=1)
         print("\n*************** GUARDADO MODELO EN ARCHIVO ***************\n")
 

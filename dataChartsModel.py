@@ -1,19 +1,18 @@
+import joblib
+import numpy as np
+import pandas as pd
+import seaborn as sn
+from matplotlib import pyplot as plt
+from scipy import stats
+from scipy.interpolate import interp1d
 from sklearn.decomposition import PCA, TruncatedSVD
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.linear_model import RidgeClassifier
-from sklearn.metrics import accuracy_score, classification_report, roc_curve, auc, confusion_matrix
-import pandas as pd
-from matplotlib import pyplot as plt
-import seaborn as sn
-import joblib
-from scipy import stats
-import numpy as np
-from sklearn.preprocessing import label_binarize
-from scipy.interpolate import interp1d
-from sklearn.metrics import precision_recall_curve
-from sklearn.metrics import average_precision_score
 from sklearn.manifold import TSNE
-
+from sklearn.metrics import accuracy_score, classification_report, roc_curve, auc, confusion_matrix, f1_score, recall_score
+from sklearn.metrics import average_precision_score
+from sklearn.metrics import precision_recall_curve
+from sklearn.preprocessing import label_binarize
 
 colors = 'navy', 'turquoise', 'darkorange', 'cornflowerblue', 'teal', 'red', 'green', 'blue', 'orange', 'brown', 'gray', 'cyan', 'olive', 'magenta', 'peru', 'pink', 'sienna', 'crimson', 'darkkhaki', 'limegreen', 'salmon', 'slateblue', 'deeppink', 'indianred', 'dodgerblue', 'mediumseagreen'
 linestyles = '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--'
@@ -282,7 +281,7 @@ def SVDChart3D(X_train, y_train, nameClass) -> None:
 
 def showCharts() -> None:
     print("*** SHOW CHARTS ***")
-    with open('generatedFiles/neuralNetwork/dataSet282landmarksV2.pkl', 'rb') as f:
+    with open('generatedFiles/LR/dataSet282landmarks.pkl', 'rb') as f:
         X_train, y_train, X_test, y_test, nameClass, gridPipe = joblib.load(f)
 
         normalizedData(X_train, X_test)
@@ -293,6 +292,14 @@ def showCharts() -> None:
         confusionMatrix(y_test, y_predict, nameClass)
 
         print("\nClassification report: \n\n" + classification_report(y_test, y_predict))
+
+        f1_scores = f1_score(y_test, y_predict, average=None)
+        f1_score_mean = f1_scores.mean()
+        print("Media del F1-score:", f1_score_mean)
+
+        recall_scores = recall_score(y_test, y_predict, average=None)
+        recall_mean = recall_scores.mean()
+        print("Media del recall:", recall_mean)
 
         ROCandPR(y_test, gridPipe, X_test)
 
