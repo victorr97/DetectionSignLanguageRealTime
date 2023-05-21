@@ -53,7 +53,7 @@ selectElement.addEventListener('change', function (e) {
     selectElement.size = 1;
     selectElement.blur();
     selectElement.style.backgroundColor = '#FFF';
-    sendSignBackend();
+    sendSignBackend(e);
 });
 
 /************** LISTENERS - SAVE DATA *********************/
@@ -71,7 +71,7 @@ saveMoreData.addEventListener('click', () => {
 /**
  * Esta función envia el signo seleccionado por el usuario al backend y cambia la imagen de ejemplo
  */
-function sendSignBackend() {
+function sendSignBackend(e) {
     //Compruebo que la letra sea correcta (A-Z)
     if (checkLetter()) { // Si la letra es correcta
         e.preventDefault(); // Evita que se envíe el formulario
